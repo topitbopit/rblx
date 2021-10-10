@@ -814,7 +814,7 @@ ui = {} do
                             twn(toggle_tcheck, {ImageTransparency = 1})
 
                             OnToggle:Fire(false)
-                            OnEnable:Fire()
+                            OnDisable:Fire()
                         end
                         
                         local function enable() 
