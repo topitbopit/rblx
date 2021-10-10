@@ -1148,7 +1148,7 @@ ui = {} do
                             twn(slider_text, {BackgroundTransparency = 0.4, TextTransparency = 0, ZIndex = 25})
                         end)
                         
-                        local slider_id = "Slider"..slider_back:GetDebugId()
+                        local slider_id = "Slider"..getrand(10)
                         local ratio = (slider_back.AbsoluteSize.X / (max-min))
 
                         
@@ -1160,7 +1160,7 @@ ui = {} do
                         
                         slider_back.InputBegan:Connect(function(input1)
                             if input1.UserInputType == Enum.UserInputType.MouseButton1 then
-                                FocusGained:Fire()
+                                OnFocusGained:Fire()
                                 
                                 local x = math.floor(math.clamp(((input1.Position.X - slider_back.AbsolutePosition.X)), 0, slider_slider.AbsoluteSize.X))
                                 twn(slider_slider, {Position = UDim2.new(0, x, 0, 0)})
@@ -1171,7 +1171,7 @@ ui = {} do
                                 
                                 
                                 if value ~= oldv then
-                                    ValueChanged:Fire(value)
+                                    OnValueChanged:Fire(value)
                                 end
                                 oldv = value
                                 
@@ -1186,7 +1186,7 @@ ui = {} do
                                         
                                         
                                         if value ~= oldv then
-                                            ValueChanged:Fire(value)
+                                            OnValueChanged:Fire(value)
                                         end
                                         
                                         oldv = value
@@ -1198,7 +1198,7 @@ ui = {} do
                         slider_back.InputEnded:Connect(function(input1)
                             if input1.UserInputType == Enum.UserInputType.MouseButton1 then
                                 ui.cons[slider_id]:Disconnect()
-                                FocusLost:Fire()
+                                OnFocusLost:Fire()
                             end
                         end) 
                         
