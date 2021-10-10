@@ -809,6 +809,21 @@ ui = {} do
                             twn(toggle_button, {BackgroundTransparency = 0.7})
                         end)
                         
+                        local function disable() 
+                            twn(toggle_button, {BackgroundColor3 = ui.colors.button})  
+                            twn(toggle_tcheck, {ImageTransparency = 1})
+
+                            OnToggle:Fire(false)
+                            OnEnable:Fire()
+                        end
+                        
+                        local function enable() 
+                            twn(toggle_button, {BackgroundColor3 = ui.colors.enabled})
+                            twn(toggle_tcheck, {ImageTransparency = 0})
+                            
+                            OnToggle:Fire(true)
+                            OnEnable:Fire()
+                        end
                         
                         local function toggle() 
                             
@@ -817,18 +832,10 @@ ui = {} do
                             
                             
                             if (toggle_state) then
-                                twn(toggle_button, {BackgroundColor3 = ui.colors.enabled})
-                                twn(toggle_tcheck, {ImageTransparency = 0})
-                                
-                                OnToggle:Fire(true)
-                                OnEnable:Fire()
+                                enable() 
                                 
                             else
-                                twn(toggle_button, {BackgroundColor3 = ui.colors.button})  
-                                twn(toggle_tcheck, {ImageTransparency = 1})
-
-                                OnToggle:Fire(false)
-                                OnEnable:Fire()
+                                disable()
                             end
                         end
                         
@@ -863,6 +870,14 @@ ui = {} do
                             
                             function t:Toggle() 
                                 toggle()
+                            end
+                            
+                            function t:Enable() 
+                                enable()
+                            end
+                            
+                            function t:Disable() 
+                                disable()
                             end
                             
                             function t:SetHotkey() 
