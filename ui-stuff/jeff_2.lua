@@ -230,6 +230,8 @@ ui = {} do
     ui.OnMinimize = eventlistener.new()
     ui.OnReady = eventlistener.new()
     
+    ui.Version = "2.0.0-alpha"
+    
     function ui:SetColors(colors) 
 
         if colors == "red" then
