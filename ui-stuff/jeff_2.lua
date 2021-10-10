@@ -1014,14 +1014,18 @@ ui = {} do
                             twn(text_textbox, {BackgroundTransparency = 0.7})
                         end)
                         
-                        text_textbox.FocusLost:Connect(function() 
+                        text_textbox.FocusLost:Connect(function(enter, io) 
                             twn(text_textbox, {BackgroundColor3 = ui.colors.button})  
                             twn(text_icon,    {BackgroundColor3 = ui.colors.text})
+                            
+                            OnFocusLost:Fire(text_textbox.Text, enter, io)
                         end)
                         
                         text_textbox.Focused:Connect(function() 
                             twn(text_textbox, {BackgroundColor3 = ui.colors.enabled})
                             twn(text_icon,    {BackgroundColor3 = ui.colors.enabledbright})
+                            
+                            Focused:Fire(text_textbox.Text)
                         end)
 
 
