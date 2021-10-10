@@ -1182,7 +1182,7 @@ ui = {} do
                         local ratio = (slider_back.AbsoluteSize.X / (max-min))
 
                         
-                        local value = math.floor((start-min) * ratio)
+                        local value = min+math.floor(0 / ratio)
                         local oldv = value
                         
                         slider_amount.Text = tostring(start)
