@@ -230,8 +230,6 @@ ui = {} do
     ui.OnMinimize = eventlistener.new()
     ui.OnReady = eventlistener.new()
     
-    ui.Version = "2.0.0-alpha"
-    
     function ui:SetColors(colors) 
 
         if colors == "red" then
@@ -960,6 +958,15 @@ ui = {} do
                             
                             function t:GetHotkey() 
                                 
+                            end
+                            
+                            function t:SetText(tx) 
+                                if tx == nil then error("SetText failed; provided value was nil") end
+                                button_button.Text = tostring(tx)
+                            end
+                            
+                            function t:GetText() 
+                                return button_button.Text
                             end
                             
                             t.OnClick = OnClick
