@@ -1025,7 +1025,7 @@ ui = {} do
                             twn(text_textbox, {BackgroundColor3 = ui.colors.enabled})
                             twn(text_icon,    {BackgroundColor3 = ui.colors.enabledbright})
                             
-                            Focused:Fire(text_textbox.Text)
+                            OnFocusGained:Fire(text_textbox.Text)
                         end)
 
 
