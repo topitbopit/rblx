@@ -275,6 +275,71 @@ ui = {} do
                 textshade2 = Color3.fromRGB(255, 0, 255)
             }
             
+        elseif colors == "purple" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(20, 20, 20),
+                topbar = Color3.fromRGB(22, 22, 22),
+                text = Color3.fromRGB(250, 230, 255),
+                button = Color3.fromRGB(145, 22, 150),
+                scroll = Color3.fromRGB(80, 80, 80),
+                detail = Color3.fromRGB(250, 53, 255),
+                enabledbright = Color3.fromRGB(250, 153, 255),
+                enabled = Color3.fromRGB(250, 50, 255),
+                textshade1 = Color3.fromRGB(250, 70, 255),
+                textshade2 = Color3.fromRGB(250, 0, 255)
+            }
+            
+        elseif colors == "bright" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(22, 22, 22),
+                topbar = Color3.fromRGB(24, 24, 24),
+                text = Color3.fromRGB(225, 225, 225),
+                button = Color3.fromRGB(170, 170, 170),
+                scroll = Color3.fromRGB(130, 130, 130),
+                detail = Color3.fromRGB(255, 255, 255),
+                enabledbright = Color3.fromRGB(255, 255, 255),
+                enabled = Color3.fromRGB(255, 255, 255),
+                textshade1 = Color3.fromRGB(255, 255, 255),
+                textshade2 = Color3.fromRGB(255, 255, 255)
+            }
+            
+        elseif colors == "mono" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(22, 22, 22),
+                topbar = Color3.fromRGB(24, 24, 24),
+                text = Color3.fromRGB(225, 225, 225),
+                button = Color3.fromRGB(71, 71, 71),
+                scroll = Color3.fromRGB(52, 52, 52),
+                detail = Color3.fromRGB(120, 120, 120),
+                enabledbright = Color3.fromRGB(180, 180, 180),
+                enabled = Color3.fromRGB(121, 121, 121),
+                textshade1 = Color3.fromRGB(131, 131, 131),
+                textshade2 = Color3.fromRGB(170, 170, 170)
+            }
+            
+            
+        elseif colors == "neon" then
+            
+            local pick = math.random(0,1)
+            local pick2 = math.random(0,1)
+            local pick3 = math.random(0,1)
+            
+            ui.colors = {
+                window = Color3.fromRGB(0, 0, 0),
+                topbar = Color3.fromRGB(5, 5, 5),
+                text = Color3.fromRGB(pick*255, pick2*255, pick3*255),
+                button = Color3.fromRGB(20, 20, 20),
+                scroll = Color3.fromRGB(32, 32, 32),
+                detail = Color3.fromRGB(64, 64, 64),
+                enabledbright = Color3.fromRGB(128, 128, 128),
+                enabled = Color3.fromRGB(72, 72, 72),
+                textshade1 = Color3.fromRGB(131, 131, 131),
+                textshade2 = Color3.fromRGB(170, 170, 170)
+            }
+            
         else
         
             
@@ -400,7 +465,7 @@ ui = {} do
         round(window_bclose)
         
         window_bclose.MouseEnter:Connect(function() 
-            twn(window_bclose, {BackgroundTransparency = 0})
+            twn(window_bclose, {BackgroundTransparency = 0.4})
         end)
         
         window_bclose.MouseLeave:Connect(function() 
@@ -424,7 +489,7 @@ ui = {} do
         round(window_bmin)
         
         window_bmin.MouseEnter:Connect(function() 
-            twn(window_bmin, {BackgroundTransparency = 0})
+            twn(window_bmin, {BackgroundTransparency = 0.4})
         end)
         
         window_bmin.MouseLeave:Connect(function() 
@@ -453,7 +518,7 @@ ui = {} do
         
         
         window_bmenu.MouseEnter:Connect(function() 
-            twn(window_bmenu, {BackgroundTransparency = 0})
+            twn(window_bmenu, {BackgroundTransparency = 0.4})
         end)
         
         window_bmenu.MouseLeave:Connect(function() 
@@ -600,7 +665,7 @@ ui = {} do
                     
                     
                     menu_scroll.MouseEnter:Connect(function() 
-                        twn(menu_scroll, {BackgroundTransparency = 0.5})
+                        twn(menu_scroll, {BackgroundTransparency = 0.4})
                     end)
                     
                     menu_scroll.MouseLeave:Connect(function() 
@@ -797,12 +862,12 @@ ui = {} do
                         toggle_tcheck.Position = UDim2.new(1, -30, 0, -5)
                         toggle_tcheck.Size = UDim2.new(0, 34, 0, 34)
                         toggle_tcheck.Rotation = 0
-                        toggle_tcheck.ZIndex = 24
+                        toggle_tcheck.ZIndex = 23
                         toggle_tcheck.Parent = toggle_button
                         
                         
                         toggle_button.MouseEnter:Connect(function() 
-                            twn(toggle_button, {BackgroundTransparency = 0})
+                            twn(toggle_button, {BackgroundTransparency = 0.4})
                         end)
                         
                         toggle_button.MouseLeave:Connect(function() 
@@ -921,23 +986,21 @@ ui = {} do
                         button_pad.PaddingLeft = UDim.new(0, 10)
                         button_pad.Parent = button_button
                         
-                        
-                        local button_image = Instance.new("ImageLabel")
-                        button_image.Active = false
-                        button_image.Visible = false
-                        button_image.BackgroundTransparency = 1
-                        button_image.Image = "rbxassetid://7197977900"
-                        button_image.ImageColor3 = ui.colors.text
-                        button_image.Position = UDim2.new(1, -30, 0, -5)
-                        button_image.Size = UDim2.new(0, 34, 0, 34)
-                        button_image.Rotation = 0
-                        button_image.ZIndex = 23
-                        button_image.Parent = button_button
+                        --local button_effect = Instance.new("ImageLabel")
+                        --button_effect.Rotation = 0
+                        --button_effect.Size = UDim2.new(0, 300, 0, 100)
+                        --button_effect.BorderSizePixel = 0
+                        --button_effect.BackgroundTransparency = 1
+                        --button_effect.ImageColor3 = ui.colors.enabled
+                        --button_effect.Image = "rbxassetid://7705018041"
+                        --button_effect.ImageTransparency = 0.7
+                        --button_effect.Position = UDim2.new(1, -300, 0, 0)
+                        --button_effect.ZIndex = 23
+                        --button_effect.Parent = button_button
 
                         
-                        
                         button_button.MouseEnter:Connect(function() 
-                            twn(button_button, {BackgroundTransparency = 0})
+                            twn(button_button, {BackgroundTransparency = 0.4})
                         end)
                         
                         button_button.MouseLeave:Connect(function() 
@@ -1002,6 +1065,7 @@ ui = {} do
                         local text_textbox = Instance.new("TextBox")
                         text_textbox.Active = true
                         text_textbox.Text = text
+                        text_textbox.ClipsDescendants = true
                         text_textbox.TextColor3 = ui.colors.text
                         text_textbox.PlaceholderText = "..."
                         text_textbox.BackgroundTransparency = 0.7
@@ -1033,7 +1097,7 @@ ui = {} do
                         
                         
                         text_textbox.MouseEnter:Connect(function() 
-                            twn(text_textbox, {BackgroundTransparency = 0})
+                            twn(text_textbox, {BackgroundTransparency = 0.4})
                         end)
                         
                         text_textbox.MouseLeave:Connect(function() 
@@ -1051,6 +1115,8 @@ ui = {} do
                             twn(text_textbox, {BackgroundColor3 = ui.colors.enabled})
                             twn(text_icon,    {BackgroundColor3 = ui.colors.enabledbright})
                             
+                            ceffect(text_textbox)
+                            
                             OnFocusGained:Fire(text_textbox.Text)
                         end)
 
@@ -1062,8 +1128,26 @@ ui = {} do
 
                             
                             function t:SetText(txt)
-                                if txt == nil then error("SetText failed; can't set text to nil") end
+                                if txt == nil then error("SetText failed; provided text was nil") end
                                 text_textbox.Text = tostring(txt)
+                            end
+                            
+                            function t:ForceFocus() 
+                                text_textbox:CaptureFocus()
+                            end
+                            
+                            function t:ForceRelease() 
+                                text_textbox:ReleaseFocus()
+                            end
+                            
+                            function t:SetClearOnFocus(state) 
+                                if type(state) ~= "boolean" then error("SetClearOnFocus failed; provided state was not a bool") end
+                            
+                                text_textbox.ClearTextOnFocus = state
+                            end
+                            
+                            function t:IsFocused() 
+                                return text_textbox:IsFocused()
                             end
                             
                             function t:GetText() 
@@ -1126,7 +1210,7 @@ ui = {} do
                         slider_text.TextSize = 19
                         slider_text.Size = UDim2.new(1, 0, 1, 0)
                         slider_text.Position = UDim2.new(0, 0, 0, 0)
-                        slider_text.ZIndex = 25
+                        slider_text.ZIndex = 24
                         slider_text.Visible = true
                         slider_text.Parent = slider_bg
                         
@@ -1144,7 +1228,7 @@ ui = {} do
                         slider_amount.TextSize = 19
                         slider_amount.Size = UDim2.new(0, 35, 1, 0)
                         slider_amount.Position = UDim2.new(0, 5, 0, 0)
-                        slider_amount.ZIndex = 25
+                        slider_amount.ZIndex = 24
                         slider_amount.Parent = slider_bg
                         
                         local slider_back = Instance.new("Frame")
@@ -1171,18 +1255,24 @@ ui = {} do
                         
                         
                         slider_text.MouseEnter:Connect(function() 
-                            twn(slider_text, {BackgroundTransparency = 1, TextTransparency = 1, ZIndex = 0})
+                            local a = twn(slider_text, {BackgroundTransparency = 1, TextTransparency = 1})
+                            a.Completed:Connect(function()
+                                if slider_text.BackgroundTransparency == 1 then 
+                                    slider_text.ZIndex = 0
+                                end
+                            end)
                         end)
                         
                         slider_text.MouseLeave:Connect(function() 
-                            twn(slider_text, {BackgroundTransparency = 0.4, TextTransparency = 0, ZIndex = 25})
+                            slider_text.ZIndex = 24
+                            twn(slider_text, {BackgroundTransparency = 0.7, TextTransparency = 0})
                         end)
                         
                         local slider_id = "Slider"..getrand(10)
                         local ratio = (slider_back.AbsoluteSize.X / (max-min))
 
                         
-                        local value = min+math.floor(0 / ratio)
+                        local value = math.floor((start-min) * ratio)
                         local oldv = value
                         
                         slider_amount.Text = tostring(start)
@@ -1233,17 +1323,11 @@ ui = {} do
                         end) 
                         
                         
+                        
                         table.insert(menu_objects, 3)
                         
                         
                         local s = {} do
-                            
-                            function s:SetCallback(cb) 
-                                if type(cb) ~= "function" then
-                                    error("SetCallback failed; provided value was not a function")
-                                end
-                                callback = cb
-                            end
                             
                             function s:GetValue() 
                                 return value
@@ -1280,9 +1364,9 @@ ui = {} do
                                 
                             end
                             
+                            
                             function s:GetMax() 
                                 return max
-                                
                             end
                             
                             function s:SetMin(m) 
@@ -1323,14 +1407,287 @@ ui = {} do
                             if success then
                             
                                 s:SetValue(ntx)
-                                slider_amount.Text = s:GetValue()
                             end
+                            slider_amount.Text = s:GetValue()
                         end)
                         
                         
                         return s
+
+                    end
+                    
+                    function m:NewDropdown(text, options)
+                        text = text or getrand(7)
+                        options = options or {
+                            getrand(5),
+                            getrand(5),
+                            getrand(5)
+                            
+                        }
+                        
+                        local options_buttons = {}
+                        local open_state = false
+                        local selection = {options[1], 1}
+                        
+                        local OnSelection = eventlistener.new()
+                        local OnOpen = eventlistener.new()
+                        local OnClose = eventlistener.new()
                         
                         
+                        
+                        local dropdown_button = Instance.new("TextButton")
+                        dropdown_button.Text = text .. " ("..tostring(selection[1])..")"
+                        dropdown_button.AutoButtonColor = false
+                        dropdown_button.ClipsDescendants = true
+                        dropdown_button.BackgroundTransparency = 0.7
+                        dropdown_button.BackgroundColor3 = ui.colors.button
+                        dropdown_button.TextColor3 = ui.colors.text
+                        dropdown_button.Font = Enum.Font.Nunito
+                        dropdown_button.TextXAlignment = Enum.TextXAlignment.Left
+                        dropdown_button.TextSize = 19
+                        dropdown_button.Size = UDim2.new(0, menu_menu.AbsoluteSize.X-30, 0, 24)
+                        dropdown_button.Position = UDim2.new(0, 15, 0, ((m:GetChildCount())*28)+3)
+                        dropdown_button.ZIndex = 23
+                        dropdown_button.Parent = menu_menu
+                        round(dropdown_button)
+                        
+                        local dropdown_pad = Instance.new("UIPadding")
+                        dropdown_pad.PaddingLeft = UDim.new(0, 10)
+                        dropdown_pad.Parent = dropdown_button
+                        
+                        local dropdown_arrow = Instance.new("ImageLabel")
+                        dropdown_arrow.Active = false
+                        dropdown_arrow.BackgroundTransparency = 1
+                        dropdown_arrow.Image = "rbxassetid://7184113125"
+                        dropdown_arrow.ImageColor3 = ui.colors.text
+                        dropdown_arrow.Position = UDim2.new(1, -30, 0, -5)
+                        dropdown_arrow.Size = UDim2.new(0, 34, 0, 34)
+                        dropdown_arrow.Rotation = 180
+                        dropdown_arrow.ZIndex = 23
+                        dropdown_arrow.Parent = dropdown_button
+                        
+                        local dropdown_container = Instance.new("Frame")
+                        dropdown_container.Size = UDim2.new(dropdown_button.Size.X, UDim.new(0, 0))
+                        dropdown_container.BorderSizePixel = 0
+                        dropdown_container.BackgroundColor3 = ui.colors.window
+                        dropdown_container.ZIndex = 25
+                        dropdown_container.ClipsDescendants = true
+                        dropdown_container.BackgroundTransparency = 0
+                        dropdown_container.Position = dropdown_button.Position + UDim2.new(0, 0, 0, 24)
+                        dropdown_container.Parent = menu_menu
+
+                        round(dropdown_container)
+                        
+                        
+                        dropdown_button.MouseEnter:Connect(function() 
+                            twn(dropdown_button, {BackgroundTransparency = 0.4})
+                        end)
+                        
+                        dropdown_button.MouseLeave:Connect(function() 
+                            twn(dropdown_button, {BackgroundTransparency = 0.7})
+                        end)
+                        
+                        
+                        
+                        local function open() 
+                            twn(dropdown_arrow, {Rotation = 360})
+                            twn(dropdown_container, {Size = UDim2.new(dropdown_button.Size.X, UDim.new(0, (#options*28)+15))})
+                            twn(dropdown_button, {BackgroundColor3 = ui.colors.enabled})
+                            
+                            
+                            OnOpen:Fire()
+                        end
+                        
+                        local function close() 
+                            twn(dropdown_arrow, {Rotation = 180})
+                            twn(dropdown_container, {Size = UDim2.new(dropdown_button.Size.X, UDim.new(0, 0))})
+                            twn(dropdown_button, {BackgroundColor3 = ui.colors.button})
+                            
+                            
+                            OnClose:Fire()
+                        end
+                        
+                        local function toggle() 
+                            open_state = not open_state
+                            if open_state then
+                                open()
+                            else
+                                close()
+                            end
+                        end
+                        
+                        dropdown_button.MouseButton1Click:Connect(function() 
+                            
+                            
+                            ceffect(dropdown_button)
+                            
+                            toggle()
+                            
+                        end)
+                        
+                        
+                        for i,v in pairs(options) do
+                            local dropdown_option = Instance.new("TextButton")
+                            dropdown_option.Text = v
+                            dropdown_option.AutoButtonColor = false
+                            dropdown_option.ClipsDescendants = true
+                            dropdown_option.BackgroundTransparency = 0.7
+                            dropdown_option.BackgroundColor3 = ui.colors.button
+                            dropdown_option.TextColor3 = ui.colors.text
+                            dropdown_option.Font = Enum.Font.Nunito
+                            dropdown_option.TextXAlignment = Enum.TextXAlignment.Left
+                            dropdown_option.TextSize = 19
+                            dropdown_option.Size = UDim2.new(0, dropdown_container.AbsoluteSize.X-30, 0, 24)
+                            dropdown_option.Position = UDim2.new(0, 15, 0, ((i-1)*28)+8)
+                            dropdown_option.ZIndex = 25
+                            dropdown_option.Parent = dropdown_container
+                            round(dropdown_option)
+                            
+                            local dropdown_pad = Instance.new("UIPadding")
+                            dropdown_pad.PaddingLeft = UDim.new(0, 10)
+                            dropdown_pad.Parent = dropdown_option
+                            
+                            
+                            dropdown_option.MouseEnter:Connect(function() 
+                                twn(dropdown_option, {BackgroundTransparency = 0.4})
+                            end)
+                            
+                            dropdown_option.MouseLeave:Connect(function() 
+                                twn(dropdown_option, {BackgroundTransparency = 0.7})
+                            end)
+                            
+                            dropdown_option.MouseButton1Click:Connect(function() 
+                                ceffect(dropdown_option)
+                                
+                                for i,v in pairs(options_buttons) do
+                                    twn(v, {BackgroundColor3 = ui.colors.button, BackgroundTransparency = 0.7})
+                                end
+                                
+                                twn(dropdown_option, {BackgroundColor3 = ui.colors.enabled, BackgroundTransparency = 0.4})
+                                
+                                selection = {v, i}
+                                dropdown_button.Text = text .. " ("..tostring(selection[1])..")"
+                                
+                                OnSelection:Fire(unpack(selection))
+                            end)
+                            
+                            if i == 1 then
+                                dropdown_option.BackgroundColor3 = ui.colors.enabled
+                                dropdown_option.BackgroundTransparency = 0.4
+                                
+                                selection = {v, i}
+                            end
+                            
+                            table.insert(options_buttons, dropdown_option)
+                        end
+                        
+                        
+                        
+                        table.insert(menu_objects, 7)
+                        
+                        local t = {} do
+                            
+                            function t:SetText(tx) 
+                                if tx == nil then error("SetText failed; provided value was nil") end
+                                dropdown_button.Text = tostring(tx)
+                            end
+                            
+                            function t:GetText() 
+                                return dropdown_button.Text
+                            end
+                            
+                            function t:GetSelectedOption() 
+                                return selection[1], selection[2]
+                            end
+                            
+                            
+                            
+                            
+                            function t:SetSelectedOption(name) 
+                                if (type(name) == "string") then 
+                                    
+                                    local occ = 0
+                                    local oldsel = selection
+                                    
+                                    for i,v in pairs(options_buttons) do
+                                        if v.Text == name then
+                                            occ = occ + 1 
+                                            
+                                            selection = {v.Text, i}
+                                        end
+                                    end
+                                    
+                                    if occ ~= 1 then
+                                        selection = oldsel
+                                        if occ == 0 then 
+                                            error("SetSelectedOption failed; could not find dropdown option with that name")
+                                            return
+                                        elseif occ > 1 then
+                                            
+                                            error("SetSelectedOption failed; more than one valid dropdown option")
+                                            return
+                                        end
+                                    end
+                                    
+                                    oldsel = nil
+                                    
+                                    
+                                    for i,v in pairs(options_buttons) do
+                                        twn(v, {BackgroundColor3 = ui.colors.button, BackgroundTransparency = 0.7})
+                                    end
+                                    
+                                    twn(button, {BackgroundColor3 = ui.colors.enabled, BackgroundTransparency = 0.4})
+                                    
+                                    dropdown_button.Text = text .. " ("..tostring(selection[1])..")"
+                                    OnSelection:Fire(unpack(selection))
+                                    
+                                elseif (type(name) == "number") then
+                                    
+                                    if options_buttons[name] then 
+                                        selection = {options_buttons[name].Text, name}
+                                        
+                                        for i,v in pairs(options_buttons) do
+                                            twn(v, {BackgroundColor3 = ui.colors.button, BackgroundTransparency = 0.7})
+                                        end
+                                        twn(options_buttons[name], {BackgroundColor3 = ui.colors.enabled, BackgroundTransparency = 0.4})
+                                        
+                                        dropdown_button.Text = text .. " ("..tostring(selection[1])..")"
+                                        OnSelection:Fire(unpack(selection))
+                                        
+                                    else
+                                        
+                                        error("SetSelectedOption failed; could not find dropdown option with index "..tostring(name)) 
+                                    end
+                                    
+                                else
+                                    
+                                    error("SetSelectedOption failed; provided value wasn't a valid name or index of option")
+                                    
+                                end 
+                                
+                            end
+                        
+                            function t:Select(...) 
+                                
+                                return t:SetSelectedOption(...)
+                                
+                            end
+                            
+                            function t:GetOptions() 
+                                return options
+                                
+                                
+                            end
+                            
+                            function t:SetOptions() 
+                                warn("Coming soon")
+                            end
+                            
+                            
+                            t.OnSelection = OnSelection
+                        end
+                        
+                        return t
                     end
                     
                     function m:NewGrid() 
@@ -1339,6 +1696,7 @@ ui = {} do
                         local g = {} do
                             
                             function g:NewToggle() 
+                                
                                 
                                 
                             end
@@ -1522,7 +1880,7 @@ ui = {} do
         
         
         msg_bclose.MouseEnter:Connect(function() 
-            twn(msg_bclose, {BackgroundTransparency = 0})
+            twn(msg_bclose, {BackgroundTransparency = 0.4})
         end)
         msg_bclose.MouseLeave:Connect(function() 
             twn(msg_bclose, {BackgroundTransparency = 1})
@@ -1560,7 +1918,7 @@ ui = {} do
             
             
             msg_bv.MouseEnter:Connect(function() 
-                twn(msg_bv, {BackgroundTransparency = 0})
+                twn(msg_bv, {BackgroundTransparency = 0.4})
             end)
             msg_bv.MouseLeave:Connect(function() 
                 twn(msg_bv, {BackgroundTransparency = 1})
@@ -1608,5 +1966,7 @@ ui = {} do
         
     end
 end
+
+
 
 return ui
