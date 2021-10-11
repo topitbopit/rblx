@@ -1,4 +1,4 @@
-local eventlistener = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/misc-dependancies/main/RBXEvent.lua'))()
+local eventlistener = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/rbxevent.lua'))()
 
 if _G.JUI2 then
     
