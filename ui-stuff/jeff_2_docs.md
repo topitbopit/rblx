@@ -1,17 +1,36 @@
-# Loading the library
+# Jeff 2 UI Library
+*Jeff 2 is a clean, simple UI library made by topit.*  
 
-Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be in these docs.
+## Getting started
+Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
 ```lua
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
 ```
-<br/>
-Functions:
+Note that unlike most UI libraries, Jeff 2 is *event based.*
+Instead of making a toggle like this...
+```lua
+ui:NewToggle("Hello world", function(state) print(state) end)
+```
+you would make it like this...
+```lua
+local toggle = ui:NewToggle("Hello world")
+toggle.OnToggle:Connect(function(state) 
+    print(state)
+end)
+```
+This lets you organize your code better, disconnect functions easily, yield until a button gets pressed, and more.
+
+Another thing is native keybind support. A lot of UIs do let you use keybinds, but usually it's a separate button / box you click and enter.
+When you right click a button, toggle, or tabbutton a prompt allows you to bind that button to any key. That way you don't have to worry about implementing keybinds; it's all done for you.
+
+## UI
+### Functions:
 
 ```lua
 <void> ui:Ready()
 ```
 *Readies library  `ui`, firing the `ui.OnReady` event.*
->`ui:Ready()` is important as it finalizes making the gui. Make sure to leave it at the far bottom of your script and **never** make more objects after calling `Ready()`. You can assign callbacks to events after you call it though.
+>`ui:Ready()` is important as it finalizes making the gui. Make sure to leave it at the far bottom of your script and **never** make more objects after calling `Ready()`. Assigning callbacks, displaying notifications and displaying messageboxes all work though.
 
 ```lua
 <void> ui:SetColors(<variant> theme)
@@ -33,13 +52,28 @@ Functions:
 <window> ui:NewWindow(<string> title, <number> size_x, <number> size_y)
 ```
 *Creates a new window object.*
->Scroll to the window section to view more documentation on windows.
-
-<br/>
-Variables:  
 
 ```lua
-<string> ui.Version = "2.0.0-alpha" 
+<msgbox> ui:NewMessagebox(<string> msg_text, <string> msg_desc, <table> msg_buttons)
+```
+*Creates a new messagebox object.*
+
+```lua
+<notification> ui:NewNotification(<string> notif_text, <string> notif_desc, <number> notif_timer)
+```
+*Creates a new notification object.*
+
+```lua
+<notification> ui:NewBindDialog(<string> bd_name, <function> bd_func, <string> bd_id, <stirng> bd_word, <guiobject> bd_display)
+```
+*Creates a new binddialog object.*
+>BindDialogs are an object used for keybind initialization that should only be used internally. Instead, use button:SetBind() or toggle:SetBind()
+
+
+#### Variables:  
+
+```lua
+<string> ui.Version = "2.1.0-alpha" 
 ```
 *The current ui version*
 ```lua
@@ -54,11 +88,51 @@ Variables:
 <table> ui.colors
 ```
 *Table for ui colors. Used internally, do not change*
+```lua
+<table> ui.binds
+```
+*Table for ui binds. Used internally, do not change*
 
+```lua
+<RBXScriptConnection> ui.BindHandler
+```
+*Connection used for handling binds. Used internally, do not change*
+
+```lua
+<number> ui.NotifCount
+```
+*Value to keep track of currently displayed notifications. Used internally, do not change.*
+```lua
+<Enum.Font> ui.Font = Enum.Font.SourceSans
+```
+*Globally used font. Edit this before calling any functions.*
+```lua
+<number> ui.FontSize = 20
+```
+*Base UI font size. Edit this before calling any functions.*
+```lua
+<number> ui.WindowCount
+```
+*How many windows there are. Used internally, do not change.*
+```lua
+<table> ui.Windows
+```
+*A table for ui windows. Used internally, do not change.*
+#### Events:
+
+```lua
+<RBXEvent> ui.OnReady
+```
+*Event that gets fired when ui:Ready() gets called. Used internally, do not change.*
+
+```lua
+<RBXEvent> ui.OnNotifDelete
+```
+*Event that gets fired when a notification gets deleted. Used internally, do not change.*
 
 ---
 ## Windows
-Windows are the main part of the library as of now, and are far from finished.
+Windows are the main part of the library as of now.
 
 Creation:
 ```lua
@@ -159,4 +233,4 @@ Events:
 `none`
 
 ---
-These docs are for version 2.0.0-alpha.
+These docs are for version 2.1.0-alpha. (UNFINISHED)
