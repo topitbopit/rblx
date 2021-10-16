@@ -249,7 +249,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.2-alpha"
+    ui.Version = "2.1.2.1-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -669,6 +669,7 @@ ui = {} do
             
             if ui.WindowCount == 0 then
                 ui.Exiting:Fire()
+                wait(0.2)
                 
                 screen:Destroy() 
                 drag = nil
@@ -2351,9 +2352,12 @@ ui = {} do
                 a.Scale = 1 
                 a.Parent = notif_window
                 
-                ctwn(notif_window, {Position = notif_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
-                ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
-                
+                if ctwn then
+                    ctwn(notif_window, {Position = notif_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
+                    ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
+                else
+                    notif_window:Destroy()
+                end
                 
                 twn(notif_window, {BackgroundTransparency = 1})
                 for i,v in pairs(notif_window:GetDescendants()) do
