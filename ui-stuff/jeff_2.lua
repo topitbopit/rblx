@@ -249,7 +249,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.2.1-alpha"
+    ui.Version = "2.1.3-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -642,26 +642,49 @@ ui = {} do
             ceffect(window_bmin)
             task.spawn(function() 
                 
-                
-                local a = Instance.new("UIScale")
-                a.Scale = 1 
-                a.Parent = window_window
-                
-                ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50), BackgroundTransparency = 1}, 1.75, "Out", "Exponential")
-                ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
-                for i,v in pairs(window_window:GetDescendants()) do
-                    pcall(function() 
-                        twn(v, {BackgroundTransparency = 1})
-                        twn(v, {ScrollBarImageTransparency = 1})
-                    end)
-                    pcall(function() 
-                        twn(v, {TextTransparency = 1})
-                    end)
-                    pcall(function() 
-                        twn(v, {ImageTransparency = 1})
-                    end)
+                if ui.WindowCount == 0 then
+                    local a = Instance.new("UIScale")
+                    a.Scale = 1 
+                    a.Parent = window_window
                     
-                    deb:AddItem(v, 0.25)
+                    ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
+                    ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
+                    for i,v in pairs(screen:GetDescendants()) do
+                        pcall(function() 
+                            twn(v, {BackgroundTransparency = 1})
+                            twn(v, {ScrollBarImageTransparency = 1})
+                        end)
+                        pcall(function() 
+                            twn(v, {TextTransparency = 1})
+                        end)
+                        pcall(function() 
+                            twn(v, {ImageTransparency = 1})
+                        end)
+                        
+                        deb:AddItem(v, 0.25)
+                    end
+                else
+                    local a = Instance.new("UIScale")
+                    a.Scale = 1 
+                    a.Parent = window_window
+                    
+                    ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
+                    twn(window_window, {BackgroundTransparency = 1})
+                    ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
+                    for i,v in pairs(window_window:GetDescendants()) do
+                        pcall(function() 
+                            twn(v, {BackgroundTransparency = 1})
+                            twn(v, {ScrollBarImageTransparency = 1})
+                        end)
+                        pcall(function() 
+                            twn(v, {TextTransparency = 1})
+                        end)
+                        pcall(function() 
+                            twn(v, {ImageTransparency = 1})
+                        end)
+                        
+                        deb:AddItem(v, 0.25)
+                    end
                 end
             end)
             
@@ -2359,28 +2382,26 @@ ui = {} do
                 a.Scale = 1 
                 a.Parent = notif_window
                 
-                if ctwn then
+                pcall(function() 
                     ctwn(notif_window, {Position = notif_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
                     ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
-                else
-                    notif_window:Destroy()
-                end
-                
-                twn(notif_window, {BackgroundTransparency = 1})
-                for i,v in pairs(notif_window:GetDescendants()) do
-                    pcall(function() 
-                        twn(v, {BackgroundTransparency = 1})
-                        twn(v, {ScrollBarImageTransparency = 1})
-                    end)
-                    pcall(function() 
-                        twn(v, {TextTransparency = 1})
-                    end)
-                    pcall(function() 
-                        twn(v, {ImageTransparency = 1})
-                    end)
                     
-                    deb:AddItem(v, 0.25)
-                end
+                    twn(notif_window, {BackgroundTransparency = 1})
+                    for i,v in pairs(notif_window:GetDescendants()) do
+                        pcall(function() 
+                            twn(v, {BackgroundTransparency = 1})
+                            twn(v, {ScrollBarImageTransparency = 1})
+                        end)
+                        pcall(function() 
+                            twn(v, {TextTransparency = 1})
+                        end)
+                        pcall(function() 
+                            twn(v, {ImageTransparency = 1})
+                        end)
+                        
+                        deb:AddItem(v, 0.25)
+                    end
+                end)
             end)
             
             wait(0.8)
