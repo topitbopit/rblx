@@ -1584,8 +1584,13 @@ ui = {} do
                             end
                             
                             function t:GetTextFormattedAsInt() 
-                                local among = text_textbox.Text:gsub("[^%d]", "")
-                                return tonumber(among)
+                                local among = nil
+                                
+                                pcall(function() 
+                                    among = text_textbox.Text:gsub("[%a%s]", "")
+                                end)
+                                
+                                return among and tonumber(among) or nil
                             end
                             
                             t.OnFocusLost = OnFocusLost
