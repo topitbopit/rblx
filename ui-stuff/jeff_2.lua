@@ -2128,6 +2128,9 @@ ui = {} do
                                 return selection[1], selection[2]
                             end
                             
+                            function t:GetSelection() 
+                                return selection[1], selection[2]
+                            end
                             
                             
                             
