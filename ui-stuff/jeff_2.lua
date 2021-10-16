@@ -1271,6 +1271,15 @@ ui = {} do
                                 return toggle_button.Text
                             end
                             
+                            function t:Assert(func) 
+                                if type(func) ~= "string" then error("Assert failed; provided value was not a string") end
+                                
+                                
+                                if not getgenv()[func] then
+                                    t:Hide("Your exploit doesn't support "..tostring(func)) 
+                                end
+                            end
+                            
                             function t:Hide(msg)
                                 if not msg then return end
                                 hidden = true
@@ -1477,6 +1486,15 @@ ui = {} do
                                     end
                                 end)
                                 
+                            end
+                            
+                            function t:Assert(func) 
+                                if type(func) ~= "string" then error("Assert failed; provided value was not a string") end
+                                
+                                
+                                if not getgenv()[func] then
+                                    t:Hide("Your exploit doesn't support "..tostring(func)) 
+                                end
                             end
                             
                             t.Hidden = hidden
