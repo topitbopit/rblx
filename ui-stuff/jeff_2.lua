@@ -249,7 +249,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.0-alpha"
+    ui.Version = "2.1.1-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -263,7 +263,7 @@ ui = {} do
                 window = Color3.fromRGB(12, 12, 12),
                 topbar = Color3.fromRGB(14, 14, 14),
                 text = Color3.fromRGB(225, 225, 225),
-                button = Color3.fromRGB(170, 22, 22),
+                button = Color3.fromRGB(150, 10, 10),
                 scroll = Color3.fromRGB(130, 130, 130),
                 detail = Color3.fromRGB(255, 53, 53),
                 enabledbright = Color3.fromRGB(255, 153, 153),
@@ -277,11 +277,11 @@ ui = {} do
                 window = Color3.fromRGB(16, 16, 16),
                 topbar = Color3.fromRGB(18, 18, 18),
                 text = Color3.fromRGB(225, 225, 225),
-                button = Color3.fromRGB(55, 170, 55),
+                button = Color3.fromRGB(30, 170, 30),
                 scroll = Color3.fromRGB(130, 130, 130),
                 detail = Color3.fromRGB(100, 255, 100),
                 enabledbright = Color3.fromRGB(160, 255, 170),
-                enabled = Color3.fromRGB(50, 255, 100),
+                enabled = Color3.fromRGB(40, 255, 90),
                 textshade1 = Color3.fromRGB(70, 255, 70),
                 textshade2 = Color3.fromRGB(0, 255, 255)
             }
@@ -1020,6 +1020,12 @@ ui = {} do
                         label_label.ZIndex = 23
                         label_label.Parent = menu_menu
                         
+                        if label_label.TextFits == false then
+                            label_label.Size = UDim2.new(1, -15, 0, 48)
+                            label_label.TextWrapped = true
+                            table.insert(menu_objects, 2)
+                        end
+                        
                         table.insert(menu_objects, 2)
                         
                         local l = {} do
@@ -1045,6 +1051,7 @@ ui = {} do
                         
                         
                         local toggle_state = state
+                        local hidden = false
                         
                         local OnEnable = eventlistener.new()
                         local OnToggle = eventlistener.new()
@@ -1108,6 +1115,35 @@ ui = {} do
                         toggle_binddisplay.ZIndex = 23
                         toggle_binddisplay.Parent = toggle_button
                         
+                        local toggle_hider = Instance.new("TextButton")
+                        toggle_hider.Text = ""
+                        toggle_hider.AutoButtonColor = false
+                        toggle_hider.BackgroundTransparency = 1
+                        toggle_hider.BackgroundColor3 = ui.colors.button
+                        toggle_hider.TextColor3 = ui.colors.text
+                        toggle_hider.Font = ui.Font
+                        toggle_hider.TextXAlignment = Enum.TextXAlignment.Center
+                        toggle_hider.TextSize = ui.FontSize
+                        toggle_hider.TextTransparency = 1
+                        toggle_hider.Size = UDim2.new(1, 10, 1, 0)
+                        toggle_hider.Position = UDim2.new(0, -10, 0, 0)
+                        toggle_hider.ZIndex = 24
+                        toggle_hider.Visible = false
+                        toggle_hider.Parent = toggle_button
+                        round(toggle_hider)
+                        
+                        
+                        toggle_hider.MouseEnter:Connect(function() 
+                            if toggle_hider.BackgroundTransparency ~= 1 then
+                                twn(toggle_hider, {BackgroundTransparency = 0.5, TextTransparency = 0.9})
+                            end
+                        end)
+                        
+                        toggle_hider.MouseLeave:Connect(function() 
+                            if toggle_hider.BackgroundTransparency ~= 1 then
+                                twn(toggle_hider, {BackgroundTransparency = 0.2, TextTransparency = 0})
+                            end
+                        end)
                         
                         toggle_button.MouseEnter:Connect(function() 
                             twn(toggle_button, {BackgroundTransparency = 0.4})
@@ -1225,6 +1261,31 @@ ui = {} do
                                 return toggle_button.Text
                             end
                             
+                            function t:Hide(msg)
+                                if not msg then return end
+                                hidden = true
+                                
+                                toggle_hider.Visible = true
+                                toggle_hider.Text = tostring(msg)
+                                twn(toggle_hider, {BackgroundTransparency = 0.2, TextTransparency = 0})
+                            end
+                            
+                            function t:Unhide() 
+                                hidden = false
+                                
+                                
+                                local a = twn(toggle_hider, {BackgroundTransparency = 1, TextTransparency = 1})
+                                
+                                a.Completed:Connect(function() 
+                                    if toggle_hider.BackgroundTransparency == 1 then
+                                        toggle_hider.Visible = false
+                                    end
+                                end)
+                                
+                            end
+                            
+                            t.Hidden = hidden
+                            
                             t.OnDisable = OnDisable
                             t.OnEnable = OnEnable
                             t.OnToggle = OnToggle
@@ -1244,6 +1305,7 @@ ui = {} do
                         text = text or getrand(7)
                         
                         local OnClick = eventlistener.new()
+                        local hidden = false
                         
                         local button_button = Instance.new("TextButton")
                         button_button.Text = text
@@ -1278,6 +1340,26 @@ ui = {} do
                         button_binddisplay.Position = UDim2.new(1, -10, 0, 0)
                         button_binddisplay.ZIndex = 23
                         button_binddisplay.Parent = button_button
+                        
+                        local button_hider = Instance.new("TextButton")
+                        button_hider.Text = ""
+                        button_hider.AutoButtonColor = false
+                        button_hider.BackgroundTransparency = 1
+                        button_hider.BackgroundColor3 = ui.colors.button
+                        button_hider.TextColor3 = ui.colors.text
+                        button_hider.Font = ui.Font
+                        button_hider.TextXAlignment = Enum.TextXAlignment.Center
+                        button_hider.TextSize = ui.FontSize
+                        button_hider.TextTransparency = 1
+                        button_hider.Size = UDim2.new(1, 10, 1, 0)
+                        button_hider.Position = UDim2.new(0, -10, 0, 0)
+                        button_hider.ZIndex = 24
+                        button_hider.Visible = false
+                        button_hider.Parent = button_button
+                        round(button_hider)
+                        
+                        round(slider_text)
+                        
 
                         
                         button_button.MouseEnter:Connect(function() 
@@ -1288,6 +1370,17 @@ ui = {} do
                             twn(button_button, {BackgroundTransparency = 0.7})
                         end)
                         
+                        button_hider.MouseEnter:Connect(function() 
+                            if button_hider.BackgroundTransparency ~= 1 then
+                                twn(button_hider, {BackgroundTransparency = 0.5, TextTransparency = 0.9})
+                            end
+                        end)
+                        
+                        button_hider.MouseLeave:Connect(function() 
+                            if button_hider.BackgroundTransparency ~= 1 then
+                                twn(button_hider, {BackgroundTransparency = 0.2, TextTransparency = 0})
+                            end
+                        end)
                         
                         
                         button_button.MouseButton1Click:Connect(function() 
@@ -1350,6 +1443,30 @@ ui = {} do
                                 return button_button.Text
                             end
                             
+                            function t:Hide(msg)
+                                if not msg then return end
+                                hidden = true
+                                
+                                button_hider.Visible = true
+                                button_hider.Text = tostring(msg)
+                                twn(button_hider, {BackgroundTransparency = 0.2, TextTransparency = 0})
+                            end
+                            
+                            function t:Unhide() 
+                                hidden = false
+                                
+                                
+                                local a = twn(button_hider, {BackgroundTransparency = 1, TextTransparency = 1})
+                                
+                                a.Completed:Connect(function() 
+                                    if button_hider.BackgroundTransparency == 1 then
+                                        button_hider.Visible = false
+                                    end
+                                end)
+                                
+                            end
+                            
+                            t.Hidden = hidden
                             t.OnClick = OnClick
                         end
                         
@@ -2873,5 +2990,6 @@ ui = {} do
     end
     
 end
+
 
 return ui
