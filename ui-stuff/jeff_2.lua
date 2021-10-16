@@ -593,7 +593,7 @@ ui = {} do
                 window_sidemenu.Visible = true
                 
                 twn(window_overlay, {ImageTransparency = 0.5, BackgroundTransparency = 0.4})
-                twn(window_sidemenu, {Size = UDim2.new(0.35, 0, 1, 0)})
+                twn(window_sidemenu, {Size = UDim2.new(0.5, 0, 1, 0)})
             else
                 twn(window_overlay, {ImageTransparency = 1, BackgroundTransparency = 1})
                 local a = twn(window_sidemenu, {Size = UDim2.new(0, 0, 1, 0)})
