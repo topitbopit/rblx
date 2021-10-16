@@ -236,9 +236,9 @@ ui = {} do
                     bf.f()
                     
                     --pcall(function() 
-                        if not ui.Windows[1]:GetMinimized() then
-                            ui:NewNotification("Bind", bf.w.." "..bf.n, 1)
-                        end
+                    --    if not ui.Windows[1]:GetMinimized() then
+                    --        ui:NewNotification("Bind", bf.w.." "..bf.n, 1)
+                    --    end
                     --end)
                 end
             end
@@ -249,16 +249,18 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.1.1-alpha"
+    ui.Version = "2.1.2-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
     ui.WindowCount = 0
     ui.Windows = {}
     
+    ui.Exiting = eventlistener.new()
+    
     ui.Toggles = {}
     
-    function ui:GetAllToggles()
+    function ui:GetAllToggles() 
         return ui.Toggles
     end
     
@@ -645,9 +647,9 @@ ui = {} do
                 a.Scale = 1 
                 a.Parent = window_window
                 
-                ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
+                ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50), BackgroundTransparency = 1}, 1.75, "Out", "Exponential")
                 ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
-                for i,v in pairs(screen:GetDescendants()) do
+                for i,v in pairs(window_window:GetDescendants()) do
                     pcall(function() 
                         twn(v, {BackgroundTransparency = 1})
                         twn(v, {ScrollBarImageTransparency = 1})
@@ -666,6 +668,8 @@ ui = {} do
             wait(0.8)
             
             if ui.WindowCount == 0 then
+                ui.Exiting:Fire()
+                
                 screen:Destroy() 
                 drag = nil
                 rdrag = nil
@@ -1305,7 +1309,7 @@ ui = {} do
                         
                         OnChildAdded:Fire("toggle", t)
                         
-                        table.insert(ui.Toggles, t)
+                        table.insert(t, ui.Toggles)
                         
                         return t
                     end
@@ -1455,8 +1459,6 @@ ui = {} do
                             function t:Hide(msg)
                                 if not msg then return end
                                 hidden = true
-                                t.Hidden = hidden
-                                
                                 
                                 button_hider.Visible = true
                                 button_hider.Text = tostring(msg)
@@ -1465,7 +1467,7 @@ ui = {} do
                             
                             function t:Unhide() 
                                 hidden = false
-                                t.Hidden = hidden
+                                
                                 
                                 local a = twn(button_hider, {BackgroundTransparency = 1, TextTransparency = 1})
                                 
@@ -1591,8 +1593,13 @@ ui = {} do
                             end
                             
                             function t:GetTextFormattedAsInt() 
-                                local among = text_textbox.Text:gsub("[^%d]", "")
-                                return tonumber(among)
+                                local among = nil
+                                
+                                pcall(function() 
+                                    among = text_textbox.Text:gsub("[%a%s]", "")
+                                end)
+                                
+                                return among and tonumber(among) or nil
                             end
                             
                             t.OnFocusLost = OnFocusLost
