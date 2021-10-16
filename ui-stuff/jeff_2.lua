@@ -1165,6 +1165,8 @@ ui = {} do
                         end)
                         
                         local function disable() 
+                            toggle_state = false
+                            
                             twn(toggle_button, {BackgroundColor3 = ui.colors.button})  
                             twn(toggle_tcheck, {ImageTransparency = 1})
 
@@ -1173,6 +1175,8 @@ ui = {} do
                         end
                         
                         local function enable() 
+                            toggle_state = true
+                            
                             twn(toggle_button, {BackgroundColor3 = ui.colors.enabled})
                             twn(toggle_tcheck, {ImageTransparency = 0})
                             
