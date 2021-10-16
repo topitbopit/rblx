@@ -1319,7 +1319,7 @@ ui = {} do
                         
                         OnChildAdded:Fire("toggle", t)
                         
-                        table.insert(t, ui.Toggles)
+                        table.insert(ui.Toggles, t)
                         
                         return t
                     end
