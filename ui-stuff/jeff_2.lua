@@ -249,12 +249,14 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.1-alpha"
+    ui.Version = "2.1.0.2-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
     ui.WindowCount = 0
     ui.Windows = {}
+    
+    ui.Exiting = eventlistener.new()
     
     function ui:SetColors(colors) 
 
@@ -641,7 +643,7 @@ ui = {} do
                 
                 ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
                 ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
-                for i,v in pairs(screen:GetDescendants()) do
+                for i,v in pairs(window_window:GetDescendants()) do
                     pcall(function() 
                         twn(v, {BackgroundTransparency = 1})
                         twn(v, {ScrollBarImageTransparency = 1})
@@ -660,6 +662,8 @@ ui = {} do
             wait(0.8)
             
             if ui.WindowCount == 0 then
+                ui.Exiting:Fire()
+                
                 screen:Destroy() 
                 drag = nil
                 rdrag = nil
