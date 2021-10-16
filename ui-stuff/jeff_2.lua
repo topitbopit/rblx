@@ -236,9 +236,9 @@ ui = {} do
                     bf.f()
                     
                     --pcall(function() 
-                        if not ui.Windows[1]:GetMinimized() then
-                            ui:NewNotification("Bind", bf.w.." "..bf.n, 1)
-                        end
+                    --    if not ui.Windows[1]:GetMinimized() then
+                    --        ui:NewNotification("Bind", bf.w.." "..bf.n, 1)
+                    --    end
                     --end)
                 end
             end
