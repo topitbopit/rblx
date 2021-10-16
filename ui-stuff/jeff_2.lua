@@ -641,7 +641,7 @@ ui = {} do
                 a.Scale = 1 
                 a.Parent = window_window
                 
-                ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50)}, 1.75, "Out", "Exponential")
+                ctwn(window_window, {Position = window_window.Position + UDim2.new(0, 0, 0, 50), BackgroundTransparency = 1}, 1.75, "Out", "Exponential")
                 ctwn(a, {Scale = 0.25}, 1, "Out", "Linear")
                 for i,v in pairs(window_window:GetDescendants()) do
                     pcall(function() 
