@@ -249,7 +249,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.0.2-alpha"
+    ui.Version = "2.1.0.3-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
