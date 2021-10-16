@@ -258,7 +258,7 @@ ui = {} do
     
     ui.Toggles = {}
     
-    function ui:GetAllToggles() do
+    function ui:GetAllToggles()
         return ui.Toggles
     end
     
