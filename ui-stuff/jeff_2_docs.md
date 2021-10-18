@@ -2,6 +2,7 @@
 *Jeff 2 is a clean, simple UI library made by topit.*  
 
 ## Getting started
+### Running the library
 Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
 ```lua
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
@@ -20,11 +21,89 @@ end)
 ```
 This lets you organize your code better, disconnect functions easily, yield until a button gets pressed, and more.
 
-Another thing is native keybind support. A lot of UIs do let you use keybinds, but usually it's a separate button / box you click and enter.
-When you right click a button, toggle, or tabbutton a prompt allows you to bind that button to any key. That way you don't have to worry about implementing keybinds; it's all done for you.
+
+
+In order to create the first window, begin with the `ui:NewWindow()` function.
+```lua
+local window = ui:NewWindow("EpicHax", 400, 300)
+```
+This would create a new window titled EpicHax with a size of 400 x 300, and assign it to `window`.
+
+Now that the window is made, much more can be done.
+
+The most important thing is creating a new menu. This lets you create buttons, sliders, and more
+```lua
+local menu = window:NewMenu("SpeedHax")
+```
+This will create a new menu called SpeedHax.
+
+Although you can do more with windows such as being able to tell when they're minimized, that's pretty much it.
+```lua
+window.OnMinimize:Connect(function(min) print("Minimized:", min) end)
+```
+This will call an anonymous function that prints *Minimized: true* when minimized and *Minimized: false* when not minimized.
+
+### Menus & Doing stuff
+
+So now we have the first menu. How can you make it actually do stuff?
+There's several objects you can create with menus.
+The most simplest is a Label - used for displaying text.
+
+```lua
+menu:NewLabel("Text")
+```
+This would create a new text label displaying "Text".
+
+Similar to a label, theres an object called a Section. It is essentially the same thing - even in code they're considered the same. The only difference is that sections aren't padded on the left.
+
+In other words, use them for creating or splitting off sections.
+
+
+What about something more complicated?
+
+When clicked, a button fires an event. That's it.
+
+```lua
+local button = menu:NewButton("Do something!")
+
+button.OnClick:Connect(function() 
+	print("I did something!")
+end)
+```
+Since everything in Jeff 2 is event based, creating objects like buttons and toggles are super easy.
+
+
+**More explanations on how to create other objects will be added soon.**
+
+### Finishing off
+
+The most important part of your GUI is actually displaying it.
+To do so with Jeff 2, just put this at the end of your script:
+```lua
+ui:Ready()
+```
+Because of the way jeff 2 internally works, objects can be created before ui:Ready() gets called very easily but will have problems after the call.
+**Do not create any objects after calling :Ready()**.
+
+However, interactions with the ui or objects you've made are completely fine.
+Sending a notification, messagebox, etc. or assigning a callback to an event won't mess anything up.
+
+What about handling the ui close?
+Maybe theres some important thing you want to delete or resources you want to clear out.
+
+Using the `ui.Exiting` event, you can do this just fine.
+```lua
+ui.Exiting:Connect(function() 
+	for i,v in pairs(VeryImportantTableClearOutLaterThough) do
+		v:Destroy()
+	end
+	VeryImportantTableClearOutLaterThough = nil
+	--cleanup successful
+end)
+```
 
 ## UI
-### Functions:
+#### Functions:
 
 ```lua
 <void> ui:Ready()
@@ -233,4 +312,8 @@ Events:
 `none`
 
 ---
-These docs are for version 2.1.0-alpha. (UNFINISHED)
+These docs are for version 2.1.3-alpha. Versions below should work fine, and functions should remain the same for future versions unless noted otherwise.
+
+**DOCS ARE CURRENTLY INCOMPLETE**
+Check out the example file to get an idea on how the library works
+If you want to make a suggestion contact topit#4057
