@@ -1,8 +1,25 @@
 
+
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 ![](https://cdn.discordapp.com/attachments/886387861388132402/900523062242447440/jeff2_banner.png)
-*And for anyone that hates roblox guis, I might make a drawing library version eventually.*
+
+Contents:
+
+```
+Getting started
+ - Loading the library
+ - Windows
+ - Menus & Doing stuff
+ - Finishing off
+UI
+ - Windows
+   - Menus
+ - Messageboxes
+ - Notifications
+
+```
+
 ## Getting started
 ### Loading the library
 Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
@@ -163,7 +180,25 @@ jacko|black and orange
 *Creates a new binddialog object.*
 >BindDialogs are an object used for keybind initialization that should only be used internally. Instead, use button:SetBind() or toggle:SetBind()
 
+#### Events:
 
+```lua
+<RBXEvent> ui.OnReady
+```
+*Event that gets fired when ui:Ready() gets called. Used internally, do not change.*
+
+```lua
+<RBXEvent> ui.OnNotifDelete
+```
+*Event that gets fired when a notification gets deleted. Used internally, do not change.*
+```lua
+<RBXEvent> ui.Exiting
+```
+*Event that gets fired when the last window closes.*
+```lua
+<RBXScriptConnection> ui.BindHandler
+```
+*Connection used for handling binds. Used internally, do not change*
 #### Variables:  
 
 ```lua
@@ -207,30 +242,9 @@ jacko|black and orange
 *A table for ui windows. Used internally, do not change.*
 <br/>
 
-#### Events:
 
-```lua
-<RBXEvent> ui.OnReady
-```
-*Event that gets fired when ui:Ready() gets called. Used internally, do not change.*
-
-```lua
-<RBXEvent> ui.OnNotifDelete
-```
-*Event that gets fired when a notification gets deleted. Used internally, do not change.*
-```lua
-<RBXEvent> ui.Exiting
-```
-*Event that gets fired when the last window closes.*
-```lua
-<RBXScriptConnection> ui.BindHandler
-```
-*Connection used for handling binds. Used internally, do not change*
-
-
----
 ## Windows
-Windows!
+Windows are pretty self explanatory. Note that although you can create more than one window, it is buggy and will not work well.
 
 #### Creation:
 ```lua
@@ -244,10 +258,9 @@ local window = ui:NewWindow("Example window", 400, 300)
 <br/>
 #### Functions:
 ```lua
-<menu> window:NewMenu(<string> title, <string> desc, <bool> showtitle)
+<menu> window:NewMenu(<string> title, <bool> showtitle)
 ```
 *Creates a new menu object.*
-**Note that `desc` is unused and will be removed in 2.1.3.1-alpha.**
 >Scroll to the menu section to view more documentation on menus.
 
 ```lua
@@ -265,8 +278,28 @@ local window = ui:NewWindow("Example window", 400, 300)
 ```
 *Event that gets fired true when the window minimizes, false when it unminimizes.*
 
+#### Variables:
+
+`none
+`
+
 ---
 ## Menus
+
+something about menus
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+---
+## Menus
+
+something about menus
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
 
 ---
 ## Message boxes
