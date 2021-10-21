@@ -282,8 +282,7 @@ ui = {} do
     end
     
     function ui:SetColors(colors) 
-        colors = colors:lower() or nil
-        
+        colors = colors or ""
         
         if colors == "red" then
             ui.colors = {
