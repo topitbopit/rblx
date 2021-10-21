@@ -12,6 +12,10 @@ Changed NewToggle parameters:
     [-] Removed NewToggle's "enable" parameter since it can't call the enable
         function that hasn't been assigned, in favor for :Enable().
 
+Changed NewTextbox parameters:
+    [+] Added a ClearTextOnFocus parameter so the function doesn't have to
+        be used
+
 Changed menu sizing:
     [*] Instead of increasing by 27 pixels per new object, it increases by 28 hopefully making objects fit more
 
@@ -1180,8 +1184,8 @@ ui = {} do
                         return l
                     end
                     
-                    function m:NewToggle(text, state)
-                        state = state or false
+                    function m:NewToggle(text)
+                        state = false
                         text = text or getrand(7)
                         
                         
@@ -1643,8 +1647,9 @@ ui = {} do
                     end
                     
                     
-                    function m:NewTextbox(text)
+                    function m:NewTextbox(text, clear)
                         text = text or getrand(7)
+                        clear = clear or true
                         
                         local OnFocusLost = eventlistener.new()
                         local OnFocusGained = eventlistener.new()
@@ -1652,6 +1657,7 @@ ui = {} do
                         local text_textbox = Instance.new("TextBox")
                         text_textbox.Active = true
                         text_textbox.Text = text
+                        text_textbox.ClearTextOnFocus = clear
                         text_textbox.ClipsDescendants = true
                         text_textbox.TextColor3 = ui.colors.text
                         text_textbox.PlaceholderText = "..."
