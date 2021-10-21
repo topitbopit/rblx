@@ -333,16 +333,25 @@ something about textboxes
 ## Textbox
 
 something about textboxes
+<br/>
+
 #### Creation:
+<br/>
+
 #### Functions:
+<br/>
+
 #### Events:
+<br/>
+
 #### Variables:
 
 ---
+<br/>
 
 ## Message boxes
 Message boxes have several functions and params. They're useful for displaying short amounts of text, but will automatically expand to fit buttons, the description, and title. 
-
+<br/>
 
 #### Creation:
 ```lua
@@ -392,6 +401,44 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 ```
 *Sets the title to  `text`*
 <br/>
+#### Events:
+`none`
+<br/>
+#### Variables:
+`none`
+
+<br/>
+
+## Notifications
+Notifications are useful for displaying text quickly without obstructing anything.
+
+#### Creation:
+```lua
+<notification> ui:NewNotification(<string> notif_text, <string> notif_desc, <number> notif_timer)
+```
+```lua
+local msg = ui:NewNotification("Notification", "Hello world!", 5)
+```
+*Creates a new notification titled **Notification** with the description **Hello world!** that lasts 5 seconds*
+<br/>
+#### Functions:
+
+```lua
+<void> notif:Close()
+```
+
+*Closes the notification. Recommended to use only for longer notifications*
+
+```lua
+<string> notif:GetDesc()
+```
+*Returns the notification description*
+```lua
+<void> notif:SetDesc()
+```
+*Sets the notification description*
+<br/>
+
 #### Events:
 `none`
 #### Variables:
