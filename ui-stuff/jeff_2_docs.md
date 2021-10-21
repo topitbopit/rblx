@@ -2,6 +2,7 @@
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 ![](https://cdn.discordapp.com/attachments/886387861388132402/900523062242447440/jeff2_banner.png)
+*And for anyone that hates roblox guis, I might make a drawing library version eventually.*
 ## Getting started
 ### Loading the library
 Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
@@ -135,7 +136,8 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 |legacy|Similar color scheme to jeff ui 1
 |cold|Similar to blue and legacy
 |nightshift|All black with some blueish/purple
-jacko|black Bnd orange
+jacko|black and orange
+
 ![](https://cdn.discordapp.com/attachments/649469977828786178/900529096067534878/unknown.png)
 <br/>
 
