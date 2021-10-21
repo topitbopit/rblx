@@ -2,7 +2,6 @@
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 ![](https://cdn.discordapp.com/attachments/886387861388132402/900523062242447440/jeff2_banner.png)
-*And for anyone that hates roblox guis, I might make a drawing library version eventually.*
 ## Getting started
 ### Loading the library
 Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
