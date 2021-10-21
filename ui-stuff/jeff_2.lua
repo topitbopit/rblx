@@ -1,4 +1,21 @@
 --[[
+2.1.3.2a
+Fixed NewLabel and NewSection:
+    [*] Fixed calling NewLabel and NewSection without any args from erroring
+        i.e. menu:NewLabel() == menu:NewLabel("")
+
+Added NewTrim:
+    [+] Creates a new line like the one under the menu text.
+        Useful for separating sections.
+
+Changed NewToggle parameters:
+    [-] Removed NewToggle's "enable" parameter since it can't call the enable
+        function that hasn't been assigned, in favor for :Enable().
+
+Changed menu sizing:
+    [*] Instead of increasing by 27 pixels per new object, it increases by 28 hopefully making objects fit more
+
+
 2.1.3.1a
 Edited Color schemes:
     [+] Added Legacy, similar to the older Jeff color scheme 
@@ -266,7 +283,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.3.1-alpha"
+    ui.Version = "2.1.3.2-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -1019,7 +1036,7 @@ ui = {} do
                 
                 
                 OnChildAdded:Connect(function() 
-                    menu_menu.CanvasSize = menu_menu.CanvasSize + UDim2.new(0, 0, 0, 27)
+                    menu_menu.CanvasSize = menu_menu.CanvasSize + UDim2.new(0, 0, 0, 28)
                     
                     div = menu_menu.CanvasSize.Y.Offset / menu_menu.Parent.AbsoluteSize.Y
                     if div < 1 then
@@ -1088,6 +1105,8 @@ ui = {} do
                     end
                     
                     function m:NewSection(text) 
+                        text = text or ""
+                        
                         local section_label = Instance.new("TextLabel")
                         section_label.Text = text
                         section_label.BackgroundTransparency = 1
@@ -1121,6 +1140,8 @@ ui = {} do
                     end
                     
                     function m:NewLabel(text) 
+                        text = text or ""
+                        
                         local label_label = Instance.new("TextLabel")
                         label_label.Text = text
                         label_label.BackgroundTransparency = 1
@@ -1182,7 +1203,7 @@ ui = {} do
                         toggle_button.TextXAlignment = Enum.TextXAlignment.Left
                         toggle_button.TextSize = ui.FontSize
                         toggle_button.Size = UDim2.new(0, menu_menu.AbsoluteSize.X-30, 0, 24)
-                        toggle_button.Position = UDim2.new(0, 15, 0, ((m:GetChildCount())*28)+3)
+                        toggle_button.Position = UDim2.new(0, 15, 0, (m:GetChildCount()*28)+3)
                         toggle_button.ZIndex = 23
                         toggle_button.Parent = menu_menu
                         round(toggle_button)
@@ -1450,7 +1471,7 @@ ui = {} do
                         button_button.TextXAlignment = Enum.TextXAlignment.Left
                         button_button.TextSize = ui.FontSize
                         button_button.Size = UDim2.new(0, menu_menu.AbsoluteSize.X-30, 0, 24)
-                        button_button.Position = UDim2.new(0, 15, 0, ((m:GetChildCount())*28)+3)
+                        button_button.Position = UDim2.new(0, 15, 0, (m:GetChildCount()*28)+3)
                         button_button.ZIndex = 23
                         button_button.Parent = menu_menu
                         round(button_button)
@@ -1637,7 +1658,7 @@ ui = {} do
                         text_textbox.BackgroundTransparency = 0.7
                         text_textbox.BackgroundColor3 = ui.colors.button
                         text_textbox.Size = UDim2.new(0, menu_menu.AbsoluteSize.X-30, 0, 24)
-                        text_textbox.Position = UDim2.new(0, 15, 0, ((m:GetChildCount())*28)+3)
+                        text_textbox.Position = UDim2.new(0, 15, 0, (m:GetChildCount()*28)+3)
                         text_textbox.ZIndex = 23
                         text_textbox.Parent = menu_menu
                         text_textbox.Font = ui.Font
@@ -1767,7 +1788,7 @@ ui = {} do
                         slider_bg.BackgroundTransparency = 0.7
                         slider_bg.BackgroundColor3 = ui.colors.button
                         slider_bg.Size = UDim2.new(0, menu_menu.AbsoluteSize.X-30, 0, 24)
-                        slider_bg.Position = UDim2.new(0, 15, 0, ((m:GetChildCount())*28)+3)
+                        slider_bg.Position = UDim2.new(0, 15, 0, (m:GetChildCount()*28)+3)
                         slider_bg.ZIndex = 23
                         slider_bg.Parent = menu_menu
                         round(slider_bg)
@@ -2072,7 +2093,7 @@ ui = {} do
                         dropdown_button.TextXAlignment = Enum.TextXAlignment.Left
                         dropdown_button.TextSize = ui.FontSize
                         dropdown_button.Size = UDim2.new(0, menu_menu.AbsoluteSize.X-30, 0, 24)
-                        dropdown_button.Position = UDim2.new(0, 15, 0, ((m:GetChildCount())*28)+3)
+                        dropdown_button.Position = UDim2.new(0, 15, 0, (m:GetChildCount()*28)+3)
                         dropdown_button.ZIndex = 23
                         dropdown_button.Parent = menu_menu
                         round(dropdown_button)
@@ -2347,6 +2368,21 @@ ui = {} do
                         end
                         return g
                         
+                    end
+                    
+                    function m:NewTrim() 
+                        local trim = Instance.new("Frame")
+                        trim.BackgroundTransparency = 0
+                        trim.BackgroundColor3 = ui.colors.detail
+                        trim.BorderSizePixel = 0
+                        trim.Size = UDim2.new(1, -30, 0, 1)
+                        trim.Position = UDim2.new(0, 15, 0, (m:GetChildCount()*28)+15)
+                        trim.ZIndex = 25
+                        trim.Parent = menu_menu
+                        
+                        table.insert(menu_objects, 3)
+                        
+                        OnChildAdded:Fire("trim", nil)
                     end
                 end
                 
@@ -3140,5 +3176,6 @@ ui = {} do
     end
     
 end
+
 
 return ui
