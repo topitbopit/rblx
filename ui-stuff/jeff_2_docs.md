@@ -1,8 +1,10 @@
+
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
-
+![](https://cdn.discordapp.com/attachments/886387861388132402/900523062242447440/jeff2_banner.png)
+*And for anyone that hates roblox guis, I might make a drawing library version eventually.*
 ## Getting started
-### Running the library
+### Loading the library
 Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
 ```lua
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
@@ -22,7 +24,7 @@ end)
 This lets you organize your code better, disconnect functions easily, yield until a button gets pressed, and more.
 
 
-
+### Windows
 In order to create the first window, begin with the `ui:NewWindow()` function.
 ```lua
 local window = ui:NewWindow("EpicHax", 400, 300)
@@ -54,15 +56,14 @@ menu:NewLabel("Text")
 ```
 This would create a new text label displaying "Text".
 
-Similar to a label, theres an object called a Section. It is essentially the same thing - even in code they're considered the same. The only difference is that sections aren't padded on the left.
+Similar to a label, there's an object called a Section. It is essentially the same thing - even in code they're considered the same. The only difference is the size and position
 
-In other words, use them for creating or splitting off sections.
+![](https://cdn.discordapp.com/attachments/892261816141496351/900504087357964348/unknown.png)
 
 
-What about something more complicated?
+*What about something that can do something cool?*
 
-When clicked, a button fires an event. That's it.
-
+Here's a button. They have a single event called `OnClick` that gets fired, you guess it, on a click. 
 ```lua
 local button = menu:NewButton("Do something!")
 
@@ -70,7 +71,6 @@ button.OnClick:Connect(function()
 	print("I did something!")
 end)
 ```
-Since everything in Jeff 2 is event based, creating objects like buttons and toggles are super easy.
 
 
 **More explanations on how to create other objects will be added soon.**
@@ -83,7 +83,7 @@ To do so with Jeff 2, just put this at the end of your script:
 ui:Ready()
 ```
 Because of the way jeff 2 internally works, objects can be created before ui:Ready() gets called very easily but will have problems after the call.
-**Do not create any objects after calling :Ready()**.
+**Do not create any objects after calling `:Ready()`**.
 
 However, interactions with the ui or objects you've made are completely fine.
 Sending a notification, messagebox, etc. or assigning a callback to an event won't mess anything up.
@@ -98,11 +98,19 @@ ui.Exiting:Connect(function()
 		v:Destroy()
 	end
 	VeryImportantTableClearOutLaterThough = nil
+	
 	--cleanup successful
 end)
 ```
 
+> When exiting, every single object on screen gets closed automatically. However, no objects get disabled. To quickly disable toggles on close, use the `ui:GetAllToggles()` function and call `:Disable()` on each toggle.
+
 ## UI
+#### Creation:
+```lua
+local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
+```
+*Loads Jeff 2 into `ui`*
 #### Functions:
 
 ```lua
@@ -121,12 +129,18 @@ end)
 |red|Near black colors with a red accent
 |green|Dark gray colors with bright green accent
 |blue|Similar to default, but higher contrast
-|purple|Purple and blue combined
+|purple|Red and blue combined
 |bright|The closest theme to a light mode
 |mono|All gray colors, like bright but better
-|neon|Experimental bad looking theme
+|mint|Like blue and bright
+|legacy|Similar color scheme to jeff ui 1
+|cold|Similar to blue and legacy
+|nightshift|All black with some blueish/purple
+jacko|black Bnd orange
+![](https://cdn.discordapp.com/attachments/649469977828786178/900529096067534878/unknown.png)
 <br/>
 
+**All of the object types below have / will have their own dedicated sections on how to use them.**
 ```lua
 <window> ui:NewWindow(<string> title, <number> size_x, <number> size_y)
 ```
@@ -143,7 +157,7 @@ end)
 *Creates a new notification object.*
 
 ```lua
-<notification> ui:NewBindDialog(<string> bd_name, <function> bd_func, <string> bd_id, <stirng> bd_word, <guiobject> bd_display)
+<notification> ui:NewBindDialog(<string> bd_name, <function> bd_func, <string> bd_id, <string> bd_word, <guiobject> bd_display)
 ```
 *Creates a new binddialog object.*
 >BindDialogs are an object used for keybind initialization that should only be used internally. Instead, use button:SetBind() or toggle:SetBind()
@@ -152,13 +166,11 @@ end)
 #### Variables:  
 
 ```lua
-<string> ui.Version = "2.1.0-alpha" 
+<string> ui.Version = "2.3.0.2-alpha" 
 ```
 *The current ui version*
-```lua
-<bool> ui.minimized
-```
-*If the ui is minimized or not. Used internally, do not change.*
+
+
 ```lua
 <table> ui.cons
 ```
@@ -171,11 +183,6 @@ end)
 <table> ui.binds
 ```
 *Table for ui binds. Used internally, do not change*
-
-```lua
-<RBXScriptConnection> ui.BindHandler
-```
-*Connection used for handling binds. Used internally, do not change*
 
 ```lua
 <number> ui.NotifCount
@@ -197,6 +204,8 @@ end)
 <table> ui.Windows
 ```
 *A table for ui windows. Used internally, do not change.*
+<br/>
+
 #### Events:
 
 ```lua
@@ -208,12 +217,21 @@ end)
 <RBXEvent> ui.OnNotifDelete
 ```
 *Event that gets fired when a notification gets deleted. Used internally, do not change.*
+```lua
+<RBXEvent> ui.Exiting
+```
+*Event that gets fired when the last window closes.*
+```lua
+<RBXScriptConnection> ui.BindHandler
+```
+*Connection used for handling binds. Used internally, do not change*
+
 
 ---
 ## Windows
-Windows are the main part of the library as of now.
+Windows!
 
-Creation:
+#### Creation:
 ```lua
 <window> ui:NewWindow(<string> title, <number> size_x, <number> size_y)
 ```
@@ -223,33 +241,28 @@ local window = ui:NewWindow("Example window", 400, 300)
 ```
 *Creates a window called **Example window** thats 400 pixels wide and 300 tall*
 <br/>
-Functions:
+#### Functions:
 ```lua
-<menu> window:NewMenu(<string> title, <bool> showtitle)
+<menu> window:NewMenu(<string> title, <string> desc, <bool> showtitle)
 ```
-
-*Creates a new menu object*
+*Creates a new menu object.*
+**Note that `desc` is unused and will be removed in 2.1.3.1-alpha.**
 >Scroll to the menu section to view more documentation on menus.
 
 ```lua
-<string> msg:GetTitle()
+<bool> window:GetMinimized()
 ```
-*Returns the title*
+*Returns true if the window is minimized - false if not*
 ```lua
-<string> msg:GetDesc()
+<table> window:GetMenus()
 ```
-*Returns the description*
-```lua
-<void> msg:SetTitle(<string> text)
-```
-*Sets the title to  `text`*
-```lua
-<void> msg:SetDesc(<string> desc)
-```
-*Sets the title to  `text`*
+*Returns every menu. May be reworked later*
 <br/>
-Events:
-`none`
+#### Events:
+```lua
+<RBXEvent> window.OnMinimize
+```
+*Event that gets fired true when the window minimizes, false when it unminimizes.*
 
 ---
 ## Menus
@@ -257,7 +270,6 @@ Events:
 ---
 ## Message boxes
 Message boxes have several functions and params. They're useful for displaying short amounts of text, but will automatically expand to fit buttons, the description, and title. 
->Don't use messageboxes for notifications, since notifications will be added within the next few updates.
 
 
 Creation:
@@ -312,8 +324,20 @@ Events:
 `none`
 
 ---
-These docs are for version 2.1.3-alpha. Versions below should work fine, and functions should remain the same for future versions unless noted otherwise.
+These docs are for version 2.1.3.2-alpha. Versions below should work fine, and functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
-Check out the example file to get an idea on how the library works
 If you want to make a suggestion contact topit#4057
+
+
+
+## Deprecated
+```lua
+<bool> ui.minimized
+```
+*If the ui is minimized or not. Used internally, do not change.*
+**Superseded by window.Minimized, removed on v2.1.0.0-a**
+
+## Pro gamers
+if you're an epic user who uses jeff 2 then let me know and i will add your name here
+
