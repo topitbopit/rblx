@@ -294,7 +294,7 @@ local window = ui:NewWindow("Example window", 400, 300)
 ---
 ## Menus
 
-something about menus
+Menus are important for actually creating your script. There technically can be any amount of menus, but you should use 1 - 6. 
 #### Creation:
 #### Functions:
 #### Events:
