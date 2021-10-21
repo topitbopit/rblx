@@ -1,3 +1,20 @@
+--[[
+2.1.3.1a
+Edited Color schemes:
+    [+] Added Legacy, similar to the older Jeff color scheme 
+    [+] Added Nightshift
+    [+] Added Mint, a cyan theme
+    [+] Added Jacko, an orange black theme
+    [+] Added Cold which is like Legacy
+    [*] Changed Bright to be more bright
+    [-] Removed Neon
+Edited menu arguments:
+    [-] Removed desc parameter
+Edited button arguments:
+    [*] Made the toggle parameter work properly
+
+]]--
+
 local eventlistener = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/rbxevent.lua'))()
 
 if _G.JUI2 then
@@ -249,7 +266,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.3-alpha"
+    ui.Version = "2.1.3.1-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -265,7 +282,9 @@ ui = {} do
     end
     
     function ui:SetColors(colors) 
-
+        colors = colors:lower() or nil
+        
+        
         if colors == "red" then
             ui.colors = {
                 window = Color3.fromRGB(12, 12, 12),
@@ -325,16 +344,16 @@ ui = {} do
         elseif colors == "bright" then
             
             ui.colors = {
-                window = Color3.fromRGB(22, 22, 22),
-                topbar = Color3.fromRGB(24, 24, 24),
-                text = Color3.fromRGB(225, 225, 225),
-                button = Color3.fromRGB(170, 170, 170),
-                scroll = Color3.fromRGB(130, 130, 130),
-                detail = Color3.fromRGB(255, 255, 255),
+                window = Color3.fromRGB(45, 46, 46),
+                topbar = Color3.fromRGB(50, 51, 51),
+                text = Color3.fromRGB(255, 255, 255),
+                button = Color3.fromRGB(100, 100, 100),
+                scroll = Color3.fromRGB(35, 45, 45),
+                detail = Color3.fromRGB(60, 70, 70),
                 enabledbright = Color3.fromRGB(255, 255, 255),
-                enabled = Color3.fromRGB(255, 255, 255),
-                textshade1 = Color3.fromRGB(255, 255, 255),
-                textshade2 = Color3.fromRGB(255, 255, 255)
+                enabled = Color3.fromRGB(200, 200, 200),
+                textshade1 = Color3.fromRGB(235, 255, 255),
+                textshade2 = Color3.fromRGB(125, 255, 125)
             }
             
         elseif colors == "mono" then
@@ -353,25 +372,81 @@ ui = {} do
             }
             
             
-        elseif colors == "neon" then
-            
-            local pick = math.random(0,1)
-            local pick2 = math.random(0,1)
-            local pick3 = math.random(0,1)
+        elseif colors == "nightshift" then
             
             ui.colors = {
-                window = Color3.fromRGB(0, 0, 0),
-                topbar = Color3.fromRGB(5, 5, 5),
-                text = Color3.fromRGB(pick*255, pick2*255, pick3*255),
-                button = Color3.fromRGB(20, 20, 20),
-                scroll = Color3.fromRGB(32, 32, 32),
-                detail = Color3.fromRGB(64, 64, 64),
-                enabledbright = Color3.fromRGB(128, 128, 128),
-                enabled = Color3.fromRGB(72, 72, 72),
-                textshade1 = Color3.fromRGB(131, 131, 131),
-                textshade2 = Color3.fromRGB(170, 170, 170)
+                window = Color3.fromRGB(5, 5, 5),
+                topbar = Color3.fromRGB(7, 7, 7),
+                text = Color3.fromRGB(250, 230, 250),
+                button = Color3.fromRGB(60, 60, 65),
+                scroll = Color3.fromRGB(50, 50, 50),
+                detail = Color3.fromRGB(80, 80, 90),
+                enabledbright = Color3.fromRGB(150, 150, 155),
+                enabled = Color3.fromRGB(100, 100, 105),
+                textshade1 = Color3.fromRGB(255, 0, 255),
+                textshade2 = Color3.fromRGB(0, 255, 255)
+            }
+        
+        elseif colors == "mint" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(20, 20, 20),
+                topbar = Color3.fromRGB(24, 24, 24),
+                text = Color3.fromRGB(200, 255, 255),
+                button = Color3.fromRGB(50, 60, 60),
+                scroll = Color3.fromRGB(35, 45, 45),
+                detail = Color3.fromRGB(60, 70, 70),
+                enabledbright = Color3.fromRGB(200, 255, 255),
+                enabled = Color3.fromRGB(150, 160, 160),
+                textshade1 = Color3.fromRGB(30, 255, 255),
+                textshade2 = Color3.fromRGB(30, 255, 30)
+            }
+        
+        elseif colors == "jacko" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(7, 6, 6),
+                topbar = Color3.fromRGB(10, 9, 9),
+                text = Color3.fromRGB(250, 120, 60),
+                button = Color3.fromRGB(80, 70, 60),
+                scroll = Color3.fromRGB(60, 50, 50),
+                detail = Color3.fromRGB(100, 90, 80),
+                enabledbright = Color3.fromRGB(230, 220, 210),
+                enabled = Color3.fromRGB(180, 170, 160),
+                textshade1 = Color3.fromRGB(255, 150, 50),
+                textshade2 = Color3.fromRGB(255, 128, 0)
+            }
+        
+        elseif colors == "legacy" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(12, 12, 17),
+                topbar = Color3.fromRGB(14, 14, 19),
+                text = Color3.fromRGB(225, 225, 230),
+                button = Color3.fromRGB(60, 60, 120),
+                scroll = Color3.fromRGB(60, 60, 120),
+                detail = Color3.fromRGB(60, 60, 120),
+                enabledbright = Color3.fromRGB(190, 220, 250),
+                enabled = Color3.fromRGB(160, 190, 220),
+                textshade1 = Color3.fromRGB(255, 0, 128),
+                textshade2 = Color3.fromRGB(0, 0, 255)
             }
             
+        elseif colors == "cold" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(12, 12, 16),
+                topbar = Color3.fromRGB(14, 14, 18),
+                text = Color3.fromRGB(225, 225, 229),
+                button = Color3.fromRGB(60, 60, 90),
+                scroll = Color3.fromRGB(60, 60, 80),
+                detail = Color3.fromRGB(60, 60, 100),
+                enabledbright = Color3.fromRGB(180, 180, 240),
+                enabled = Color3.fromRGB(80, 80, 140),
+                textshade1 = Color3.fromRGB(100, 100, 255),
+                textshade2 = Color3.fromRGB(255, 100, 255)
+            }
+        
         else
         
             
@@ -830,7 +905,7 @@ ui = {} do
         
         local w = {} do
             
-            function w:NewMenu(text, desc, showtitle)
+            function w:NewMenu(text, showtitle)
                 showtitle = showtitle or true
                 local menu_objects = {}
                 
@@ -1206,6 +1281,8 @@ ui = {} do
                             OnToggle:Fire(true)
                             OnEnable:Fire()
                         end
+                        
+                        if state == true then enable() end
                         
                         local function toggle() 
                             
