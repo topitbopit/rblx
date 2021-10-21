@@ -13,10 +13,18 @@ Getting started
  - Menus & Doing stuff
  - Finishing off
 UI
- - Windows
-   - Menus
- - Messageboxes
- - Notifications
+ - Window
+   - Menu
+     - Label
+     - Section
+     - Textbox
+     - Button
+     - Toggle
+     - Dropdown
+     - Slider
+     - Trim
+ - Messagebox
+ - Notification
 
 ```
 
@@ -290,23 +298,53 @@ something about menus
 #### Creation:
 #### Functions:
 #### Events:
+```lua
+<RBXEvent> menu.OnChildAdded
+```
+*Event that fires when a new child is added to a menu. Used internally, do not change.*
+
 #### Variables:
 
----
-## Menus
 
-something about menus
+## Labels
+
+something about labels
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+## Section
+
+something about sections
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+## Textbox
+
+something about textboxes
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+## Textbox
+
+something about textboxes
 #### Creation:
 #### Functions:
 #### Events:
 #### Variables:
 
 ---
+
 ## Message boxes
 Message boxes have several functions and params. They're useful for displaying short amounts of text, but will automatically expand to fit buttons, the description, and title. 
 
 
-Creation:
+#### Creation:
 ```lua
 <msgbox> ui:NewMessageBox(<string> msg_text, <string> msg_desc, <table>{<table>{Text: <string>, Callback: <function>}} msg_buttons)
 ```
@@ -329,7 +367,7 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 ```
 *Creates a new message box titled **Message box** with the description **Hello world!** and two buttons*
 <br/>
-Functions:
+#### Functions:
 
 ```lua
 <void> msg:Close()
@@ -354,7 +392,9 @@ Functions:
 ```
 *Sets the title to  `text`*
 <br/>
-Events:
+#### Events:
+`none`
+#### Variables:
 `none`
 
 ---
