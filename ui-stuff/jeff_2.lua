@@ -281,10 +281,14 @@ ui = {} do
         return ui.Toggles
     end
     
-    function ui:SetColors(colors) 
-        colors = colors or ""
+    function ui:SetColors(newcolors) 
+        if type(newcolors) == "string" then
+            newcolors = newcolors:lower()
+        elseif type(newcolors) ~= "table" then
+            newcolors = {}
+        end
         
-        if colors == "red" then
+        if newcolors == "red" then
             ui.colors = {
                 window = Color3.fromRGB(12, 12, 12),
                 topbar = Color3.fromRGB(14, 14, 14),
@@ -298,7 +302,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(255, 70, 255)
             }
             
-        elseif colors == "green" then
+        elseif newcolors == "green" then
             ui.colors = {
                 window = Color3.fromRGB(16, 16, 16),
                 topbar = Color3.fromRGB(18, 18, 18),
@@ -311,7 +315,7 @@ ui = {} do
                 textshade1 = Color3.fromRGB(70, 255, 70),
                 textshade2 = Color3.fromRGB(0, 255, 255)
             }
-        elseif colors == "blue" then
+        elseif newcolors == "blue" then
             ui.colors = {
                 window = Color3.fromRGB(22, 22, 22),
                 topbar = Color3.fromRGB(24, 24, 24),
@@ -325,7 +329,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(255, 0, 255)
             }
             
-        elseif colors == "purple" then
+        elseif newcolors == "purple" then
             
             ui.colors = {
                 window = Color3.fromRGB(20, 20, 20),
@@ -340,7 +344,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(250, 0, 255)
             }
             
-        elseif colors == "bright" then
+        elseif newcolors == "bright" then
             
             ui.colors = {
                 window = Color3.fromRGB(45, 46, 46),
@@ -355,7 +359,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(125, 255, 125)
             }
             
-        elseif colors == "mono" then
+        elseif newcolors == "mono" then
             
             ui.colors = {
                 window = Color3.fromRGB(22, 22, 22),
@@ -371,7 +375,7 @@ ui = {} do
             }
             
             
-        elseif colors == "nightshift" then
+        elseif newcolors == "nightshift" then
             
             ui.colors = {
                 window = Color3.fromRGB(5, 5, 5),
@@ -386,7 +390,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(0, 255, 255)
             }
         
-        elseif colors == "mint" then
+        elseif newcolors == "mint" then
             
             ui.colors = {
                 window = Color3.fromRGB(20, 20, 20),
@@ -401,7 +405,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(30, 255, 30)
             }
         
-        elseif colors == "jacko" then
+        elseif newcolors == "jacko" then
             
             ui.colors = {
                 window = Color3.fromRGB(7, 6, 6),
@@ -416,7 +420,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(255, 128, 0)
             }
         
-        elseif colors == "legacy" then
+        elseif newcolors == "legacy" then
             
             ui.colors = {
                 window = Color3.fromRGB(12, 12, 17),
@@ -431,7 +435,7 @@ ui = {} do
                 textshade2 = Color3.fromRGB(0, 0, 255)
             }
             
-        elseif colors == "cold" then
+        elseif newcolors == "cold" then
             
             ui.colors = {
                 window = Color3.fromRGB(12, 12, 16),
@@ -449,15 +453,17 @@ ui = {} do
         else
         
             
-            colors.window = colors.window or ui.colors.window
-            colors.topbar = colors.topbar or ui.colors.topbar
-            colors.text = colors.text or ui.colors.text
-            colors.button = colors.button or ui.colors.button
-            colors.scroll = colors.scroll or ui.colors.scroll
-            colors.detail = colors.detail or ui.colors.detail
-            colors.enabledbright = colors.enabledbright or ui.colors.enabledbright
-            colors.enabled = colors.enabled or ui.colors.enabled
-            ui.colors = colors
+            newcolors.window        = newcolors.window        or ui.colors.window
+            newcolors.topbar        = newcolors.topbar        or ui.colors.topbar
+            newcolors.text          = newcolors.text          or ui.colors.text
+            newcolors.button        = newcolors.button        or ui.colors.button
+            newcolors.scroll        = newcolors.scroll        or ui.colors.scroll
+            newcolors.detail        = newcolors.detail        or ui.colors.detail
+            newcolors.enabledbright = newcolors.enabledbright or ui.colors.enabledbright
+            newcolors.enabled       = newcolors.enabled       or ui.colors.enabled
+            newcolors.textshade1    = newcolors.textshade1    or ui.colors.textshade1
+            newcolors.textshade2    = newcolors.textshade2    or ui.colors.textshade2
+            ui.colors = newcolors
         
         
         end
@@ -3134,6 +3140,5 @@ ui = {} do
     end
     
 end
-
 
 return ui
