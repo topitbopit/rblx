@@ -3,7 +3,7 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
 ui:SetColors("nightshift")
-local window = ui:NewWindow("Invis", 200, 150)
+local window = ui:NewWindow("Shitty Invis", 200, 150)
 local menu = window:NewMenu("Invisibility")
 local invisible = menu:NewToggle("Toggle")
 
