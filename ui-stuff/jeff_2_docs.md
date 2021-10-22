@@ -3,7 +3,7 @@
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 ![](https://cdn.discordapp.com/attachments/886387861388132402/900523062242447440/jeff2_banner.png)
-
+*Join the [discord server](https://discord.gg/Gn9vWr8DJC)!*
 Contents:
 
 ```
