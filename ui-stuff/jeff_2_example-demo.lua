@@ -1,3 +1,6 @@
+--Simple example demoing some features of the gui
+--Check out the jeff_2_example-gui to see what a simple speed gui would look like
+
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
 
 --Windows hold menus
