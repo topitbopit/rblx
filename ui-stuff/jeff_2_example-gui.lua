@@ -29,8 +29,6 @@ local rs = game:GetService("RunService")
 local plr = players.LocalPlayer
 
 
-
-
 ui.Exiting:Connect(function() 
     rs:UnbindFromRenderStep("Jeff2_ExampleSpeed") 
 end)
@@ -39,12 +37,20 @@ end)
 menu.OnEnable:Connect(function() 
     rs:UnbindFromRenderStep("Jeff2_ExampleSpeed")
     local _,idx = mode:GetSelection()
+    local chr = plr.Character
     
     if idx == 1 then --cframe
-        
+        rs:BindToRenderStep("Jeff2_ExampleSpeed", 2000, function() 
+            pcall(function() 
+                chr.HumanoidRootPart.CFrame = chr.HumanoidRootPart.CFrame + (((chr.Humanoid.MoveDirection*5)*amount:GetValue())*dt) -- move direction * 5 * value * deltatime
+            end)    
+        end)
     elseif idx == 2 then --walkspeed
-         
-                
+        rs:BindToRenderStep("Jeff2_ExampleSpeed", 2000, function() 
+            pcall(function() 
+                chr.Humanoid.WalkSpeed = amount:GetValue()
+            end)            
+        end)       
     end
 end)
 
