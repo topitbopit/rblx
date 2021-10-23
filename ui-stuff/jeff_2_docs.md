@@ -1,7 +1,10 @@
 
 
+
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
+**DOCS ARE CURRENTLY INCOMPLETE!**
+**They are updated frequently, so check back often!**
 ![](https://cdn.discordapp.com/attachments/886387861388132402/900523062242447440/jeff2_banner.png)  
 *Join the [discord server](https://discord.gg/Gn9vWr8DJC)!*  
 Contents:
@@ -130,12 +133,14 @@ end)
 
 > When exiting, every single object on screen gets closed automatically. However, no objects get disabled. To quickly disable toggles on close, use the `ui:GetAllToggles()` function and call `:Disable()` on each toggle.
 
+<br/>
+
 ## UI
 #### Creation:
 ```lua
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
 ```
-*Loads Jeff 2 into `ui`*
+*Loads the Jeff 2 library into `ui`*
 #### Functions:
 
 ```lua
@@ -154,14 +159,15 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 |red|Near black colors with a red accent
 |green|Dark gray colors with bright green accent
 |blue|Similar to default, but higher contrast
-|purple|Red and blue combined
+|purple|Combination of Red and Blue
 |bright|The closest theme to a light mode
-|mono|All gray colors, like bright but better
+|mono|All gray colors, better version of older bright
 |mint|Like blue and bright
-|legacy|Similar color scheme to jeff ui 1
+|legacy|Similar color scheme to the original jeff ui
 |cold|Similar to blue and legacy
 |nightshift|All black with some blueish/purple
-jacko|black and orange
+|jacko|Black and orange
+|spring|Slightly lighter version of mint with a different hue
 
 ![](https://cdn.discordapp.com/attachments/649469977828786178/900529096067534878/unknown.png)
 <br/>
@@ -210,7 +216,7 @@ jacko|black and orange
 #### Variables:  
 
 ```lua
-<string> ui.Version = "2.3.0.2-alpha" 
+<string> ui.Version = "2.1.3.3-alpha" 
 ```
 *The current ui version*
 
@@ -248,8 +254,8 @@ jacko|black and orange
 <table> ui.Windows
 ```
 *A table for ui windows. Used internally, do not change.*
-<br/>
 
+<br/>
 
 ## Windows
 Windows are pretty self explanatory. Note that although you can create more than one window, it is buggy and will not work well.
@@ -263,12 +269,11 @@ Windows are pretty self explanatory. Note that although you can create more than
 local window = ui:NewWindow("Example window", 400, 300)
 ```
 *Creates a window called **Example window** thats 400 pixels wide and 300 tall*
-<br/>
 #### Functions:
 ```lua
-<menu> window:NewMenu(<string> title, <bool> showtitle)
+<menu> window:NewMenu(<string> menu_title, <bool> menu_showtitle = true)
 ```
-*Creates a new menu object.*
+*Creates a new menuobject named `menu_title`. If `menu_showtitle` is true, the menu header is displayed.*
 >Scroll to the menu section to view more documentation on menus.
 
 ```lua
@@ -284,19 +289,77 @@ local window = ui:NewWindow("Example window", 400, 300)
 ```lua
 <RBXEvent> window.OnMinimize
 ```
-*Event that gets fired true when the window minimizes, false when it unminimizes.*
+*Event that gets fired the current minimize state on change*
 
 #### Variables:
 
-`none
-`
+`none`
 
----
+<br/>
+
 ## Menus
 
 Menus are important for actually creating your script. There technically can be any amount of menus, but you should use 1 - 6. 
 #### Creation:
+```lua
+<menu> window:NewMenu(<string> menu_title, <bool> menu_showtitle = true)
+```
+*Creates a new menuobject named `menu_title`. If `menu_showtitle` is true, the menu header is displayed.*
+```lua
+local menu = window:NewMenu("Epic modules")
+```
+*Creates a menu displaying the header **Epic Modules***
 #### Functions:
+```lua
+<table> menu:GetChildren()
+```
+*Returns a table of all the menus children. Used internally, do not change*
+```lua
+<number> menu:GetChildrenCount()
+```
+*Returns how many children the menu has. Used internally, do not change*
+**All below functions have specific documentation sections on how to use them. Scroll down until you find what you need!**
+```lua
+<section> menu:NewSection(<string> section_text)
+```
+*Creates a new section object saying `section_text`.*
+```lua
+<label> menu:NewLabel(<string> label_text)
+```
+*Creates a new label object saying `label_text`.*
+>Although labels and sections are technically different, their functions are the exact same.
+```lua
+<toggle> menu:NewToggle(<string> toggle_text)
+```
+*Creates a new toggle object displaying `toggle_text`.*
+>Older ui versions have a bool for enabling the toggle on creation, but it is deprecated and removed from newer versions.
+```lua
+<button> menu:NewButton(<string> button_text)
+```
+*Creates a new button object displaying `button_text`.*
+```lua
+<textbox> menu:NewTextbox(<string> tb_text, <bool> clearonfocus = true)
+```
+*Creates a new textbox object displaying `tb_text`. When `clearonfocus` is set to true, text will be cleared on focus. Currently, `clearonfocus` being false leaves it on.*
+>The bool `clearonfocus` is currently broken. Use the function `tb:SetClearOnFocus` until it gets fixed.
+```lua
+<slider> menu:NewSlider(<string> slider_text, <number> slider_min = 0, <number> slider_max = 0, <number> slider_start = slider_min)
+```
+*Creates a new slider object displaying `slider_text` when unfocused, with a range from `slider_min` to `slider_max`, defaulting to `slider_start`.*
+>Sliders are quite advanced and have lots of features. Right clicking will slow-drag, and entering a number into the value box will instantly set the slider to that value!
+```lua
+<dropdown> menu:NewDropdown(<string> dropdown_text, <table<string>> dropdown_options)
+```
+*Creates a new dropdown object displaying `dropdown_text`, with `dropdown_options` as options.*
+```lua
+<grid> menu:NewGrid()
+```
+*Unused as of now. Will be used as an embedded menu that can be used to fit more objects into a grid*
+```lua
+<void> menu:NewTrim()
+```
+*Creates a new trim object, like the ones below menu headers.*
+
 #### Events:
 ```lua
 <RBXEvent> menu.OnChildAdded
@@ -304,7 +367,8 @@ Menus are important for actually creating your script. There technically can be 
 *Event that fires when a new child is added to a menu. Used internally, do not change.*
 
 #### Variables:
-
+`none`
+<br/>
 
 ## Labels
 
@@ -314,6 +378,8 @@ something about labels
 #### Events:
 #### Variables:
 
+<br/>
+
 ## Section
 
 something about sections
@@ -322,6 +388,8 @@ something about sections
 #### Events:
 #### Variables:
 
+<br/>
+
 ## Textbox
 
 something about textboxes
@@ -330,28 +398,63 @@ something about textboxes
 #### Events:
 #### Variables:
 
-## Textbox
-
-something about textboxes
 <br/>
 
+## Button
+
+something about buttons
 #### Creation:
-<br/>
-
 #### Functions:
-<br/>
-
 #### Events:
-<br/>
-
 #### Variables:
+
+## Toggle
+
+something about toggles
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+## Dropdown
+
+something about dropdowns
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+## Slider
+
+something about sliders
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+## Grid
+
+something about grids
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+## Trim
+
+something about trims
+#### Creation:
+#### Functions:
+#### Events:
+#### Variables:
+
+<br/>
+<br/>
+<br/>
 
 ---
-<br/>
-
 ## Message boxes
 Message boxes have several functions and params. They're useful for displaying short amounts of text, but will automatically expand to fit buttons, the description, and title. 
-<br/>
 
 #### Creation:
 ```lua
@@ -375,7 +478,6 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 })
 ```
 *Creates a new message box titled **Message box** with the description **Hello world!** and two buttons*
-<br/>
 #### Functions:
 
 ```lua
@@ -400,10 +502,8 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 <void> msg:SetDesc(<string> text)
 ```
 *Sets the title to  `text`*
-<br/>
 #### Events:
 `none`
-<br/>
 #### Variables:
 `none`
 
@@ -420,7 +520,6 @@ Notifications are useful for displaying text quickly without obstructing anythin
 local msg = ui:NewNotification("Notification", "Hello world!", 5)
 ```
 *Creates a new notification titled **Notification** with the description **Hello world!** that lasts 5 seconds*
-<br/>
 #### Functions:
 
 ```lua
@@ -437,7 +536,6 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 <void> notif:SetDesc()
 ```
 *Sets the notification description*
-<br/>
 
 #### Events:
 `none`
@@ -445,12 +543,12 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 `none`
 
 ---
-These docs are for version 2.1.3.2-alpha. Versions below should work fine, and functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
+These docs are for version 2.1.3.3-alpha. Versions below should work fine, and functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
 If you want to make a suggestion contact topit#4057
 
-
+<br/>
 
 ## Deprecated
 ```lua
@@ -458,6 +556,15 @@ If you want to make a suggestion contact topit#4057
 ```
 *If the ui is minimized or not. Used internally, do not change.*
 **Superseded by window.Minimized, removed on v2.1.0.0-a**
+
+```lua
+NewToggle(name, enabled)
+                ^^^^^^^
+```
+*Removed enabled param on NewToggle*
+**Superseded by toggle:Enable(), removed on 2.1.3.2a**
+
+<br/>
 
 ## Pro gamers
 if you're an epic user who uses jeff 2 then let me know and i will add your name here
