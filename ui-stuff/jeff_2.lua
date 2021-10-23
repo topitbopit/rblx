@@ -1,23 +1,19 @@
 --[[
+2.1.3.3a
+    [*] Sliders - fixed the numberbox error, fixed how they initiated stopping the glitched value from occuring
+    [*] Menus - made the showtitle param work properly
+    [+] SetColor - added new theme "Spring"
+    
 2.1.3.2a
-Fixed NewLabel and NewSection:
-    [*] Fixed calling NewLabel and NewSection without any args from erroring
-        i.e. menu:NewLabel() == menu:NewLabel("")
-
-Added NewTrim:
-    [+] Creates a new line like the one under the menu text.
+    [*] Label / Sections - Menu:NewLabel() and Menu:NewSection() no longer errors
+    [+] Added NewTrim; Creates a new line like the one under the menu text.
         Useful for separating sections.
-
-Changed NewToggle parameters:
-    [-] Removed NewToggle's "enable" parameter since it can't call the enable
-        function that hasn't been assigned, in favor for :Enable().
-
-Changed NewTextbox parameters:
-    [+] Added a ClearTextOnFocus parameter so the function doesn't have to
+    [-] Toggles - Removed NewToggle's "enable" parameter since it can't call the enable
+        function when it hasn't been assigned, making it useless. I might add
+        it back later but it's not here for now.
+    [+] Textboxes - Added a ClearTextOnFocus parameter so the function doesn't have to
         be used
-
-Changed menu sizing:
-    [*] Instead of increasing by 27 pixels per new object, it increases by 28 hopefully making objects fit more
+    [*] Menus - Instead of increasing by 27 pixels per new object, it increases by 28 hopefully making objects fit more
 
 
 2.1.3.1a
@@ -287,7 +283,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.3.2-alpha"
+    ui.Version = "2.1.3.3-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -425,6 +421,21 @@ ui = {} do
                 textshade1 = Color3.fromRGB(30, 255, 255),
                 textshade2 = Color3.fromRGB(30, 255, 30)
             }
+            
+        elseif newcolors == "spring" then
+            
+            ui.colors = {
+                window = Color3.fromRGB(25, 25, 25),
+                topbar = Color3.fromRGB(28, 28, 28),
+                text = Color3.fromRGB(200, 255, 200),
+                button = Color3.fromRGB(50, 60, 60),
+                scroll = Color3.fromRGB(35, 45, 35),
+                detail = Color3.fromRGB(60, 70, 60),
+                enabledbright = Color3.fromRGB(200, 255, 200),
+                enabled = Color3.fromRGB(150, 160, 150),
+                textshade1 = Color3.fromRGB(30, 255, 30),
+                textshade2 = Color3.fromRGB(30, 255, 255)
+            }
         
         elseif newcolors == "jacko" then
             
@@ -472,7 +483,9 @@ ui = {} do
             }
         
         else
-        
+            if type(newcolors) == "string" then
+                newcolors = {}
+            end
             
             newcolors.window        = newcolors.window        or ui.colors.window
             newcolors.topbar        = newcolors.topbar        or ui.colors.topbar
@@ -932,7 +945,7 @@ ui = {} do
         local w = {} do
             
             function w:NewMenu(text, showtitle)
-                showtitle = showtitle or true
+                showtitle = (showtitle == nil and true) or showtitle
                 local menu_objects = {}
                 
                 local OnChildAdded = eventlistener.new()
@@ -1877,11 +1890,12 @@ ui = {} do
                         local ratio = (slider_back.AbsoluteSize.X / (max-min))
 
                         
-                        local value = math.floor((start-min) * ratio)
+                        local value = start
                         local oldv = value
                         
                         slider_amount.Text = tostring(start)
-                        slider_slider.Position = UDim2.new(0, value, 0, 0)
+                        slider_slider.Position = UDim2.new(0, math.floor((value-min) * ratio), 0, 0)
+                        
                         
                         slider_back.InputBegan:Connect(function(input1)
                             if input1.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -2055,8 +2069,8 @@ ui = {} do
                                 return tonumber(tx)
                             end)
                             
-                            
-                            if success then
+
+                            if type(ntx) == "number" then
                             
                                 s:SetValue(ntx)
                             end
