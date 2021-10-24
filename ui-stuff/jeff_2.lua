@@ -2763,13 +2763,13 @@ ui = {} do
             function msg:FadeText(newtext,newdesc)
                 msg_text = tostring(newtext)
                 msg_desc = tostring(newdesc)
-                ctwn(msg_desc2, {TextTransparency = 1}, 0.25, "Exponential", "Out")
-                ctwn(msg_title, {TextTransparency = 1}, 0.25, "Exponential", "Out")
+                ctwn(msg_desc2, {TextTransparency = 1}, 0.25, "Out", "Exponential")
+                ctwn(msg_title, {TextTransparency = 1}, 0.25, "Out", "Exponential")
                 wait(0.25)
                 msg_desc2.Text = msg_desc
                 msg_title.Text = msg_text
-                ctwn(msg_desc2, {TextTransparency = 0}, 0.25, "Exponential", "Out")
-                ctwn(msg_title, {TextTransparency = 0}, 0.25, "Exponential", "Out")
+                ctwn(msg_desc2, {TextTransparency = 0}, 0.25, "Out", "Exponential")
+                ctwn(msg_title, {TextTransparency = 0}, 0.25, "Out", "Exponential")
                 
             end
         end
