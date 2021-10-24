@@ -1,4 +1,10 @@
 --[[
+2.1.3.4a
+    [+] Messageboxes - Added msg_AddX and msg_AddY params that will increase the size
+        the size of the box
+    [*] Menus - Increases by 30 pixels per object now
+
+
 2.1.3.3a
     [*] Sliders - fixed the numberbox error, fixed how they initiated stopping the glitched value from occuring
     [*] Menus - made the showtitle param work properly
@@ -283,7 +289,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.3.3-alpha"
+    ui.Version = "2.1.3.4-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -2596,7 +2602,7 @@ ui = {} do
         return notif
     end
     
-    function ui:NewMessagebox(msg_text, msg_desc, msg_buttons)
+    function ui:NewMessagebox(msg_text, msg_desc, msg_buttons, msg_AddX, msg_AddY)
         msg_text = msg_text or getrand(5)
         msg_desc = msg_desc or getrand(10)
         msg_buttons = msg_buttons or {
@@ -2608,9 +2614,10 @@ ui = {} do
             }
             
         }
+        msg_AddY = msg_AddY or 0
+        msg_AddX = msg_AddX or 0
         
-        
-        local sizex, sizey = 150 + (#msg_buttons*10), 100 + ((utf8.len(msg_desc)))
+        local sizex, sizey = 150 + (#msg_buttons*10) + msg_AddX, 100 + ((utf8.len(msg_desc))) + msg_AddY
         
         local msg_window = Instance.new("Frame")
         msg_window.BackgroundColor3 = ui.colors.window
