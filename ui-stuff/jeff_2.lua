@@ -42,11 +42,6 @@ Edited button arguments:
 
 local eventlistener = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/rbxevent.lua'))()
 
-if _G.JUI2 then
-    
-    pcall(_G.JUI2) 
-end
-
 local plrs = game:GetService("Players")
 local ts = game:GetService("TweenService")
 local uis = game:GetService("UserInputService")
