@@ -1059,7 +1059,7 @@ ui = {} do
                 
                 
                 OnChildAdded:Connect(function() 
-                    menu_menu.CanvasSize = menu_menu.CanvasSize + UDim2.new(0, 0, 0, 28)
+                    menu_menu.CanvasSize = menu_menu.CanvasSize + UDim2.new(0, 0, 0, 30)
                     
                     div = menu_menu.CanvasSize.Y.Offset / menu_menu.Parent.AbsoluteSize.Y
                     if div < 1 then
