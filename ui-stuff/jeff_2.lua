@@ -1,5 +1,7 @@
 --[[
 2.1.3.4a
+    [+] Messageboxes - Added FadeText function which fades the previous text and description
+        to newtext and newdesc respectively
     [+] Messageboxes - Added msg_AddX and msg_AddY params that will increase the size
         the size of the box
     [*] Menus - Increases by 30 pixels per object now
@@ -2757,7 +2759,19 @@ ui = {} do
                 msg_desc = desc
                 msg_desc2.Text = msg_desc
             end
-        
+            
+            function msg:FadeText(newtext,newdesc)
+                msg_text = tostring(newtext)
+                msg_desc = tostring(newdesc)
+                ctwn(msg_desc2, {TextTransparency = 1}, 0.25, "Exponential", "Out")
+                ctwn(msg_title, {TextTransparency = 1}, 0.25, "Exponential", "Out")
+                wait(0.25)
+                msg_desc2.Text = msg_desc
+                msg_title.Text = msg_text
+                ctwn(msg_desc2, {TextTransparency = 0}, 0.25, "Exponential", "Out")
+                ctwn(msg_title, {TextTransparency = 0}, 0.25, "Exponential", "Out")
+                
+            end
         end
         
         
