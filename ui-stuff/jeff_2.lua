@@ -1,4 +1,7 @@
 --[[
+2.1.3.5a
+    [+] Messageboxes - Added OnClose event
+
 2.1.3.4a
     [+] Messageboxes - Added FadeText function which fades the previous text and description
         to newtext and newdesc respectively
@@ -41,6 +44,11 @@ Edited button arguments:
 ]]--
 
 local eventlistener = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/rbxevent.lua'))()
+
+if _G.JUI2 then
+    
+    pcall(_G.JUI2) 
+end
 
 local plrs = game:GetService("Players")
 local ts = game:GetService("TweenService")
@@ -286,7 +294,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.3.4-alpha"
+    ui.Version = "2.1.3.5-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -2614,6 +2622,8 @@ ui = {} do
         msg_AddY = msg_AddY or 0
         msg_AddX = msg_AddX or 0
         
+        local OnClose = eventlistener.new()
+        
         local sizex, sizey = 150 + (#msg_buttons*10) + msg_AddX, 100 + ((utf8.len(msg_desc))) + msg_AddY
         
         local msg_window = Instance.new("Frame")
@@ -2698,6 +2708,7 @@ ui = {} do
         
         
         local function closeMsg() 
+            OnClose:Fire()
             task.spawn(function() 
                 
                 
@@ -2767,6 +2778,8 @@ ui = {} do
                 ctwn(msg_title, {TextTransparency = 0}, 0.25, "Out", "Exponential")
                 
             end
+            
+            msg.OnClose = OnClose
         end
         
         
