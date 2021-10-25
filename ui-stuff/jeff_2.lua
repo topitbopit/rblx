@@ -3251,29 +3251,4 @@ ui = {} do
     
 end
 
-
-local window = ui:NewWindow("Jeff Hoops", 400, 300)
-
-local m_home = window:NewMenu("Home")
-local m_ball = window:NewMenu("Ball")
-local m_player = window:NewMenu("Player")
-local m_misc = window:NewMenu("Misc")
-
-
-m_home:NewLabel("Jeff Hoops made by topit")
-m_home:NewButton("Join the discord")
-m_home:NewButton("View changelog")
-m_home:NewSection("Config")
-m_home:NewButton("Load config")
-m_home:NewButton("Save config")
-m_home:NewLabel()
-m_home:NewLabel()
-m_home:NewLabel()
-m_home:NewLabel()
-m_home:NewLabel()
-m_home:NewLabel()
-m_home:NewLabel()
-m_home:NewLabel("hi")
-ui:Ready()
-
 return ui
