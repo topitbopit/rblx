@@ -1,4 +1,8 @@
 --[[
+2.1.3.6a
+    [+] Menus - Added custom scrolling logic
+    [*] Menus - Fixed all scroll bars being shown until menus were switched
+
 2.1.3.5a
     [+] Messageboxes - Added OnClose event
 
@@ -294,7 +298,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.3.5-alpha"
+    ui.Version = "2.1.3.6-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -970,7 +974,8 @@ ui = {} do
                 menu_menu.CanvasSize = UDim2.new(0, 0, 0, 55)
                 menu_menu.TopImage = menu_menu.MidImage
                 menu_menu.BottomImage = menu_menu.MidImage
-                menu_menu.ScrollingEnabled = true --may finish custom scrolling later but roblox default is used for now
+                menu_menu.ScrollingEnabled = true
+                menu_menu.ScrollingDirection = Enum.ScrollingDirection.X
                 menu_menu.ScrollBarThickness = 0
                 menu_menu.Visible = false
                 menu_menu.Parent = window_menureg
@@ -1051,6 +1056,21 @@ ui = {} do
                             ui.cons["ScrollDrag"]:Disconnect() 
                         end)
                         scrollConnection = menu_menu:GetPropertyChangedSignal("CanvasPosition"):Connect(handleScrollPos)
+                    end
+                end)
+                
+                menu_menu.InputChanged:Connect(function(io) 
+                    if io.UserInputType == Enum.UserInputType.MouseWheel then
+                        local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-75
+                        local max = menu_menu.AbsoluteCanvasSize.Y - menu_menu.AbsoluteSize.Y
+                        
+                        newpos = math.clamp(newpos, 0, max)
+                    
+                        
+                        twn(menu_menu, {CanvasPosition = Vector2.new(
+                            0,
+                            newpos
+                        )})
                     end
                 end)
                 
@@ -2444,9 +2464,14 @@ ui = {} do
     function ui:Ready() 
         
         for i,v in pairs(ui.Windows) do
+            for i,m in pairs(v:GetMenus()) do
+                m.s.Visible = false
+                m.i.Visible = false
+            end
             local m = v:GetMenus()[1]
             m.s.Visible = true
             m.i.Visible = true
+            
             
         end
         
@@ -3226,5 +3251,29 @@ ui = {} do
     
 end
 
+
+local window = ui:NewWindow("Jeff Hoops", 400, 300)
+
+local m_home = window:NewMenu("Home")
+local m_ball = window:NewMenu("Ball")
+local m_player = window:NewMenu("Player")
+local m_misc = window:NewMenu("Misc")
+
+
+m_home:NewLabel("Jeff Hoops made by topit")
+m_home:NewButton("Join the discord")
+m_home:NewButton("View changelog")
+m_home:NewSection("Config")
+m_home:NewButton("Load config")
+m_home:NewButton("Save config")
+m_home:NewLabel()
+m_home:NewLabel()
+m_home:NewLabel()
+m_home:NewLabel()
+m_home:NewLabel()
+m_home:NewLabel()
+m_home:NewLabel()
+m_home:NewLabel("hi")
+ui:Ready()
 
 return ui
