@@ -483,7 +483,6 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 ```lua
 <void> msg:Close()
 ```
-
 *Closes the messagebox*
 
 ```lua
@@ -503,7 +502,12 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 ```
 *Sets the title to  `text`*
 #### Events:
-`none`
+
+```lua
+<RBXEvent> msg.OnClose
+```
+*Event that fires when the messagebox closes. No arguments are passed as of now, but the title will be passed in a later update.*
+
 #### Variables:
 `none`
 
