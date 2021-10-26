@@ -465,6 +465,15 @@ something about dropdowns
 
 something about sliders
 #### Creation:
+```lua
+<slider> menu:NewSlider(<string> slider_text, <number> slider_min = 0, <number> slider_max = 100, <number> slider_start = slider_min)
+```
+*Creates a new slider object displaying `slider_text` when unfocused, with a range from `slider_min` to `slider_max`, defaulting to `slider_start`.*
+
+```lua
+local how_many_years_will = it_take_for:NewSlider("jeff hoops 3 to release:",5,500,500)
+```
+*Creates a new slider `how_many_years_will` parented to `it_take_for` saying `jeff hoops 3 to release:` ranging from `5` to `500` years*
 #### Functions:
 #### Events:
 #### Variables:
