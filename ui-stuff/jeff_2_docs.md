@@ -372,21 +372,58 @@ local menu = window:NewMenu("Epic modules")
 
 ## Labels
 
-something about labels
+Labels are useful for adding descriptions, and adding newline breaks (:NewLabel()). Descriptions for specific objects that can be viewed when you mouse over will be added soon.
 #### Creation:
+```lua
+<label> menu:NewLabel(<string> text = "")
+```
+*Creates a new label reading `text` and returns it*
+```lua
+local Description = speedhax:NewLabel("Among us")
+```
+*Creates a new label reading **Among us**, and returns it to Description*
 #### Functions:
+```lua
+<void> label:SetText(<string> newtext)
+```
+*Sets `label`s text to `newtext`*
+```lua
+<string> label:GetText()
+```
+*Returns `label`s text*
 #### Events:
+`none`
 #### Variables:
+`none`
 
 <br/>
 
 ## Section
 
-something about sections
+Sections are like labels, but with different positioning and sizing. They're the same as menu titles, but without the color gradient.
+
 #### Creation:
+```lua
+<section> menu:NewSection(<string> text = "")
+```
+*Creates a new section reading `text` and returns it*
+```lua
+local Title = epicstuff:NewSection("TPHax")
+```
+*Creates a new section reading **TPHax**, and returns it to Title*
 #### Functions:
+```lua
+<void> section:SetText(<string> newtext)
+```
+*Sets `section`s text to `newtext`*
+```lua
+<string> section:GetText()
+```
+*Returns `section`s text*
 #### Events:
+`none`
 #### Variables:
+`none`
 
 <br/>
 
@@ -434,19 +471,37 @@ something about sliders
 
 ## Grid
 
-something about grids
+Grids are like mini menus, and are unfinished. Instead of buttons, dropdowns, sliders, etc. being 100% the width of menus, they can be 1/3, 2/3, or 3/3 the width.
+
+I.e., grids help you organize buttons like guis using jeff 1.
+
 #### Creation:
+`none`
 #### Functions:
+`none`
 #### Events:
+`none`
 #### Variables:
+`none`
 
 ## Trim
+Trim objects are useful for organization. Kinda like sections, trims are the detail line underneath menu titles.
 
-something about trims
 #### Creation:
+```lua
+<void> menu:NewTrim()
+```
+*Creates a new trim object for `menu`.*
+```lua
+local hehe_this_will_be_nil = modules:NewTrim()
+```
+*Creates a new trim object on the `modules` menu. Since NewTrim doesn't return anything, `hehe_this_will_be_nil` will obviously be `table: 0x23d31a0`.*
 #### Functions:
+`none`
 #### Events:
+`none`
 #### Variables:
+`none`
 
 <br/>
 <br/>
@@ -501,6 +556,11 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 <void> msg:SetDesc(<string> text)
 ```
 *Sets the title to  `text`*
+
+```lua
+<void> msg:FadeText(<string> newtitle, <string> newdesc)
+```
+*Fades from the previous title and description to `newtitle` and `newdesc`*
 #### Events:
 
 ```lua
