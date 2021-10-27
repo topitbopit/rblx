@@ -2,6 +2,7 @@
 
 
 
+
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 **DOCS ARE CURRENTLY INCOMPLETE!**
@@ -430,8 +431,12 @@ local Title = epicstuff:NewSection("TPHax")
 
 ## Textbox
 
-something about textboxes
+Textboxes are useful for user input. They're limited for now but will have more features and possibly a combined version with dropdowns.
+
 #### Creation:
+```lua
+```
+*Creates a new textbox object displaying `textbox_display`. If `textbox_clear` is true, then the box will clear on focus*
 #### Functions:
 #### Events:
 #### Variables:
@@ -474,7 +479,7 @@ something about sliders
 ```lua
 local how_many_years_will = it_take_for:NewSlider("jeff hoops 3 to release:",5,500,500)
 ```
-*Creates a new slider `how_many_years_will` parented to `it_take_for` saying `jeff hoops 3 to release:` ranging from `5` to `500` years*
+*Creates a new slider `how_many_years_will` parented to `it_take_for` saying `jeff hoops 3 to release:` ranging from `5` to `500`*
 #### Functions:
 #### Events:
 #### Variables:
@@ -495,7 +500,7 @@ I.e., grids help you organize buttons like guis using jeff 1.
 `none`
 
 ## Trim
-Trim objects are useful for organization. Kinda like sections, trims are the detail line underneath menu titles.
+Trim objects are useful for organization. Kinda like sections, trims are the detail line underneath menu titles. They're extremely simple and were added just for a single gui.
 
 #### Creation:
 ```lua
@@ -503,7 +508,7 @@ Trim objects are useful for organization. Kinda like sections, trims are the det
 ```
 *Creates a new trim object for `menu`.*
 ```lua
-local hehe_this_will_be_nil = modules:NewTrim()
+modules:NewTrim()
 ```
 *Creates a new trim object on the `modules` menu.*
 #### Functions:
@@ -565,7 +570,7 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 ```lua
 <void> msg:SetDesc(<string> text)
 ```
-*Sets the title to  `text`*
+*Sets the description to  `text`*
 
 ```lua
 <void> msg:FadeText(<string> newtitle, <string> newdesc)
