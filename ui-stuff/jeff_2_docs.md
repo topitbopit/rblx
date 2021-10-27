@@ -34,12 +34,9 @@ UI
 ```
 
 ## Getting started
-### Loading the library
-Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
-```lua
-local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
-```
-Note that unlike most UI libraries, Jeff 2 is *event based.*
+### Quirks and cool features
+Jeff 2 is unique and unlike most ui libraries. The biggest difference is that it is *event based*.
+
 Instead of making a toggle like this...
 ```lua
 ui:NewToggle("Hello world", function(state) print(state) end)
@@ -51,7 +48,23 @@ toggle.OnToggle:Connect(function(state)
     print(state)
 end)
 ```
-This lets you organize your code better, disconnect functions easily, yield until a button gets pressed, and more.
+This doesn't seem like that big of a difference, right? The callback is just a line down!
+
+However, this is more powerful than it seems. It lets you organize your code better, disconnect and change functions easily, and allow better optimization. It's also closer to normal GUI creation workflow.
+
+Heres a list of more cool features that you won't find anywhere else: 
+- Toggles (on-off) and Buttons (click to fire) let you bind hotkeys to them by right clicking them, so you don't have to implement expensive hotkey systems
+- Toggles and buttons can be **hidden** from user interaction. This prevents them from being fired, which is useful in case a module needs to wait for something to load or if an exploit doesn't support a function.
+- Sliders are more 
+
+
+
+### Loading the library
+Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
+```lua
+local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
+```
+
 
 
 ### Windows
@@ -435,19 +448,106 @@ Textboxes are useful for user input. They're limited for now but will have more 
 
 #### Creation:
 ```lua
+<textbox> menu:NewTextbox(<string> textbox_display, <boolean> textbox_clear)
 ```
 *Creates a new textbox object displaying `textbox_display`. If `textbox_clear` is true, then the box will clear on focus*
-#### Functions:
-#### Events:
-#### Variables:
 
+```lua
+local plrbox = teleports:NewTextbox("Enter player to teleport to")
+```
+*Creates a new textbox displaying `Enter player to teleport to`*
+
+#### Functions:
+```lua
+<void> textbox:SetText(<string> text)
+```
+*Sets `textbox`s text to `text`*
+```lua
+<void> textbox:ForceFocus()
+```
+*Forces the client to focus on `textbox`*
+```lua
+<void> textbox:ForceRelease()
+```
+*Forces the client to unfocus `textbox`*
+```lua
+<void> textbox:SetClearOnFocus(<boolean> newstate)
+```
+*Sets `textbox`s ClearTextOnFocus property to `newstate`
+
+```lua
+<bool> textbox:IsFocused()
+```
+*Returns whether or not `textbox` is focused*
+```lua
+<string> textbox:GetText()
+```
+*Returns `textbox`s text*
+```lua
+<number?> textbox:GetTextFormattedAsInt()
+```
+*Returns `textbox`s text formatted as a number.*
+> If the text cannot be formatted as a number properly, it returns `nil`. Despite being called Int, it can return doubles.
+
+#### Events:
+```lua
+<RBXEvent> OnFocusGained
+```
+*Event that fires when the textbox gains focus.*
+```lua
+<RBXEvent> OnFocusLost
+```
+*Event that fires when the textbox loses focus.*
+
+#### Variables:
+`none`
 <br/>
 
 ## Button
 
-something about buttons
+Buttons are very simple but do have some neat features. Just like toggles, buttons natively support binds when right clicked.
+Another cool feature buttons and toggles have is that they can be disabled from user interaction, or **hidden**. This prevents the user from actually clicking this button, which is useful in case a module needs to wait for something to load or if an exploit doesn't support a function.
+
 #### Creation:
+```lua
+<button> menu:NewButton(<string> text)
+```
+*Creates a new `button` displaying `text`*
+```lua
+local invite = menu_amongus:NewButton("Join the discord server")
+```
+*Creates a button saying `Join the discord server` and assigns it to `invite`*
+
 #### Functions:
+```lua
+<void> button:Fire()
+```
+*Triggers the OnClick function*
+```lua
+<void> button:SetCallback(<function> func)
+```
+*Sets the callback to `func`. Deprecated, will be removed within the next few updates*
+```lua
+<void> button:SetBind(<string?> bind_name)
+```
+*Sets `button`s bind to `bind_name`. If `bind_name` is not passed, the bind is removed.
+>`bind_name` must be the name of the keycode you are binding. Instead of Enum.KeyCode.RightControl, pass "RightControl" or Enum.KeyCode.RightControl.Name
+```lua
+<string> button:GetBind()
+```
+*Returns the name of the bind `button` is bound to*
+
+```lua
+<void> button:SetText(<string> text)
+```
+*Sets `button`s text to `text`*
+```lua
+<string> button:GetText()'
+```
+*Returns `button`s text*
+
+
+
 #### Events:
 #### Variables:
 
@@ -642,6 +742,12 @@ NewToggle(name, enabled)
 ```
 *Removed enabled param on NewToggle*
 **Superseded by toggle:Enable(), removed on 2.1.3.2a**
+
+```lua
+<void> button:SetCallback(<function> func)
+```
+*Sets the callback of `button` to `func`*
+
 
 <br/>
 
