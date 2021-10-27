@@ -1,6 +1,7 @@
 
 
 
+
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 **DOCS ARE CURRENTLY INCOMPLETE!**
@@ -480,7 +481,7 @@ local how_many_years_will = it_take_for:NewSlider("jeff hoops 3 to release:",5,5
 
 ## Grid
 
-Grids are like mini menus, and are unfinished. Instead of buttons, dropdowns, sliders, etc. being 100% the width of menus, they can be 1/3, 2/3, or 3/3 the width.
+Grid objects are like menus inside of menus, and are unfinished. Instead of buttons, dropdowns, sliders, etc. being 100% the width of menus, they can be 1/3, 2/3, or 3/3 the width.
 
 I.e., grids help you organize buttons like guis using jeff 1.
 
@@ -504,7 +505,7 @@ Trim objects are useful for organization. Kinda like sections, trims are the det
 ```lua
 local hehe_this_will_be_nil = modules:NewTrim()
 ```
-*Creates a new trim object on the `modules` menu. Since NewTrim doesn't return anything, `hehe_this_will_be_nil` will obviously be `table: 0x23d31a0`.*
+*Creates a new trim object on the `modules` menu.*
 #### Functions:
 `none`
 #### Events:
@@ -616,7 +617,7 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 `none`
 
 ---
-These docs are for version 2.1.3.3-alpha. Versions below should work fine, and functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
+These docs are for version 2.1.3.6-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
 If you want to make a suggestion contact topit#4057
