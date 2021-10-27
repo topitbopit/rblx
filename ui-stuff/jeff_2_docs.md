@@ -56,8 +56,13 @@ Heres a list of more cool features that you won't find anywhere else:
 - Toggles (on-off) and Buttons (click to fire) let you bind hotkeys to them by right clicking them, so you don't have to implement expensive hotkey systems
 - Toggles and buttons can be **hidden** from user interaction. This prevents them from being fired, which is useful in case a module needs to wait for something to load or if an exploit doesn't support a function.
 - Sliders are intuitive. Not only can you type in a specific number to jump to it, you can slow drag with right click to slowly change the value.
+- Menus can be bound to keys, letting you quickly jump between them without having to use the menu button every time.
 
-
+Of course, this library isn't perfect and there are some issues.
+- Although technically more than one window could be made, it is super buggy. 
+- Only a limited amount of menus can be made
+- Library code is pretty large and not very polished
+- Buttons, toggles, etc. take up a lot of space
 
 ### Loading the library
 Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
