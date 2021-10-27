@@ -55,7 +55,7 @@ However, this is more powerful than it seems. It lets you organize your code bet
 Heres a list of more cool features that you won't find anywhere else: 
 - Toggles (on-off) and Buttons (click to fire) let you bind hotkeys to them by right clicking them, so you don't have to implement expensive hotkey systems
 - Toggles and buttons can be **hidden** from user interaction. This prevents them from being fired, which is useful in case a module needs to wait for something to load or if an exploit doesn't support a function.
-- Sliders are more 
+- Sliders are intuitive. Not only can you type in a specific number to jump to it, you can slow drag with right click to slowly change the value.
 
 
 
