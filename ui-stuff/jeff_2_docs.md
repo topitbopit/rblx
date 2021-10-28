@@ -671,17 +671,17 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 <void> toggle:Assert(<string> global)
 ```
 *Hides `toggle` with the message `Your exploit doesn't support global` if `global` is not found in the global env.*
->Think of `:Assert()` like `if not getgenv()["globalhere"] then toggle:Hide("Your exploit does not support global!") end
+>Think of `:Assert()` like `if not getgenv()["globalhere"] then toggle:Hide("Your exploit does not support global!") end`; it checks if the function / library exists and if it doesn't, it disables the toggle
 ```lua
-<void> button:SetTooltip(<string> newtooltip)
+<void> toggle:SetTooltip(<string> newtooltip)
 ```
 *Sets this objects tooltip to `newtooltip`
 ```lua
-<string> button:GetTooltip()
+<string> toggle:GetTooltip()
 ```
 *Returns this object's tooltip*
 ```lua
-<boolean> button:IsMouseOver()
+<boolean> toggle:IsMouseOver()
 ```
 *Returns if the mouse is currently hovering over this object.*
 
@@ -691,19 +691,28 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 #### Events:
 
 ```lua
-<RBXEvent> OnClick
+<RBXEvent> OnEnable
 ```
-*Event that fires when clicked*
+*Event that fires when enabled*
+
+```lua
+<RBXEvent> OnDisable
+```
+*Event that fires when disabled*
+```lua
+<RBXEvent> OnToggle
+```
+*Event that fires when toggled; true when enabled and false when disabled*
+
 
 #### Variables:
 ```lua
 <boolean> Hidden
 ```
-*True when the button is hidden from interaction, false when it's not hidden*
+*True when the toggle is hidden from interaction, false when it's not hidden*
 
 ## Dropdown
-
-something about dropdowns
+Dropdowns are useful for 
 #### Creation:
 #### Functions:
 #### Events:
