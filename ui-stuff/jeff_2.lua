@@ -1,4 +1,28 @@
 --[[
+2.1.4.0a
+    [+] Made some microoptimizations
+    [+] Toggle
+        SetTooltip() function
+        GetTooltip() function
+        IsMouseOver() function
+    [+] Slider
+        SetTooltip() function
+        GetTooltip() function
+        IsMouseOver() function
+    [+] Button
+        SetTooltip() function
+        GetTooltip() function
+        IsMouseOver() function
+    [+] Dropdown
+        SetTooltip() function
+        GetTooltip() function
+        IsMouseOver() function
+    [+] Textbox
+        SetTooltip() function
+        GetTooltip() function
+        IsMouseOver() function
+
+
 2.1.3.6a
     [+] Menus - Added custom scrolling logic
     [*] Menus - Fixed all scroll bars being shown until menus were switched
@@ -63,6 +87,13 @@ local rs = game:GetService("RunService")
 local plr = plrs.LocalPlayer
 
 local mouse = plr:GetMouse()
+
+local tinsert = table.insert
+local ulen = utf8.len
+local tdelay = task.delay
+local twait = task.wait
+local tspawn = task.spawn
+
 
 local screen = Instance.new("ScreenGui")
 
@@ -298,7 +329,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.3.6-alpha"
+    ui.Version = "2.1.4.0-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -715,6 +746,48 @@ ui = {} do
         window_sidemenu.Visible = false
         window_sidemenu.Parent = window_window
         
+        
+        local window_tooltip = Instance.new("TextLabel")
+        window_tooltip.Visible = true
+        window_tooltip.ZIndex = 50
+        window_tooltip.Size = UDim2.new(0, 150, 0, 40)
+        window_tooltip.TextSize = ui.FontSize - 10
+        window_tooltip.TextColor3 = ui.colors.text
+        window_tooltip.BackgroundColor3 = ui.colors.topbar
+        window_tooltip.BorderSizePixel = 1
+        window_tooltip.BorderColor3 = ui.colors.scroll
+        window_tooltip.TextWrapped = true
+        window_tooltip.BackgroundTransparency = 1
+        window_tooltip.TextTransparency = 1
+        window_tooltip.Parent = screen
+        
+        local function displayTooltip(text) 
+            window_tooltip.Text = text
+            window_tooltip.Size = UDim2.new(0, 50 + ulen(text), 0, 15)
+            window_tooltip.Visible = true
+            
+            for i = 0, 25 do
+                
+                window_tooltip.Size = window_tooltip.Size + UDim2.new(0, 25, 0, 10)
+                if window_tooltip.TextFits then break end
+            end
+            
+            window_tooltip.BackgroundTransparency = 1
+            window_tooltip.TextTransparency = 1
+            
+            window_tooltip.Position = UDim2.new(0, mouse.X+6, 0, mouse.Y+6)
+            twn(window_tooltip, {BackgroundTransparency = 0, TextTransparency = 0})
+        end
+        
+        local function hideTooltip() 
+            local a = twn(window_tooltip, {BackgroundTransparency = 1, TextTransparency = 1})
+            a.Completed:Connect(function() 
+                if window_tooltip.BackgroundTransparency == 1 then
+                    window_tooltip.Visible = false
+                end
+            end)
+        end
+        
         local function toggleMenu() 
             SidemenuOpen = not SidemenuOpen
             if SidemenuOpen then
@@ -769,7 +842,7 @@ ui = {} do
         window_bclose.MouseButton1Click:Connect(function() 
             ui.WindowCount = ui.WindowCount - 1 
             ceffect(window_bmin)
-            task.spawn(function() 
+            tspawn(function() 
                 
                 if ui.WindowCount == 0 then
                     local a = Instance.new("UIScale")
@@ -922,7 +995,7 @@ ui = {} do
                 window_tabbutton.BackgroundColor3 = ui.colors.enabled 
             end
             
-            table.insert(sidemenu_buttons, window_tabbutton)
+            tinsert(sidemenu_buttons, window_tabbutton)
             
         end)
         
@@ -1119,7 +1192,7 @@ ui = {} do
                     }
                     among.Parent = menu_label 
                     
-                    table.insert(menu_objects, menu_label)
+                    tinsert(menu_objects, menu_label)
                     
                     local trim = Instance.new("Frame")
                     trim.BackgroundTransparency = 0
@@ -1132,7 +1205,7 @@ ui = {} do
                     
                 end
                 
-                table.insert(wind_menus, {
+                tinsert(wind_menus, {
                     n = text,
                     i = menu_menu,
                     s = menu_scroll
@@ -1168,7 +1241,7 @@ ui = {} do
                         section_label.ZIndex = 23
                         section_label.Parent = menu_menu
                         
-                        table.insert(menu_objects, 2)
+                        tinsert(menu_objects, 2)
                         
                         local l = {} do
                             
@@ -1206,10 +1279,10 @@ ui = {} do
                         if label_label.TextFits == false then
                             label_label.Size = UDim2.new(1, -15, 0, 48)
                             label_label.TextWrapped = true
-                            table.insert(menu_objects, 2)
+                            tinsert(menu_objects, 2)
                         end
                         
-                        table.insert(menu_objects, 2)
+                        tinsert(menu_objects, 2)
                         
                         local l = {} do
                             
@@ -1239,6 +1312,9 @@ ui = {} do
                         local OnEnable = eventlistener.new()
                         local OnToggle = eventlistener.new()
                         local OnDisable = eventlistener.new()
+                        
+                        local mousingover = false
+                        local tooltip = nil
                         
                         local toggle_button = Instance.new("TextButton")
                         toggle_button.Text = text
@@ -1330,10 +1406,21 @@ ui = {} do
                         
                         toggle_button.MouseEnter:Connect(function() 
                             twn(toggle_button, {BackgroundTransparency = 0.4})
+                            
+                            mousingover = true
+                            tdelay(1, function() 
+                                if mousingover and tooltip then
+                                    displayTooltip(tooltip)
+                                end
+                            end)
                         end)
                         
                         toggle_button.MouseLeave:Connect(function() 
                             twn(toggle_button, {BackgroundTransparency = 0.7})
+                            
+                            mousingover = false
+                            hideTooltip()
+                            
                         end)
                         
                         local function disable() 
@@ -1378,7 +1465,7 @@ ui = {} do
                         end)
                         
                         
-                        table.insert(menu_objects, 1)
+                        tinsert(menu_objects, 1)
                         
                         local t = {} do
                             
@@ -1483,6 +1570,18 @@ ui = {} do
                                 
                             end
                             
+                            function t:GetTooltip()
+                                return tooltip
+                            end
+                            
+                            function t:SetTooltip(newtooltip) 
+                                tooltip = newtooltip and tostring(newtooltip) or nil
+                            end
+                            
+                            function t:IsMouseOver() 
+                                return mousingover
+                            end
+                            
                             t.Hidden = hidden
                             
                             t.OnDisable = OnDisable
@@ -1497,7 +1596,7 @@ ui = {} do
                         
                         OnChildAdded:Fire("toggle", t)
                         
-                        table.insert(ui.Toggles, t)
+                        tinsert(ui.Toggles, t)
                         
                         return t
                     end
@@ -1507,6 +1606,8 @@ ui = {} do
                         
                         local OnClick = eventlistener.new()
                         local hidden = false
+                        local mousingover = false
+                        local tooltip = nil
                         
                         local button_button = Instance.new("TextButton")
                         button_button.Text = text
@@ -1565,10 +1666,23 @@ ui = {} do
                         
                         button_button.MouseEnter:Connect(function() 
                             twn(button_button, {BackgroundTransparency = 0.4})
+                            
+                            mousingover = true
+                            
+                            
+                            tdelay(1, function() 
+                                if mousingover and tooltip then
+                                    displayTooltip(tooltip)
+                                end
+                            end)
                         end)
                         
                         button_button.MouseLeave:Connect(function() 
                             twn(button_button, {BackgroundTransparency = 0.7})
+                            
+                            mousingover = false
+                            
+                            hideTooltip()
                         end)
                         
                         button_hider.MouseEnter:Connect(function() 
@@ -1593,7 +1707,7 @@ ui = {} do
                         
                         
                         
-                        table.insert(menu_objects, 1)
+                        tinsert(menu_objects, 1)
                         
                         local t = {} do
                             
@@ -1645,7 +1759,7 @@ ui = {} do
                             end
                             
                             function t:Hide(msg)
-                                if not msg then return end
+                                if not msg then error("Hide failed; you must provide a message") end
                                 hidden = true
                                 
                                 button_hider.Visible = true
@@ -1676,6 +1790,18 @@ ui = {} do
                                 end
                             end
                             
+                            function t:GetTooltip()
+                                return tooltip
+                            end
+                            
+                            function t:SetTooltip(newtooltip) 
+                                tooltip = newtooltip and tostring(newtooltip) or nil
+                            end
+                            
+                            function t:IsMouseOver() 
+                                return mousingover
+                            end
+                            
                             t.Hidden = hidden
                             t.OnClick = OnClick
                         end
@@ -1697,6 +1823,9 @@ ui = {} do
                         
                         local OnFocusLost = eventlistener.new()
                         local OnFocusGained = eventlistener.new()
+                        
+                        local mousingover = false
+                        local tooltip = nil
                         
                         local text_textbox = Instance.new("TextBox")
                         text_textbox.Active = true
@@ -1735,10 +1864,23 @@ ui = {} do
                         
                         text_textbox.MouseEnter:Connect(function() 
                             twn(text_textbox, {BackgroundTransparency = 0.4})
+                            
+                            
+                            mousingover = true
+                            
+                            tdelay(1, function() 
+                                if mousingover and tooltip then
+                                    displayTooltip(tooltip)
+                                end
+                            end)
                         end)
                         
                         text_textbox.MouseLeave:Connect(function() 
                             twn(text_textbox, {BackgroundTransparency = 0.7})
+                            
+                            
+                            mousingover = false
+                            hideTooltip()
                         end)
                         
                         text_textbox.FocusLost:Connect(function(enter, io) 
@@ -1759,7 +1901,7 @@ ui = {} do
 
 
                         
-                        table.insert(menu_objects, 5)
+                        tinsert(menu_objects, 5)
                         
                         local t = {} do
 
@@ -1801,6 +1943,19 @@ ui = {} do
                                 return among and tonumber(among) or nil
                             end
                             
+                            
+                            function t:GetTooltip()
+                                return tooltip
+                            end
+                            
+                            function t:SetTooltip(newtooltip) 
+                                tooltip = newtooltip and tostring(newtooltip) or nil
+                            end
+                            
+                            function t:IsMouseOver() 
+                                return mousingover
+                            end
+                            
                             t.OnFocusLost = OnFocusLost
                             t.OnFocusGained = OnFocusGained
                         end
@@ -1833,6 +1988,9 @@ ui = {} do
                         local Focused = false
                         local SlowDragging = false
                         local FastDragging = false
+                        
+                        local tooltip = nil
+                        local mousingover = false
                         
                         local slider_bg = Instance.new("Frame")
                         slider_bg.BackgroundTransparency = 0.7
@@ -1907,14 +2065,28 @@ ui = {} do
                                     slider_text.ZIndex = 0
                                 end
                             end)
+                            
+                            
+                            mousingover = true
+                            
+                            tdelay(1, function() 
+                                if mousingover and tooltip then
+                                    displayTooltip(tooltip)
+                                end
+                            end)
                         end)
                         
                         slider_text.MouseLeave:Connect(function() 
+                            mousingover = false
+                            hideTooltip()
+                            
                             if Focused then
                                 OnFocusLost:Wait()
                             end
                             slider_text.ZIndex = 24
                             twn(slider_text, {BackgroundTransparency = 0.2, TextTransparency = 0})
+                            
+                            
                         end)
                         
                         local slider_id = "Slider"..getrand(10)
@@ -2021,7 +2193,7 @@ ui = {} do
                         
                         
                         
-                        table.insert(menu_objects, 3)
+                        tinsert(menu_objects, 3)
                         
                         
                         local s = {} do
@@ -2087,6 +2259,19 @@ ui = {} do
                                 return min
                             end
                             
+                            
+                            function s:GetTooltip()
+                                return tooltip
+                            end
+                            
+                            function s:SetTooltip(newtooltip) 
+                                tooltip = newtooltip and tostring(newtooltip) or nil
+                            end
+                            
+                            function s:IsMouseOver() 
+                                return mousingover
+                            end
+                            
                             s.OnValueChanged = OnValueChanged
                             s.OnFocusLost    = OnFocusLost
                             s.OnFocusGained  = OnFocusGained
@@ -2131,6 +2316,10 @@ ui = {} do
                         local OnOpen = eventlistener.new()
                         local OnClose = eventlistener.new()
                         local OnToggle = eventlistener.new()
+                        
+                        local mousingover = false
+                        local tooltip = nil
+                        
                         
                         
                         local dropdown_button = Instance.new("TextButton")
@@ -2179,10 +2368,20 @@ ui = {} do
                         
                         dropdown_button.MouseEnter:Connect(function() 
                             twn(dropdown_button, {BackgroundTransparency = 0.4})
+                            
+                            mousingover = true
+                            tdelay(1, function() 
+                                if mousingover and tooltip then
+                                    displayTooltip(tooltip) 
+                                end
+                            end)
                         end)
                         
                         dropdown_button.MouseLeave:Connect(function() 
                             twn(dropdown_button, {BackgroundTransparency = 0.7})
+                            
+                            mousingover = false
+                            hideTooltip()
                         end)
                         
                         
@@ -2287,12 +2486,12 @@ ui = {} do
                                 selection = {v, i}
                             end
                             
-                            table.insert(options_buttons, dropdown_option)
+                            tinsert(options_buttons, dropdown_option)
                         end
                         
                         
                         
-                        table.insert(menu_objects, 7)
+                        tinsert(menu_objects, 7)
                         
                         local t = {} do
                             
@@ -2395,6 +2594,21 @@ ui = {} do
                                 warn("Coming soon")
                             end
                             
+                            
+                            function t:GetTooltip()
+                                return tooltip
+                            end
+                            
+                            function t:SetTooltip(newtooltip) 
+                                tooltip = newtooltip and tostring(newtooltip) or nil
+                            end
+                            
+                            function t:IsMouseOver() 
+                                return mousingover
+                            end
+                            
+                            
+                            
                             t.OnOpen = OnOpen
                             t.OnClose = OnClose
                             t.OnSelection = OnSelection
@@ -2431,7 +2645,7 @@ ui = {} do
                         trim.ZIndex = 25
                         trim.Parent = menu_menu
                         
-                        table.insert(menu_objects, 3)
+                        tinsert(menu_objects, 3)
                         
                         OnChildAdded:Fire("trim", nil)
                     end
@@ -2455,7 +2669,7 @@ ui = {} do
             
         end
         
-        table.insert(ui.Windows, w)
+        tinsert(ui.Windows, w)
         
         return w
         
@@ -2487,7 +2701,7 @@ ui = {} do
         
         local place = ui.NotifCount
         
-        local sizex, sizey = 150 + (utf8.len(notif_text)*2), 100
+        local sizex, sizey = 150 + (ulen(notif_text)*2), 100
         
         local notif_window = Instance.new("Frame")
         notif_window.BackgroundColor3 = ui.colors.window
@@ -2549,7 +2763,7 @@ ui = {} do
         local function closeNotif() 
             ui.NotifCount = ui.NotifCount - 1
             ui.OnNotifDelete:Fire()
-            task.spawn(function() 
+            tspawn(function() 
                 
                 
                 local a = Instance.new("UIScale")
@@ -2649,7 +2863,7 @@ ui = {} do
         
         local OnClose = eventlistener.new()
         
-        local sizex, sizey = 150 + (#msg_buttons*10) + msg_AddX, 100 + ((utf8.len(msg_desc))) + msg_AddY
+        local sizex, sizey = 150 + (#msg_buttons*10) + msg_AddX, 100 + ((ulen(msg_desc))) + msg_AddY
         
         local msg_window = Instance.new("Frame")
         msg_window.BackgroundColor3 = ui.colors.window
@@ -2734,7 +2948,7 @@ ui = {} do
         
         local function closeMsg() 
             OnClose:Fire()
-            task.spawn(function() 
+            tspawn(function() 
                 
                 
                 local a = Instance.new("UIScale")
@@ -2861,13 +3075,13 @@ ui = {} do
                 cb(msg, v["Text"], v)
             end)
             
-            task.delay(0.25, function() 
+            tdelay(0.25, function() 
                 ctwn(msg_bv, {TextTransparency = 0}, 1)
             end)
         end
         
         
-        task.spawn(function()
+        tspawn(function()
             msg_window.Size = UDim2.new(0, sizex, 0, 0)
             msg_window.Position = UDim2.new(0, 20, 0, 20)
             
@@ -3050,7 +3264,7 @@ ui = {} do
             pcall(function() 
                 hotkey_connection:Disconnect()
             end)
-            task.spawn(function() 
+            tspawn(function() 
                 
                 
                 local a = Instance.new("UIScale")
@@ -3088,7 +3302,7 @@ ui = {} do
             bd_desc.Text = "Binding action for "..bd_name..";\npress any key..."
             bd_bindentry.Text = "..."
             
-            task.wait(0.02)
+            twait(0.02)
             hotkey_connection = uis.InputBegan:Connect(function(io) 
                 if io.KeyCode == Enum.KeyCode.Unknown then
                     twn(bd_bindentry, {BackgroundColor3 = ui.colors.button})
@@ -3214,13 +3428,13 @@ ui = {} do
                 cb(bd, v["Text"], v)
             end)
             
-            task.delay(0.25, function() 
+            tdelay(0.25, function() 
                 ctwn(bd_bv, {TextTransparency = 0}, 1)
             end)
         end
         
         
-        task.spawn(function()
+        tspawn(function()
             bd_window.Size = UDim2.new(0, sizex, 0, 0)
             bd_window.Position = UDim2.new(0, 20, 0, 20)
             
