@@ -1,7 +1,5 @@
 
-
-
-
+  
 
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
@@ -378,7 +376,7 @@ local menu = window:NewMenu("Epic modules")
 ```lua
 <void> menu:NewTrim()
 ```
-*Creates a new trim object, like the ones below menu headers.*
+*Creates a new trim object, which is the detail line below menu headers.*
 
 #### Events:
 ```lua
@@ -494,6 +492,19 @@ local plrbox = teleports:NewTextbox("Enter player to teleport to")
 *Returns `textbox`s text formatted as a number.*
 > If the text cannot be formatted as a number properly, it returns `nil`. Despite being called Int, it can return doubles.
 
+```lua
+<void> textbox:SetTooltip(<string> newtooltip)
+```
+*Sets this objects tooltip to `newtooltip`
+```lua
+<string> textbox:GetTooltip()
+```
+*Returns this object's tooltip*
+```lua
+<boolean> textbox:IsMouseOver()
+```
+*Returns if the mouse is currently hovering over this object.*
+
 #### Events:
 ```lua
 <RBXEvent> OnFocusGained
@@ -550,19 +561,106 @@ local invite = menu_amongus:NewButton("Join the discord server")
 <string> button:GetText()'
 ```
 *Returns `button`s text*
+```lua
+<void> button:SetTooltip(<string> newtooltip)
+```
+*Sets this objects tooltip to `newtooltip`
+```lua
+<string> button:GetTooltip()
+```
+*Returns this object's tooltip*
+```lua
+<boolean> button:IsMouseOver()
+```
+*Returns if the mouse is currently hovering over this object.*
 
 
 
 #### Events:
+
+```lua
+<RBXEvent> OnClick
+```
+*Event that fires when clicked*
+
 #### Variables:
+```lua
+<boolean> Hidden
+```
+*True when the button is hidden from interaction, false when it's not hidden*
 
 ## Toggle
 
-something about toggles
+Toggles are like advanced buttons. They can be hidden, have tooltips, and have binds, just like buttons. 
+
 #### Creation:
+```lua
+<toggle> menu:NewToggle(<string> text)
+```
+*Creates a new `toggle` displaying `text`*
+```lua
+local spectate = PlayerViewer:NewToggle("view selected player")
+```
+*Creates a toggle saying `view selected player` and assigns it to `spectate`*
+
 #### Functions:
+```lua
+<bool> toggle:GetState()
+```
+*Returns true if `toggle` is enabled, false otherwise*
+```lua
+<void> toggle:SetState(<bool> newstate, <bool> call_func_after)
+```
+*Sets the state to `newstate`. If `call_func_after` is true, then the callback will be fired. Currently broken, do not use.*
+```lua
+<void> toggle:Toggle()
+```
+
+```lua
+<void> button:SetBind(<string?> bind_name)
+```
+*Sets `button`s bind to `bind_name`. If `bind_name` is not passed, the bind is removed.
+>`bind_name` must be the name of the keycode you are binding. Instead of Enum.KeyCode.RightControl, pass "RightControl" or Enum.KeyCode.RightControl.Name
+```lua
+<string> button:GetBind()
+```
+*Returns the name of the bind `button` is bound to*
+
+```lua
+<void> button:SetText(<string> text)
+```
+*Sets `button`s text to `text`*
+```lua
+<string> button:GetText()'
+```
+*Returns `button`s text*
+```lua
+<void> button:SetTooltip(<string> newtooltip)
+```
+*Sets this objects tooltip to `newtooltip`
+```lua
+<string> button:GetTooltip()
+```
+*Returns this object's tooltip*
+```lua
+<boolean> button:IsMouseOver()
+```
+*Returns if the mouse is currently hovering over this object.*
+
+
+
 #### Events:
+
+```lua
+<RBXEvent> OnClick
+```
+*Event that fires when clicked*
+
 #### Variables:
+```lua
+<boolean> Hidden
+```
+*True when the button is hidden from interaction, false when it's not hidden*
 
 ## Dropdown
 
@@ -574,7 +672,7 @@ something about dropdowns
 
 ## Slider
 
-something about sliders
+Sliders are useful for easily changing a value of something, and have plenty of features like slow dragging and the number box. The only limitation is a slider can only have integers from 0 to 999; no floats or >999.
 #### Creation:
 ```lua
 <slider> menu:NewSlider(<string> slider_text, <number> slider_min = 0, <number> slider_max = 100, <number> slider_start = slider_min)
@@ -758,4 +856,3 @@ NewToggle(name, enabled)
 
 ## Pro gamers
 if you're an epic user who uses jeff 2 then let me know and i will add your name here
-
