@@ -1,4 +1,7 @@
 --[[
+2.1.4.1a
+    [+] Changed how tooltips looked - slightly further from mouse, slightly better resizing
+
 2.1.4.0a
     [+] Made some microoptimizations
     [+] Toggle
@@ -329,7 +332,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.4.0-alpha"
+    ui.Version = "2.1.4.1-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -763,19 +766,19 @@ ui = {} do
         
         local function displayTooltip(text) 
             window_tooltip.Text = text
-            window_tooltip.Size = UDim2.new(0, 50 + ulen(text), 0, 15)
+            window_tooltip.Size = UDim2.new(0, 50, 0, 15)
             window_tooltip.Visible = true
             
             for i = 0, 25 do
                 
-                window_tooltip.Size = window_tooltip.Size + UDim2.new(0, 25, 0, 10)
+                window_tooltip.Size = window_tooltip.Size + UDim2.new(0, 15, 0, 12)
                 if window_tooltip.TextFits then break end
             end
             
             window_tooltip.BackgroundTransparency = 1
             window_tooltip.TextTransparency = 1
             
-            window_tooltip.Position = UDim2.new(0, mouse.X+6, 0, mouse.Y+6)
+            window_tooltip.Position = UDim2.new(0, mouse.X+10, 0, mouse.Y+10)
             twn(window_tooltip, {BackgroundTransparency = 0, TextTransparency = 0})
         end
         
