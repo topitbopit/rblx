@@ -28,8 +28,8 @@ UI
      - Trim
  - Messagebox
  - Notification
-
 ```
+
 
 ## Getting started
 ### Quirks and cool features
@@ -558,9 +558,22 @@ local invite = menu_amongus:NewButton("Join the discord server")
 ```
 *Sets `button`s text to `text`*
 ```lua
-<string> button:GetText()'
+<string> button:GetText()
 ```
 *Returns `button`s text*
+```lua
+<void> button:Hide(<string> message)
+```
+*Hides `button`, disabling user interaction. When hidden, `message` will be displayed.*
+```lua
+<void> button:Unhide()
+```
+*Unhides `button`, reenabling user interaction.*
+```lua
+<void> button:Assert(<string> global)
+```
+*Hides `button` with the message `Your exploit doesn't support global` if `global` is not found in the global env.*
+>`:Assert()` was based on the vanilla function `assert`. If you pass a conditional into `assert` and it fails, it will send an error message. If you pass `getsynasset` into `:Assert()` and `getsynasset` is not found in `getgenv`, it will hide the object.
 ```lua
 <void> button:SetTooltip(<string> newtooltip)
 ```
@@ -591,7 +604,7 @@ local invite = menu_amongus:NewButton("Join the discord server")
 
 ## Toggle
 
-Toggles are like advanced buttons. They can be hidden, have tooltips, and have binds, just like buttons. 
+Toggles are like advanced buttons. They can be hidden, have tooltips, and have binds, but can also be enabled, disabled, and toggled. 
 
 #### Creation:
 ```lua
@@ -611,29 +624,54 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 ```lua
 <void> toggle:SetState(<bool> newstate, <bool> call_func_after)
 ```
-*Sets the state to `newstate`. If `call_func_after` is true, then the callback will be fired. Currently broken, do not use.*
+*Sets the state to `newstate`. If `call_func_after` is true, then the callback will be fired. **Currently broken, do not use.***
 ```lua
 <void> toggle:Toggle()
 ```
+*Toggles the toggle `toggle`*
+```lua
+<void> toggle:Enable()
+```
+*Enables `toggle`, firing the `OnEnable` and `OnToggle` events*
 
 ```lua
-<void> button:SetBind(<string?> bind_name)
+<void> toggle:Disable()
 ```
-*Sets `button`s bind to `bind_name`. If `bind_name` is not passed, the bind is removed.
+*Disables `toggle`, firing the `OnDisable` and `OnToggle` events*
+
+
+```lua
+<void> toggle:SetBind(<string?> bind_name)
+```
+*Sets `toggle`s bind to `bind_name`. If `bind_name` is not passed, the bind is removed.
 >`bind_name` must be the name of the keycode you are binding. Instead of Enum.KeyCode.RightControl, pass "RightControl" or Enum.KeyCode.RightControl.Name
 ```lua
-<string> button:GetBind()
+<string> toggle:GetBind()
 ```
-*Returns the name of the bind `button` is bound to*
+*Returns the name of the bind `toggle` is bound to*
 
 ```lua
-<void> button:SetText(<string> text)
+<void> toggle:SetText(<string> text)
 ```
-*Sets `button`s text to `text`*
+*Sets `toggle`s text to `text`*
 ```lua
-<string> button:GetText()'
+<string> toggle:GetText()'
 ```
-*Returns `button`s text*
+*Returns `toggle`s text*
+
+```lua
+<void> toggle:Hide(<string> message)
+```
+*Hides `toggle`, disabling user interaction. When hidden, `message` will be displayed.*
+```lua
+<void> toggle:Unhide()
+```
+*Unhides `toggle`, reenabling user interaction.*
+```lua
+<void> toggle:Assert(<string> global)
+```
+*Hides `toggle` with the message `Your exploit doesn't support global` if `global` is not found in the global env.*
+>Think of `:Assert()` like `if not getgenv()["globalhere"] then toggle:Hide("Your exploit does not support global!") end
 ```lua
 <void> button:SetTooltip(<string> newtooltip)
 ```
@@ -646,6 +684,7 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 <boolean> button:IsMouseOver()
 ```
 *Returns if the mouse is currently hovering over this object.*
+
 
 
 
@@ -825,7 +864,7 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 `none`
 
 ---
-These docs are for version 2.1.3.6-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
+These docs are for version 2.1.4.1-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
 If you want to make a suggestion contact topit#4057
@@ -833,6 +872,7 @@ If you want to make a suggestion contact topit#4057
 <br/>
 
 ## Deprecated
+If a function or object is going to be deprecated then using it will print a warning in your console.
 ```lua
 <bool> ui.minimized
 ```
@@ -850,6 +890,7 @@ NewToggle(name, enabled)
 <void> button:SetCallback(<function> func)
 ```
 *Sets the callback of `button` to `func`*
+**Hasn't been removed yet, will not be replaced**
 
 
 <br/>
