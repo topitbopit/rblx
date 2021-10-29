@@ -327,7 +327,7 @@ Menus are important for actually creating your script. There technically can be 
 ```lua
 local menu = window:NewMenu("Epic modules")
 ```
-*Creates a menu displaying the header **Epic Modules***
+*Creates a menu displaying the header `Epic Modules`*
 #### Functions:
 ```lua
 <table> menu:GetChildren()
@@ -491,7 +491,7 @@ local plrbox = teleports:NewTextbox("Enter player to teleport to")
 <number?> textbox:GetTextFormattedAsInt()
 ```
 *Returns `textbox`s text formatted as a number.*
-> If the text cannot be formatted as a number properly, it returns `nil`. Despite being called Int, it can return doubles.
+> If the text cannot be formatted as a number properly, it returns `nil`. It may not return floats properly, so this tip will be updated when floats are confirmed to work.
 
 ```lua
 <void> textbox:SetTooltip(<string> newtooltip)
@@ -508,11 +508,11 @@ local plrbox = teleports:NewTextbox("Enter player to teleport to")
 
 #### Events:
 ```lua
-<RBXEvent> OnFocusGained
+<RBXEvent> textbox.OnFocusGained
 ```
 *Event that fires when the textbox gains focus.*
 ```lua
-<RBXEvent> OnFocusLost
+<RBXEvent> textbox.OnFocusLost
 ```
 *Event that fires when the textbox loses focus.*
 
@@ -595,13 +595,13 @@ local invite = menu_amongus:NewButton("Join the discord server")
 #### Events:
 
 ```lua
-<RBXEvent> OnClick
+<RBXEvent> button.OnClick
 ```
 *Event that fires when clicked*
 
 #### Variables:
 ```lua
-<boolean> Hidden
+<boolean> button.Hidden
 ```
 *True when the button is hidden from interaction, false when it's not hidden*
 
@@ -631,7 +631,7 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 ```lua
 <void> toggle:Toggle()
 ```
-*Toggles the toggle `toggle`*
+*Toggles the toggle `toggle`, toggling the `OnToggle` `toggle` event*
 ```lua
 <void> toggle:Enable()
 ```
@@ -678,11 +678,11 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 <void> toggle:Assert(<string> global)
 ```
 *Hides `toggle` with the message `Your exploit doesn't support global` if `global` is not found in the global env.*
->Think of `:Assert()` like `if not getgenv()["globalhere"] then toggle:Hide("Your exploit does not support global!") end`; it checks if the function / library exists and if it doesn't, it disables the toggle
+>Think of `:Assert()` like `if not getgenv()["global"] then toggle:Hide("Your exploit does not support global!") end`; it checks if the function / library exists and if it doesn't, it disables the toggle
 ```lua
 <void> toggle:SetTooltip(<string> newtooltip)
 ```
-*Sets this objects tooltip to `newtooltip`
+*Sets this objects tooltip to `newtooltip`*
 ```lua
 <string> toggle:GetTooltip()
 ```
@@ -698,23 +698,23 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 #### Events:
 
 ```lua
-<RBXEvent> OnEnable
+<RBXEvent> toggle.OnEnable
 ```
 *Event that fires when enabled*
 
 ```lua
-<RBXEvent> OnDisable
+<RBXEvent> toggle.OnDisable
 ```
 *Event that fires when disabled*
 ```lua
-<RBXEvent> OnToggle
+<RBXEvent> toggle.OnToggle
 ```
 *Event that fires when toggled; true when enabled and false when disabled*
 
 
 #### Variables:
 ```lua
-<boolean> Hidden
+<boolean> toggle.Hidden
 ```
 *True when the toggle is hidden from interaction, false when it's not hidden*
 
@@ -785,21 +785,21 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 #### Events:
 
 ```lua
-<RBXEvent> OnOpen
+<RBXEvent> dropdown.OnOpen
 ```
 *Event that fires when the dropdown opens.*
 ```lua
-<RBXEvent> OnClose
+<RBXEvent> dropdown.OnClose
 ```
 *Event that fires when the dropdown closes.*
 ```lua
-<RBXEvent> OnSelection
+<RBXEvent> dropdown.OnSelection
 ```
 *Event that fires when a selection is made. Gets passed with the name and index.*
 ```lua
-<RBXEvent> OnToggle
+<RBXEvent> dropdown.OnToggle
 ```
-*Event that fires `true` when dropdown opens and `false` when closed.*
+*Event that fires `true` when the dropdown opens and `false` when closed.*
 
 #### Variables:
 `none`
@@ -807,6 +807,8 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 ## Slider
 
 Sliders are useful for easily changing a value of something, and have plenty of features like slow dragging and the number box. The only limitation is a slider can only have whole, positive integers from 0 to 999. They may gain support for floats and >999 later.
+For more specific numbers, use a textbox and `tonumber` the text, since`:GetTextFormattedAsInt` doesn't support yet.
+
 #### Creation:
 ```lua
 <slider> menu:NewSlider(<string> slider_text, <number> slider_min = 0, <number> slider_max = 100, <number> slider_start = slider_min)
@@ -867,7 +869,7 @@ modules:NewTrim()
 
 ---
 ## Message boxes
-Message boxes have several functions and params. They're useful for displaying short amounts of text, but will automatically expand to fit buttons, the description, and title. 
+Message boxes have several functions and params. They're useful for displaying short amounts of text, but will automatically expand to (mostly) fit buttons, the description, and title. 
 
 ![](https://media.discordapp.net/attachments/892261816141496351/903427018169937991/unknown.png
 )
