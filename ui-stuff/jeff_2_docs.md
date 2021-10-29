@@ -1,4 +1,5 @@
 
+
   
 
 # Jeff 2 UI Library
@@ -50,11 +51,12 @@ This doesn't seem like that big of a difference, right? The callback is just a l
 
 However, this is more powerful than it seems. It lets you organize your code better, disconnect and change functions easily, and allow better optimization. It's also closer to normal GUI creation workflow.
 
-Heres a list of more cool features that you won't find anywhere else: 
-- Toggles (on-off) and Buttons (click to fire) let you bind hotkeys to them by right clicking them, so you don't have to implement expensive hotkey systems
+Heres a list of more cool native features that you probably won't find anywhere else: 
+- Toggles (on-off) and Buttons (click to fire) let you bind hotkeys to them by right clicking them, so you don't have to implement expensive hotkey systems.
 - Toggles and buttons can be **hidden** from user interaction. This prevents them from being fired, which is useful in case a module needs to wait for something to load or if an exploit doesn't support a function.
 - Sliders are intuitive. Not only can you type in a specific number to jump to it, you can slow drag with right click to slowly change the value.
 - Menus can be bound to keys, letting you quickly jump between them without having to use the menu button every time.
+- Any object can have a tooltip set to it, letting you quickly set descriptions without obstructing anything
 
 Of course, this library isn't perfect and there are some issues.
 - Although technically more than one window could be made, it is super buggy. 
@@ -573,7 +575,9 @@ local invite = menu_amongus:NewButton("Join the discord server")
 <void> button:Assert(<string> global)
 ```
 *Hides `button` with the message `Your exploit doesn't support global` if `global` is not found in the global env.*
->`:Assert()` was based on the vanilla function `assert`. If you pass a conditional into `assert` and it fails, it will send an error message. If you pass `getsynasset` into `:Assert()` and `getsynasset` is not found in `getgenv`, it will hide the object.
+>`:Assert()` was based on the vanilla function `assert`. If you pass a global, such as`getsynasset`, into `:Assert()` and that global is not found in `getgenv`, it will hide the object.
+![](https://cdn.discordapp.com/attachments/892261816141496351/903425728803123230/unknown.png
+)
 ```lua
 <void> button:SetTooltip(<string> newtooltip)
 ```
@@ -643,8 +647,12 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 ```lua
 <void> toggle:SetBind(<string?> bind_name)
 ```
-*Sets `toggle`s bind to `bind_name`. If `bind_name` is not passed, the bind is removed.
+*Sets `toggle`s bind to `bind_name`. If `bind_name` is not passed, the bind is removed.*
 >`bind_name` must be the name of the keycode you are binding. Instead of Enum.KeyCode.RightControl, pass "RightControl" or Enum.KeyCode.RightControl.Name
+
+![](https://cdn.discordapp.com/attachments/892261816141496351/903426532146577468/unknown.png
+)
+*Image showcasing a button bound to E*
 ```lua
 <string> toggle:GetBind()
 ```
@@ -712,8 +720,10 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 *True when the toggle is hidden from interaction, false when it's not hidden*
 
 ## Dropdown
-Dropdowns are useful for 
+Dropdowns are useful for more customization, such as what method a flight script would use to fly.
+![](https://cdn.discordapp.com/attachments/892261816141496351/903425543104512090/unknown.png)
 #### Creation:
+
 #### Functions:
 #### Events:
 #### Variables:
@@ -732,6 +742,9 @@ local how_many_years_will = it_take_for:NewSlider("jeff hoops 3 to release:",5,5
 ```
 *Creates a new slider `how_many_years_will` parented to `it_take_for` saying `jeff hoops 3 to release:` ranging from `5` to `500`*
 #### Functions:
+
+![](https://cdn.discordapp.com/attachments/892261816141496351/903423745769738240/unknown.png
+)
 #### Events:
 #### Variables:
 
@@ -751,8 +764,11 @@ I.e., grids help you organize buttons like guis using jeff 1.
 `none`
 
 ## Trim
-Trim objects are useful for organization. Kinda like sections, trims are the detail line underneath menu titles. They're extremely simple and were added just for a single gui.
+Trim objects are useful for organization. Kinda like sections, trims are the detail line underneath menu titles.
 
+![](https://media.discordapp.net/attachments/892261816141496351/903426205376708668/unknown.png
+)
+A trim is used here to separate the main modules from the credits.
 #### Creation:
 ```lua
 <void> menu:NewTrim()
@@ -777,10 +793,14 @@ modules:NewTrim()
 ## Message boxes
 Message boxes have several functions and params. They're useful for displaying short amounts of text, but will automatically expand to fit buttons, the description, and title. 
 
+![](https://media.discordapp.net/attachments/892261816141496351/903427018169937991/unknown.png
+)
+
 #### Creation:
 ```lua
-<msgbox> ui:NewMessageBox(<string> msg_text, <string> msg_desc, <table>{<table>{Text: <string>, Callback: <function>}} msg_buttons)
+<msgbox> ui:NewMessageBox(<string> msg_text, <string> msg_desc, <table>{<table>{Text: <string>, Callback: <function>}} msg_buttons, <number?> msg_extraX, <number?> msg_extraY)
 ```
+*Creates a new `msgbox` object titled `msg_text`, with the description `msg_desc`, with `msg_buttons` buttons and optionally expanded by (`msg_extraX`, `msg_extraY`)*
 ```lua
 local msg = ui:NewMessageBox("Message box", "Hello world!", {
 	{
@@ -796,9 +816,9 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 			self:Close()
 		end
 	},
-})
+}, 40)
 ```
-*Creates a new message box titled **Message box** with the description **Hello world!** and two buttons*
+*Creates a new message box titled **Message box** with the description **Hello world!** and two buttons, as well as a 40 px extension*
 #### Functions:
 
 ```lua
@@ -841,11 +861,14 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 
 ## Notifications
 Notifications are useful for displaying text quickly without obstructing anything.
+![](https://media.discordapp.net/attachments/892261816141496351/903426902797213726/unknown.png
+)
 
 #### Creation:
 ```lua
 <notification> ui:NewNotification(<string> notif_text, <string> notif_desc, <number> notif_timer)
 ```
+*Creates a new notification titled `notif_text` with thedescription `notif_desc` that lasts `notif_timer` seconds*
 ```lua
 local msg = ui:NewNotification("Notification", "Hello world!", 5)
 ```
