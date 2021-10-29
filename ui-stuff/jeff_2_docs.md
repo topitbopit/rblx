@@ -723,8 +723,39 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 Dropdowns are useful for more customization, such as what method a flight script would use to fly.
 ![](https://cdn.discordapp.com/attachments/892261816141496351/903425543104512090/unknown.png)
 #### Creation:
+```lua
+<dropdown> menu:NewDropdown(<string> text, <table<string>> options)
+```
+*Creates a new dropdown displaying `text` with options `options`*
+```lua
+local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Walkspeed","Velocity"})
+```
+*Creates a new dropdown `speedmethod` saying `Speed hack method` with the options `CFrame`, `Walkspeed`, and `Velocity`.*
 
 #### Functions:
+```lua
+<void> dropdown:SetText(<string> text)
+```
+*Sets `dropdown`s text to `text`*
+
+```lua
+<string> dropdown:GetText()
+```
+*Gets `dropdown`s text*
+```lua
+<string>, <number> dropdown:GetSelectedOption()
+```
+*Returns the current option's text and index.*
+
+```lua
+<string>, <number> dropdown:GetSelection()
+```
+*Alias for `GetSelectedOption()`*
+```lua
+<void> dropdown:SetSelectedOption(<variant>)
+```
+*Selects an option on the dropdown. Using the index is preferable, but strings work as well.*
+
 #### Events:
 #### Variables:
 
