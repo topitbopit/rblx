@@ -459,7 +459,7 @@ Textboxes are useful for user input. They're limited for now but will have more 
 ```lua
 local plrbox = teleports:NewTextbox("Enter player to teleport to")
 ```
-*Creates a new textbox displaying `Enter player to teleport to`*
+*Creates a new textbox (`plrbox`) displaying `Enter player to teleport to`*
 
 #### Functions:
 ```lua
