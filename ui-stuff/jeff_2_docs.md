@@ -1,7 +1,6 @@
-
-
-  
-
+<!---
+among us
+--->
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 **DOCS ARE CURRENTLY INCOMPLETE!**
@@ -652,7 +651,7 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 
 ![](https://cdn.discordapp.com/attachments/892261816141496351/903426532146577468/unknown.png
 )
-*Image showcasing a button bound to E*
+*Image showcasing a toggle bound to E*
 ```lua
 <string> toggle:GetBind()
 ```
@@ -754,14 +753,60 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 ```lua
 <void> dropdown:SetSelectedOption(<variant>)
 ```
-*Selects an option on the dropdown. Using the index is preferable, but strings work as well.*
+*Selects an option on the dropdown. Using the index is faster and preferable, but using the name works as well.*
 
+```lua
+<void> dropdown:Select()
+```
+*Alias for `SetSelectedOption()`*
+
+```lua
+<table> dropdown:GetOptions()
+```
+*Returns the dropdown options*
+```lua
+<void> dropdown:SetOptions()
+```
+**Currently unfinished and does nothing.**
+
+
+```lua
+<void> toggle:SetTooltip(<string> newtooltip)
+```
+*Sets this objects tooltip to `newtooltip`
+```lua
+<string> toggle:GetTooltip()
+```
+*Returns this object's tooltip*
+```lua
+<boolean> toggle:IsMouseOver()
+```
+*Returns if the mouse is currently hovering over this object.*
 #### Events:
+
+```lua
+<RBXEvent> OnOpen
+```
+*Event that fires when the dropdown opens.*
+```lua
+<RBXEvent> OnClose
+```
+*Event that fires when the dropdown closes.*
+```lua
+<RBXEvent> OnSelection
+```
+*Event that fires when a selection is made. Gets passed with the name and index.*
+```lua
+<RBXEvent> OnToggle
+```
+*Event that fires `true` when dropdown opens and `false` when closed.*
+
 #### Variables:
+`none`
 
 ## Slider
 
-Sliders are useful for easily changing a value of something, and have plenty of features like slow dragging and the number box. The only limitation is a slider can only have integers from 0 to 999; no floats or >999.
+Sliders are useful for easily changing a value of something, and have plenty of features like slow dragging and the number box. The only limitation is a slider can only have whole, positive integers from 0 to 999. They may gain support for floats and >999 later.
 #### Creation:
 ```lua
 <slider> menu:NewSlider(<string> slider_text, <number> slider_min = 0, <number> slider_max = 100, <number> slider_start = slider_min)
