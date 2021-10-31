@@ -1423,7 +1423,7 @@ ui = {} do
                             
                             mousingover = true
                             tdelay(1, function() 
-                                if mousingover and tooltip then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -1685,7 +1685,7 @@ ui = {} do
                             
                             
                             tdelay(1, function() 
-                                if mousingover and tooltip then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -1883,7 +1883,7 @@ ui = {} do
                             mousingover = true
                             
                             tdelay(1, function() 
-                                if mousingover and tooltip then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -2084,7 +2084,7 @@ ui = {} do
                             mousingover = true
                             
                             tdelay(1, function() 
-                                if mousingover and tooltip then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -2385,7 +2385,7 @@ ui = {} do
                             
                             mousingover = true
                             tdelay(1, function() 
-                                if mousingover and tooltip then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
                                     displayTooltip(tooltip) 
                                 end
                             end)
