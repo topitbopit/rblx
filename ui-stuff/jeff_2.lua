@@ -1,4 +1,7 @@
 --[[
+2.1.4.4a
+    [+] Increased scroll speed
+
 2.1.4.3a
     [+] Fixed tooltip flicker
 
@@ -82,11 +85,6 @@ Edited button arguments:
 ]]--
 
 local eventlistener = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/rbxevent.lua'))()
-
-if _G.JUI2 then
-    
-    pcall(_G.JUI2) 
-end
 
 local plrs = game:GetService("Players")
 local ts = game:GetService("TweenService")
@@ -339,7 +337,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.4.3-alpha"
+    ui.Version = "2.1.4.4-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -1150,7 +1148,7 @@ ui = {} do
                 
                 menu_menu.InputChanged:Connect(function(io) 
                     if io.UserInputType == Enum.UserInputType.MouseWheel then
-                        local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-75
+                        local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-85
                         local max = menu_menu.AbsoluteCanvasSize.Y - menu_menu.AbsoluteSize.Y
                         
                         newpos = math.clamp(newpos, 0, max)
