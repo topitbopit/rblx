@@ -1,6 +1,6 @@
 --[[
 2.1.4.4a
- [+] Increased scroll speed
+ [+] Made scrolling better
 
 2.1.4.3a
  [+] Fixed tooltip flicker
