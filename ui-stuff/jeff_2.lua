@@ -1,8 +1,10 @@
 --[[
+2.1.4.3a
+    [+] Fixed tooltip flicker
+
 2.1.4.2a
     [+] Added ui.TooltipX
     [+] Added ui.ToolTipY
-
 
 2.1.4.1a
     [+] Changed how tooltips looked - slightly further from mouse, slightly better resizing
@@ -1423,7 +1425,7 @@ ui = {} do
                             
                             mousingover = true
                             tdelay(1, function() 
-                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 1 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -1685,7 +1687,7 @@ ui = {} do
                             
                             
                             tdelay(1, function() 
-                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 1 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -1883,7 +1885,7 @@ ui = {} do
                             mousingover = true
                             
                             tdelay(1, function() 
-                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 1 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -2084,7 +2086,7 @@ ui = {} do
                             mousingover = true
                             
                             tdelay(1, function() 
-                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 1 then
                                     displayTooltip(tooltip)
                                 end
                             end)
@@ -2385,7 +2387,7 @@ ui = {} do
                             
                             mousingover = true
                             tdelay(1, function() 
-                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 0 then
+                                if mousingover and tooltip and window_tooltip.BackgroundTransparency == 1 then
                                     displayTooltip(tooltip) 
                                 end
                             end)
