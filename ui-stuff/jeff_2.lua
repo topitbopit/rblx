@@ -1,4 +1,9 @@
 --[[
+2.1.4.2a
+    [+] Added ui.TooltipX
+    [+] Added ui.ToolTipY
+
+
 2.1.4.1a
     [+] Changed how tooltips looked - slightly further from mouse, slightly better resizing
 
@@ -332,7 +337,7 @@ ui = {} do
     ui.OnNotifDelete = eventlistener.new() 
     ui.NotifCount = -1
     
-    ui.Version = "2.1.4.1-alpha"
+    ui.Version = "2.1.4.2-alpha"
     ui.Font = Enum.Font["SourceSans"]
     ui.FontSize = 20
     
@@ -342,6 +347,10 @@ ui = {} do
     ui.Exiting = eventlistener.new()
     
     ui.Toggles = {}
+    
+    
+    ui.TooltipX = 15
+    ui.TooltipY = 8
     
     function ui:GetAllToggles() 
         return ui.Toggles
@@ -769,9 +778,11 @@ ui = {} do
             window_tooltip.Size = UDim2.new(0, 50, 0, 15)
             window_tooltip.Visible = true
             
+            local x,y = ui.TooltipX, ui.TooltipY
+            
             for i = 0, 25 do
                 
-                window_tooltip.Size = window_tooltip.Size + UDim2.new(0, 15, 0, 12)
+                window_tooltip.Size = window_tooltip.Size + UDim2.new(0, x, 0, y)
                 if window_tooltip.TextFits then break end
             end
             
