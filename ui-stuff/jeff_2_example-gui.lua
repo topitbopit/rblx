@@ -1,8 +1,6 @@
 --Simple example showing how a speed gui would work
 --Check out the jeff_2_example-demo to see what more features look like
 
---Written while at school, may have syntax errors or similar.
-
 
 -- { UI } --
 
@@ -14,7 +12,7 @@ local window = ui:NewWindow("Example Speed GUI", 400, 300)
 -- Main menu
 local menu = window:NewMenu("Modules")
 
-local toggle = menu:NewToggle("Toggle")
+local toggle = menu:NewToggle("Speed")
 local mode = menu:NewDropdown("Speed method", {"CFrame", "Walkspeed"})
 local amount = menu:NewSlider("Speed amount", 1, 200, 16)
 
@@ -29,12 +27,8 @@ local rs = game:GetService("RunService")
 local plr = players.LocalPlayer
 
 
-ui.Exiting:Connect(function() 
-    rs:UnbindFromRenderStep("Jeff2_ExampleSpeed") 
-end)
 
-
-menu.OnEnable:Connect(function() 
+toggle.OnEnable:Connect(function() 
     rs:UnbindFromRenderStep("Jeff2_ExampleSpeed")
     local _,idx = mode:GetSelection()
     local chr = plr.Character
@@ -54,6 +48,11 @@ menu.OnEnable:Connect(function()
     end
 end)
 
-menu.OnDisable:Connect(function() 
+toggle.OnDisable:Connect(function() 
     rs:UnbindFromRenderStep("Jeff2_ExampleSpeed")
+end)
+
+
+ui.Exiting:Connect(function() 
+    rs:UnbindFromRenderStep("Jeff2_ExampleSpeed") 
 end)
