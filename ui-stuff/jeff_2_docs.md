@@ -51,18 +51,20 @@ This doesn't seem like that big of a difference, right? The callback is just a l
 However, this is more powerful than it seems. It lets you organize your code better, disconnect and change functions easily, and allow better optimization. It's also closer to normal GUI creation workflow.
 
 Heres a list of more cool native features that you probably won't find anywhere else: 
-- Toggles (on-off) and Buttons (click to fire) let you bind hotkeys to them by right clicking them, so you don't have to implement expensive hotkey systems.
+- Jeff 2 has a built-in optimized hotkey system. Toggles (on-off) and Buttons (click to fire) let you bind hotkeys by right clicking them, so you don't have to implement expensive hotkey systems.
 - Toggles and buttons can be **hidden** from user interaction. This prevents them from being fired, which is useful in case a module needs to wait for something to load or if an exploit doesn't support a function.
 - Sliders are intuitive. Not only can you type in a specific number to jump to it, you can slow drag with right click to slowly change the value.
-- Menus can be bound to keys, letting you quickly jump between them without having to use the menu button every time.
-- Any object can have a tooltip set to it, letting you quickly set descriptions without obstructing anything
+- Any object can have a description that appears when you mouse over it - called a tooltip - letting you quickly set descriptions without obstructing anything
 
 Of course, this library isn't perfect and there are some issues.
-- Although technically more than one window could be made, it is super buggy. 
+- Although technically more than one window could be made, it is super buggy.
 - Only a limited amount of menus can be made
 - Library code is pretty large and not very polished
 - Buttons, toggles, etc. take up a lot of space
+- Generic ui design
 
+Most of these issues will be worked on and fixed eventually.
+ 
 ### Loading the library
 Just put this at the top of your script to load the library. It doesn't have to be called `ui`, but it will be here for consistency.
 ```lua
