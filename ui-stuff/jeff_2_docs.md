@@ -129,7 +129,7 @@ To do so with Jeff 2, just put this at the end of your script:
 ```lua
 ui:Ready()
 ```
-Because of the way jeff 2 internally works, objects can be created before ui:Ready() gets called very easily but will have problems after the call.
+Because of the way jeff 2 internally works, objects can be created before ui:Ready() gets called very easily but will have many problems after the call.
 **Do not create any objects after calling `:Ready()`**.
 
 However, interactions with the ui or objects you've made are completely fine.
@@ -138,19 +138,28 @@ Sending a notification, messagebox, etc. or assigning a callback to an event won
 What about handling the ui close?
 Maybe theres some important thing you want to delete or resources you want to clear out.
 
-Using the `ui.Exiting` event, you can do this just fine.
+Using the `ui.Exiting` event, you can do this easily.
 ```lua
 ui.Exiting:Connect(function() 
-	for i,v in pairs(VeryImportantTableClearOutLaterThough) do
+	for i,v in pairs(ClearLater) do
 		v:Destroy()
 	end
-	VeryImportantTableClearOutLaterThough = nil
+	ClearLater = nil
 	
+
+	for _, t in pairs(ui:GetAllToggles()) do 
+		if t:GetState() == true then
+			t:Disable()
+		end
+	end
 	--cleanup successful
 end)
 ```
 
-> When exiting, every single object on screen gets closed automatically. However, no objects get disabled. To quickly disable toggles on close, use the `ui:GetAllToggles()` function and call `:Disable()` on each toggle.
+> When exiting, every single object on screen gets closed automatically. However, no objects get disabled. To quickly disable toggles on close, use the `ui:GetAllToggles()` function and call `:Disable()` on each enabled toggle.
+
+> Keep in mind that after the final window closes, all ui resources clear out automatically. If no window is created, the resources won't be cleared. To manually clear resources after you finish, use `ui:Exit()` **(NOT YET IMPLEMENTED)**
+
 
 <br/>
 
@@ -166,7 +175,7 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 <void> ui:Ready()
 ```
 *Readies library  `ui`, firing the `ui.OnReady` event.*
->`ui:Ready()` is important as it finalizes making the gui. Make sure to leave it at the far bottom of your script and **never** make more objects after calling `Ready()`. Assigning callbacks, displaying notifications and displaying messageboxes all work though.
+>`ui:Ready()` is important as it finalizes making the gui. Make sure to leave it at the far bottom of your script and **never** make more objects after calling `Ready()`. Assigning callbacks, displaying notifications and doing other things with the ui all work though.
 
 ```lua
 <void> ui:SetColors(<variant> theme)
@@ -235,7 +244,7 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 #### Variables:  
 
 ```lua
-<string> ui.Version = "2.1.3.3-alpha" 
+<string> ui.Version = "2.1.4.4-alpha" 
 ```
 *The current ui version*
 
@@ -974,7 +983,7 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 `none`
 
 ---
-These docs are for version 2.1.4.1-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
+These docs are for version 2.1.4.5-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
 If you want to make a suggestion contact topit#4057
