@@ -1,93 +1,70 @@
---Simple example demoing some features of the gui
---Check out the jeff_2_example-gui to see what a simple speed gui would look like
+-- Simple example demoing some features of the gui
+-- Check out the jeff_2_example-gui to see what a simple speed gui would look like
 
+-- Load in the library
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
 
---Windows hold menus
---Technically you can use multiple windows, but its janky and you need to ui:Ready() twice
+-- Create the main window which will hold everything
 local window = ui:NewWindow("Example window", 400, 300)
 
---Menus hold labels, buttons, sliders, and everything else
---as of 2.1.0-a, as many menus as you want can be used
+-- Menus are important for actually letting you do stuff
+-- They can be switched using the button at the top left of the window
 local menu = window:NewMenu("Menu")
 local menu2 = window:NewMenu("Menu2")
---Sections are for headers
+
+-- Here's a section header. They're useful for separating
+-- different types of modules and organization.
 menu:NewSection("Example section")
 
---Buttons let you fire a function on click
-local button = menu:NewButton("Example button")
+-- Create a button
+local button = menu:NewButton("Click me!")
+-- Buttons can only be clicked, but they can have hotkeys bound to them
+
+button:SetTooltip("Heres a button! Try clicking it")
 
 button.OnClick:Connect(function() 
-    button:SetText("Click!")
+    ui:NewNotification("Nice!","You clicked the button!",3)
+    button:Hide("Already clicked, too bad")
 end)
 
+-- Sliders are useful for choosing a number from a wide or small range
+local slider = menu:NewSlider("Yo pick a number",0,10,5)
 
---Textboxes are for simple user input
-local textbox = menu:NewTextbox("Example textbox")
+slider.OnValueChanged:Connect(function(v) 
+    if v == 10 then
+        v:SetValue(0)
+    end
+    ui:NewNotification("Slider","The sliders at "..tostring(v),2)    
+end)
 
-textbox.OnFocusLost:Connect(function(text, enter) 
-    if enter then
-        textbox:SetText("Enter was pressed") 
-    else
-        textbox:SetText("Did you accidentally cancel typing?")
-        wait(1)
-        textbox:SetText(text)
+local dd = menu:NewDropdown("Dropdown",{"Yes","No","Maybe","Idk"})
+
+dd.OnSelection:Connect(function()
+    local val = math.random(0,3)
+    if val == 3 then
+        ui:NewNotification("Ey good choice", "Yeah i picked that too", 2)
+    elseif val == 2 then
+        ui:NewNotification("Ok choice", "I wouldn't pick its fine", 2)
+    elseif val == 1 then
+        ui:NewNotification("That sucks", "Wtf why would you pick that", 2)
+    elseif val == 0 then
+        ui:NewNotification("No","Awful choice",2)
     end
 end)
 
---Sliders are useful but can only be in range from 0 to 999. For more specific numbers textboxes are better
---If you want to get a number from 0 to 1 you can make it 0 to 10 and divide the result, though.
-local slider = menu:NewSlider("Example slider", 0, 20, 0)
-
-menu:NewLabel("Sliders can be both hard dragged (MB1) and")
-menu:NewLabel("soft dragged (MB2).") --Label text wrapping isn't implemented yet but will be soon.
-menu:NewLabel("You can also type in the value!")
-menu:NewLabel("")
-slider.OnFocusLost:Connect(function() 
-    ui:NewNotification("Slider", "Goodbye!")
-end)
-
---Toggles can be on or off
-local toggle = menu:NewToggle("Example toggle")
-
-toggle.OnEnable:Connect(function() 
-    slider:SetValue(10)
-end)
-
-toggle.OnDisable:Connect(function() 
-    slider:SetValue(5)
-end)
-
---Dropdowns can have infinite amounts of options but somewhere between 1 and 4 is recommended.
-local dropdown = menu:NewDropdown("Example dropdown", {"Option 1", "Option 2"})
-menu:NewLabel("")
-menu:NewLabel("")
-menu:NewLabel("")
-
-menu:NewSection("Credits")
-
-local discord = menu:NewButton("Copy discord link")
-discord.OnClick:Connect(function() 
-    ui:NewNotification("Thanks!", "", 3) 
-    setclipboard("https://discord.gg/Gn9vWr8DJC") 
-end)
-
-
-menu:NewLabel("Made by topit")
-
-
-dropdown.OnSelection:Connect(function(name, index) 
-    ui:NewNotification("Dropdown", "Selected button "..index..", which says \""..name.."\".", 2)
-end)
-
 --Messageboxes can have titles, descriptions, and any amount of buttons
-ui:NewMessagebox("Message box", "Example text", {{Text = "Ok", Callback = function(self) 
-    self:SetDesc("Cya") 
-    wait(1) 
-    self:Close() 
-end}})
+ui:NewMessagebox("Message box", "Here's a message box!", {
+    {
+        Text = "Ok", 
+        Callback = function(self) 
+            self:FadeText("Ok","Cya") 
+            wait(1) 
+            self:Close() 
+        end
+    }
+})
 
---For no buttons, pass the button table as {}, like this
+--For no buttons, just pass the button table as an empty table, like this
 --ui:NewMessagebox("Message box", "Example text", {})
 
 --For a simpler method of showing information, use a notification
@@ -98,5 +75,10 @@ ui:NewNotification("New Notification", "Hello world!", 5)
 --When you're finished making objects, call ui:Ready() to finish everything off
 ui:Ready()
 --Do NOT make window objects after you've readied!
---Assigning callbacks to events still works on window objects.
---Notifications and messageboxes do work properly.
+--Doing anything else with the ui (callbacks, notifications, etc.) will work though
+
+ui.Exiting:Connect(function() 
+    for _,t in pairs(ui:GetAllToggles()) do
+        t:Disable()    
+    end
+end)
