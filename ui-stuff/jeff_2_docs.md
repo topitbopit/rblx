@@ -730,7 +730,7 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 *True when the toggle is hidden from interaction, false when it's not hidden*
 
 ## Dropdown
-Dropdowns are useful for more customization, such as what method a flight script would use to fly.
+Dropdowns are useful for more specific customization, such as what method a flight script would use to fly.
 ![](https://cdn.discordapp.com/attachments/892261816141496351/903425543104512090/unknown.png)
 #### Creation:
 ```lua
@@ -782,15 +782,15 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 
 
 ```lua
-<void> toggle:SetTooltip(<string> newtooltip)
+<void> dropdown:SetTooltip(<string> newtooltip)
 ```
 *Sets this objects tooltip to `newtooltip`
 ```lua
-<string> toggle:GetTooltip()
+<string> dropdown:GetTooltip()
 ```
 *Returns this object's tooltip*
 ```lua
-<boolean> toggle:IsMouseOver()
+<boolean> dropdown:IsMouseOver()
 ```
 *Returns if the mouse is currently hovering over this object.*
 #### Events:
@@ -818,7 +818,7 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 ## Slider
 
 Sliders are useful for easily changing a value of something, and have plenty of features like slow dragging and the number box. The only limitation is a slider can only have whole, positive integers from 0 to 999. They may gain support for floats and >999 later.
-For more specific numbers, use a textbox and `tonumber` the text, since`:GetTextFormattedAsInt` doesn't support yet.
+For more specific numbers, use a textbox and `tonumber` the text, since`:GetTextFormattedAsInt` doesn't support floats yet.
 
 #### Creation:
 ```lua
@@ -832,9 +832,15 @@ local how_many_years_will = it_take_for:NewSlider("jeff hoops 3 to release:",5,5
 *Creates a new slider `how_many_years_will` parented to `it_take_for` saying `jeff hoops 3 to release:` ranging from `5` to `500`*
 #### Functions:
 
-![](https://cdn.discordapp.com/attachments/892261816141496351/903423745769738240/unknown.png
-)
+![](https://cdn.discordapp.com/attachments/892261816141496351/903423745769738240/unknown.png)
+
 #### Events:
+
+```lua
+<RBXEvent> slider.OnValueChanged
+```
+*Event that fires when the value changes. The event gets passed with the slider value and 1 if MouseButton1 was used, 2 if MouseButton2 was used, or 3 if SetValue / number box was used.*
+
 #### Variables:
 
 ## Grid
