@@ -201,6 +201,10 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 
 ![](https://cdn.discordapp.com/attachments/649469977828786178/900529096067534878/unknown.png)
 <br/>
+```lua
+<table<Toggle>> ui:GetAllToggles()
+```
+*Returns every toggle in `ui`. Use for disabling modules when exiting.*
 
 **All of the object types below have / will have their own dedicated sections on how to use them.**
 ```lua
@@ -284,6 +288,18 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 <table> ui.Windows
 ```
 *A table for ui windows. Used internally, do not change.*
+```lua
+<table> ui.Toggles
+```
+*A table for ui toggles. Used internally, do not change.*
+```lua
+<number> ui.TooltipX = 15
+```
+*Value used for resizing tooltips' width.*
+```lua
+<number> ui.TooltipY = 8
+```
+*Value used for resizing tooltips' height.*
 
 <br/>
 
@@ -329,7 +345,7 @@ local window = ui:NewWindow("Example window", 400, 300)
 
 ## Menus
 
-Menus are important for actually creating your script. There technically can be any amount of menus, but you should use 1 - 6. 
+Menus are important for actually creating your script. There technically can be any amount of menus, but you should use 1 - 6. They hold the objects that will be used for the gui.
 #### Creation:
 ```lua
 <menu> window:NewMenu(<string> menu_title, <bool> menu_showtitle = true)
@@ -362,7 +378,6 @@ local menu = window:NewMenu("Epic modules")
 <toggle> menu:NewToggle(<string> toggle_text)
 ```
 *Creates a new toggle object displaying `toggle_text`.*
->Older ui versions have a bool for enabling the toggle on creation, but it is deprecated and removed from newer versions.
 ```lua
 <button> menu:NewButton(<string> button_text)
 ```
@@ -833,13 +848,21 @@ local how_many_years_will = it_take_for:NewSlider("jeff hoops 3 to release:",5,5
 #### Functions:
 
 ![](https://cdn.discordapp.com/attachments/892261816141496351/903423745769738240/unknown.png)
-
+![](https://cdn.discordapp.com/attachments/892261816141496351/903423745769738240/unknown.png)
 #### Events:
 
 ```lua
 <RBXEvent> slider.OnValueChanged
 ```
 *Event that fires when the value changes. The event gets passed with the slider value and 1 if MouseButton1 was used, 2 if MouseButton2 was used, or 3 if SetValue / number box was used.*
+```lua
+<RBXEvent> slider.OnFocusLost
+```
+*Event that fires when the slider loses focus. The event gets passed with `1` if MouseButton1 was used, and `2` if MouseButton2 was used.
+```lua
+<RBXEvent> slider.OnFocusGained
+```
+*Event that fires when the slider gains focus. The event gets passed with `1` if MouseButton1 was used, and `2` if MouseButton2 was used.
 
 #### Variables:
 
