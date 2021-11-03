@@ -1,3 +1,4 @@
+
 <!---
 among us
 --->
@@ -385,8 +386,7 @@ local menu = window:NewMenu("Epic modules")
 ```lua
 <textbox> menu:NewTextbox(<string> tb_text, <bool> clearonfocus = true)
 ```
-*Creates a new textbox object displaying `tb_text`. When `clearonfocus` is set to true, text will be cleared on focus. Currently, `clearonfocus` being false leaves it on.*
->The bool `clearonfocus` is currently broken. Use the function `tb:SetClearOnFocus` until it gets fixed.
+*Creates a new textbox object displaying `tb_text`. When `clearonfocus` is set to true, text will be cleared on focus.*
 ```lua
 <slider> menu:NewSlider(<string> slider_text, <number> slider_min = 0, <number> slider_max = 0, <number> slider_start = slider_min)
 ```
@@ -653,7 +653,7 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 ```lua
 <void> toggle:SetState(<bool> newstate, <bool> call_func_after)
 ```
-*Sets the state to `newstate`. If `call_func_after` is true, then the callback will be fired. **Currently broken, do not use.***
+*Sets the state to `newstate`. If `call_func_after` is true, then the callback will be fired.
 ```lua
 <void> toggle:Toggle()
 ```
@@ -846,9 +846,46 @@ local how_many_years_will = it_take_for:NewSlider("jeff hoops 3 to release:",5,5
 ```
 *Creates a new slider `how_many_years_will` parented to `it_take_for` saying `jeff hoops 3 to release:` ranging from `5` to `500`*
 #### Functions:
+```lua
+<void> slider:SetValue(<number> newvalue)
+```
+*Sets `slider`s value to `newvalue`*
+```lua
+<number> slider:GetValue()
+```
+*Returns `slider`s value*
+```lua
+<void> slider:SetMax(<number> newmax)
+```
+*Sets `slider`s maximum value to `newmax`*
+```lua
+<number> slider:GetMax()
+```
+*Returns `slider`s minimum value*
+```lua
+<void> slider:SetMin(<number> newmin)
+```
+*Sets `slider`s minimum value to `newmin`*
+```lua
+<number> slider:GetMin()
+```
+*Returns `slider`s minimum value*
+
+```lua
+<void> slider:SetTooltip(<string> newtooltip)
+```
+*Sets this objects tooltip to `newtooltip`
+```lua
+<string> slider:GetTooltip()
+```
+*Returns this object's tooltip*
+```lua
+<boolean> slider:IsMouseOver()
+```
+*Returns if the mouse is currently hovering over this object.*
 
 ![](https://cdn.discordapp.com/attachments/892261816141496351/903423745769738240/unknown.png)
-![](https://cdn.discordapp.com/attachments/892261816141496351/903423745769738240/unknown.png)
+
 #### Events:
 
 ```lua
@@ -924,14 +961,14 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 	{
 		Text = "Yes",
 		Callback = function(self) --The callback function gets passed with the created msgbox object
-			self:Close()
+			self:Close("Yes")
 		end
 	}, {
 		Text = "No",
 		Callback = function(self) --You can do more than just close the box when the button gets pressed
 			self:SetTitle("Ok")
 			wait(2)
-			self:Close()
+			self:Close("No")
 		end
 	},
 }, 40)
@@ -940,10 +977,10 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 #### Functions:
 
 ```lua
-<void> msg:Close()
+<void> msg:Close(<variant> msg_identifier)
 ```
-*Closes the messagebox*
-
+*Closes the messagebox. If `msg_identifier` is provided, then the `OnClose` event will be passed with it.*
+>Use `msg_identifier` for keeping track of different options. For example, if you have a "Yes" button and want to see if the user clicks it, use a custom callback with `self:Close("Yes")` (it doesn't have to be yes - just anything unique works fine) then check what gets passed with the event
 ```lua
 <string> msg:GetTitle()
 ```
@@ -970,7 +1007,7 @@ local msg = ui:NewMessageBox("Message box", "Hello world!", {
 ```lua
 <RBXEvent> msg.OnClose
 ```
-*Event that fires when the messagebox closes. No arguments are passed as of now, but the title will be passed in a later update.*
+*Event that fires when the messagebox closes. The first argument is the identifier that gets passed. When the close button is clicked, `OnClose` gets passed with 'Close'.* 
 
 #### Variables:
 `none`
