@@ -5,7 +5,7 @@
 local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/ui-stuff/jeff_2.lua'))()
 
 -- Create the main window which will hold everything
-local window = ui:NewWindow("Example window", 400, 300)
+local window = ui:NewWindow("Jeff 2 demo", 400, 300)
 
 -- Menus are important for actually letting you do stuff
 -- They can be switched using the button at the top left of the window
@@ -31,12 +31,16 @@ end)
 local slider = menu:NewSlider("Yo pick a number",0,10,5)
 
 slider.OnValueChanged:Connect(function(v) 
-    if v == 10 then
-        v:SetValue(0)
+    
+    local a = ""
+    for i = 0, v do
+        a = a .. "ඞ" 
     end
-    ui:NewNotification("Slider","The sliders at "..tostring(v),2)    
+    ui:NewNotification("ඞ count",a,1.5)    
 end)
 
+
+-- Dropdown
 local dd = menu:NewDropdown("Dropdown",{"Yes","No","Maybe","Idk"})
 
 dd.OnSelection:Connect(function()
@@ -44,13 +48,71 @@ dd.OnSelection:Connect(function()
     if val == 3 then
         ui:NewNotification("Ey good choice", "Yeah i picked that too", 2)
     elseif val == 2 then
-        ui:NewNotification("Ok choice", "I wouldn't pick its fine", 2)
+        ui:NewNotification("Ok choice", "I wouldn't pick it, but its ok", 2)
     elseif val == 1 then
         ui:NewNotification("That sucks", "Wtf why would you pick that", 2)
     elseif val == 0 then
-        ui:NewNotification("No","Awful choice",2)
+        ui:NewNotification("No","Awful choice pls uninstall",2)
     end
 end)
+
+-- Textbox
+local textbox = menu:NewTextbox("Type some stuff in")
+
+textbox.OnFocusLost:Connect(function(text)
+    ui:NewNotification(text, "", 2)
+    textbox:SetText("Among us")
+end)
+
+-- Toggle
+local toggle = menu:NewToggle("Toggle epic mode")
+
+toggle.OnEnable:Connect(function() 
+    ui:NewNotification("Epic mode enabled", ":D", 2)
+end)
+
+toggle.OnDisable:Connect(function() 
+    ui:NewNotification("Epic mode disabled", ":(", 2)
+end)
+
+
+local name1 = {
+    "among",
+    "epic",
+    "sussy",
+    "jeff",
+    "bob",
+    "joey",
+    "xX",
+    "II_",
+    "cold",
+    "aeq",
+    "233",
+    "Raider"
+}
+local name2 = {
+    "gamer",
+    "460",
+    "YT",
+    "_TTV",
+    "NoHoes",
+    "Marku",
+    "Matthias",
+    "_micdown",
+    "SRT"
+}
+
+local name = menu:NewButton("Make a username")
+name.OnClick:Connect(function() 
+    local new = name1[math.random(1, #name1)] .. name2[math.random(1, #name2)] .. tostring(math.random(10001,96836))
+    ui:NewNotification("Your new name is",new,2)
+end)
+menu:NewLabel("Epic")
+menu:NewLabel()
+menu:NewTrim()
+
+menu:NewLabel("Made by "..name1[math.random(1, #name1)] .. name2[math.random(1, #name2)] .. tostring(math.random(10001,96836)))
+
 
 --Messageboxes can have titles, descriptions, and any amount of buttons
 ui:NewMessagebox("Message box", "Here's a message box!", {
@@ -62,7 +124,7 @@ ui:NewMessagebox("Message box", "Here's a message box!", {
             self:Close() 
         end
     }
-})
+}, 40)
 
 --For no buttons, just pass the button table as an empty table, like this
 --ui:NewMessagebox("Message box", "Example text", {})
