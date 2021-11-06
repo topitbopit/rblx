@@ -18,10 +18,22 @@ local antifling = menu:NewToggle("Antifling")
 local distance = menu:NewSlider("Sensitivity", 1, 15, 8)
 local mode = menu:NewDropdown("Antifling type",{"Anchor","Noclip"})
 menu:NewLabel()
-menu:NewLabel()
+menu:NewLabel("This antifling automatically\ntriggers when it detects someones")
+menu:NewLabel("rootpart near you. Stops most flings")
 menu:NewTrim()
 menu:NewLabel("Made by topit")
 
+distance:SetTooltip("How close someone has to be to trigger the antifling")
+antifling:SetTooltip("Toggles antiskid")
+mode:SetTooltip("The antifling method uses.\nAnchor: Anchors your character\nNoclip: Enables noclip and removes velocity")
+
+local secret = window:NewMenu("💀")
+secret:NewLabel("Congrats, you found a secret!")
+local disc = secret:NewButton("Want more cool scripts?")
+disc.OnClick:Connect(function() 
+    setclipboard("https://discord.gg/Gn9vWr8DJC")
+    ui:NewMessagebox("Thanks!","Copied discord link",nil,40)
+end)
 
 local vector3 = Vector3.new
 
