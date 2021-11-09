@@ -1,4 +1,5 @@
 
+
 <!---
 among us
 --->
@@ -12,6 +13,7 @@ Contents:
 
 ```
 Getting started
+ - Quirks and cool features
  - Loading the library
  - Windows
  - Menus & Doing stuff
@@ -58,11 +60,9 @@ Heres a list of more cool native features that you probably won't find anywhere 
 - Any object can have a description that appears when you mouse over it - called a tooltip - letting you quickly set descriptions without obstructing anything
 
 Of course, this library isn't perfect and there are some issues.
-- Although technically more than one window could be made, it is super buggy.
 - Only a limited amount of menus can be made
 - Library code is pretty large and not very polished
 - Buttons, toggles, etc. take up a lot of space
-- Generic ui design
 
 Most of these issues will be worked on and fixed eventually.
  
@@ -93,7 +93,7 @@ Although you can do more with windows such as being able to tell when they're mi
 ```lua
 window.OnMinimize:Connect(function(min) print("Minimized:", min) end)
 ```
-This will call an anonymous function that prints *Minimized: true* when minimized and *Minimized: false* when not minimized.
+*This will call an anonymous function that prints `Minimized: true` when minimized and `Minimized: false` when not minimized.*
 
 ### Menus & Doing stuff
 
@@ -106,12 +106,12 @@ menu:NewLabel("Text")
 ```
 This would create a new text label displaying "Text".
 
-Similar to a label, there's an object called a Section. It is essentially the same thing - even in code they're considered the same. The only difference is the size and position
+Similar to a label, there's an object called a Section. It is essentially the same thing - even in code they're considered the same. The only difference is the size and position.
 
 ![](https://cdn.discordapp.com/attachments/892261816141496351/900504087357964348/unknown.png)
 
 
-*What about something that can do something cool?*
+**What about something you can click?**
 
 Here's a button. They have a single event called `OnClick` that gets fired, you guess it, on a click. 
 ```lua
@@ -123,7 +123,71 @@ end)
 ```
 
 
-**More explanations on how to create other objects will be added soon.**
+*Buttons are nice and all, but what about something that can be turned both on and off?*
+
+Toggles are like buttons, but can be turned both on and off.
+```lua
+local toggle = menu:NewToggle("Do something, but in a better way!")
+
+-- Toggles can have two ways of being made
+-- With two separate events
+toggle.OnEnable:Connect(function() 
+	print("Enabled")
+end)
+toggle.OnDisable:Connect(function() 
+	print("Disabled")
+end)
+
+-- Or one event
+toggle.OnToggle:Connect(function(toggle) 
+	if toggle then
+		print("Enabled")
+	else
+		print("Disabled")
+	end
+end)
+```
+
+Buttons and toggles both have a lot of neat functions, like hiding, setting binds, and setting tooltips.
+
+Heres an example of what could be done in a shooter game like Arsenal, provided you have the right events and variables ready.
+```lua
+if map_isnt_loaded then
+	wallbang:Hide("Map isn't loaded!")
+	wallbang:SetTooltip("Wait for the game to finish loading the map first.")
+	map_loaded:Wait()
+	wallbang:Unhide()
+	wallbang:SetTooltip("When enabled, wallbang lets you shoot through walls.")
+end
+```
+
+
+*Now I've made a toggle. How can I change what it does?*
+
+There are a bunch of useful objects for controlling settings. Sliders let you select a number from a specified range, dropdowns let you select an option from a specified group, and textboxes let you input text.
+
+
+
+
+Dropdowns are useful for selecting a certain mode for something to use. An example could be flight - vehicle fly, cframe fly, and normal fly are all valid options.
+```lua
+local dd = menu:NewDropdown("Pick an option!",{"Option 1","Option 2","Option 3","Option 4"})
+
+dd.OnSelectionChange:Connect(function(value, idx) 
+	if value == "Option 1" then
+		print("Option 1 is the best")
+	else
+		print("This option sucks")
+	end
+
+	if toggle:GetState() == true then 
+		toggle:Disable() 
+		toggle:Enable()
+	end
+end)
+
+```
+
 
 ### Finishing off
 
@@ -161,7 +225,7 @@ end)
 
 > When exiting, every single object on screen gets closed automatically. However, no objects get disabled. To quickly disable toggles on close, use the `ui:GetAllToggles()` function and call `:Disable()` on each enabled toggle.
 
-> Keep in mind that after the final window closes, all ui resources clear out automatically. If no window is created, the resources won't be cleared. To manually clear resources after you finish, use `ui:Exit()` **(NOT YET IMPLEMENTED)**
+> Keep in mind that after the final window closes, all ui resources clear out automatically. If no window is created, the resources won't be cleared. To manually clear resources after you finish, use `ui:Exit()`
 
 
 <br/>
