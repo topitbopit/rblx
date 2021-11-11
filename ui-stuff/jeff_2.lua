@@ -1,4 +1,9 @@
 --[[
+2.1.5.0a
+ [+] Added :IsEnabled() for toggles as an alias for GetState
+ [+] Increased scroll speed slightly
+ [-] Removed deprecated function toggle:SetCallback()
+ 
 2.1.4.5a
  [*] Fixed menu scrolling happening when you zoom out
  [*] Fixed several issues with parameters like textboxes cleartext not working
@@ -338,7 +343,7 @@ ui = {} do
  ui.OnNotifDelete = eventlistener.new() 
  ui.NotifCount = -1
  
- ui.Version = "2.1.4.5-alpha"
+ ui.Version = "2.1.5.0-alpha"
  ui.Font = Enum.Font["SourceSans"]
  ui.FontSize = 20
  
@@ -1157,7 +1162,7 @@ ui = {} do
  
  menu_menu.InputBegan:Connect(function(io) 
  if io.UserInputType == Enum.UserInputType.MouseWheel then
- local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-85
+ local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-95
  local max = menu_menu.AbsoluteCanvasSize.Y - menu_menu.AbsoluteSize.Y
  
  newpos = math.clamp(newpos, 0, max)
@@ -1172,7 +1177,7 @@ ui = {} do
  
  menu_menu.InputChanged:Connect(function(io) 
  if io.UserInputType == Enum.UserInputType.MouseWheel then
- local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-85
+ local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-95
  local max = menu_menu.AbsoluteCanvasSize.Y - menu_menu.AbsoluteSize.Y
  
  newpos = math.clamp(newpos, 0, max)
@@ -1512,6 +1517,10 @@ ui = {} do
  return toggle_state
  end 
  
+ function t:IsEnabled() 
+ return toggle_state
+ end 
+ 
  function t:SetState(bool, callafter) 
  callafter = callafter == nil and true or callafter
  
@@ -1752,12 +1761,6 @@ ui = {} do
  OnClick:Fire()
  end
  
- function t:SetCallback(cb) 
- if type(cb) ~= "function" then
- error("SetCallback failed; provided value was not a function")
- end
- callback = cb
- end
  
  function t:SetBind(kc)
  local bd_id = button_button:GetDebugId()
