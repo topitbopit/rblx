@@ -124,7 +124,7 @@ main.Slider({
 		pcall(edit_self, plr.Character)
 	end,
 	Min = 2,
-	Max = 10,
+	Max = 25,
 	Def = 4,
 	Menu = {
 		Information = function(self)
@@ -204,7 +204,7 @@ main.Slider({
 		end
 	end,
 	Min = 2,
-	Max = 10,
+	Max = 25,
 	Def = 4,
 	Menu = {
 		Information = function(self)
