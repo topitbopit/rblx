@@ -1,5 +1,6 @@
 
 
+
 <!---
 among us
 --->
@@ -315,7 +316,7 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 #### Variables:  
 
 ```lua
-<string> ui.Version = "2.1.4.4-alpha" 
+<string> ui.Version = "2.1.5.1-alpha" 
 ```
 *The current ui version*
 
@@ -365,7 +366,10 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 <number> ui.TooltipY = 8
 ```
 *Value used for resizing tooltips' height.*
-
+```lua
+<number  ui.ScrollAmount = 200
+```
+*Value used for scroll speed*
 <br/>
 
 ## Windows
@@ -665,8 +669,10 @@ local invite = menu_amongus:NewButton("Join the discord server")
 ```
 *Hides `button` with the message `Your exploit doesn't support global` if `global` is not found in the global env.*
 >`:Assert()` was based on the vanilla function `assert`. If you pass a global, such as`getsynasset`, into `:Assert()` and that global is not found in `getgenv`, it will hide the object.
+
 ![](https://cdn.discordapp.com/attachments/892261816141496351/903425728803123230/unknown.png
 )
+<sup>Example message of a module that had :Assert("Drawing") called on it being used on an exploit without Drawing</sup>
 ```lua
 <void> button:SetTooltip(<string> newtooltip)
 ```
@@ -739,9 +745,10 @@ local spectate = PlayerViewer:NewToggle("view selected player")
 *Sets `toggle`s bind to `bind_name`. If `bind_name` is not passed, the bind is removed.*
 >`bind_name` must be the name of the keycode you are binding. Instead of Enum.KeyCode.RightControl, pass "RightControl" or Enum.KeyCode.RightControl.Name
 
+
 ![](https://cdn.discordapp.com/attachments/892261816141496351/903426532146577468/unknown.png
 )
-*Image showcasing a toggle bound to E*
+<sup>*Image showcasing a toggle bound to E*</sup>
 ```lua
 <string> toggle:GetBind()
 ```
@@ -987,7 +994,7 @@ Trim objects are useful for organization. Kinda like sections, trims are the det
 
 ![](https://media.discordapp.net/attachments/892261816141496351/903426205376708668/unknown.png
 )
-A trim is used here to separate the main modules from the credits.
+<sup>*A trim is used here to separate the main modules from the credits.*</sub>
 #### Creation:
 ```lua
 <void> menu:NewTrim()
@@ -1115,7 +1122,7 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 `none`
 
 ---
-These docs are for version 2.1.4.5-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
+These docs are for version 2.1.5.1-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
 If you want to make a suggestion contact topit#4057
