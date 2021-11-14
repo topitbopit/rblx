@@ -1,4 +1,8 @@
 --[[
+2.1.5.1a
+ [+] Changed scrolling again
+ [+] Added ui.ScrollAmount number which controls the amount menus scroll each input
+
 2.1.5.0a
  [+] Added :IsEnabled() for toggles as an alias for GetState
  [+] Increased scroll speed slightly
@@ -343,7 +347,7 @@ ui = {} do
  ui.OnNotifDelete = eventlistener.new() 
  ui.NotifCount = -1
  
- ui.Version = "2.1.5.0-alpha"
+ ui.Version = "2.1.5.1-alpha"
  ui.Font = Enum.Font["SourceSans"]
  ui.FontSize = 20
  
@@ -357,6 +361,8 @@ ui = {} do
  
  ui.TooltipX = 15
  ui.TooltipY = 8
+ 
+ ui.ScrollAmount = 200
  
  function ui:Exit() 
  ui.Exiting:Fire()
@@ -1162,31 +1168,31 @@ ui = {} do
  
  menu_menu.InputBegan:Connect(function(io) 
  if io.UserInputType == Enum.UserInputType.MouseWheel then
- local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-95
+ local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-ui.ScrollAmount
  local max = menu_menu.AbsoluteCanvasSize.Y - menu_menu.AbsoluteSize.Y
  
  newpos = math.clamp(newpos, 0, max)
  
  
- twn(menu_menu, {CanvasPosition = Vector2.new(
+ ctwn(menu_menu, {CanvasPosition = Vector2.new(
  0,
  newpos
- )})
+ )}, 0.3, "Out", "Exponential")
  end
  end)
  
  menu_menu.InputChanged:Connect(function(io) 
  if io.UserInputType == Enum.UserInputType.MouseWheel then
- local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-95
+ local newpos = menu_menu.CanvasPosition.Y + io.Position.Z*-ui.ScrollAmount
  local max = menu_menu.AbsoluteCanvasSize.Y - menu_menu.AbsoluteSize.Y
  
  newpos = math.clamp(newpos, 0, max)
  
  
- twn(menu_menu, {CanvasPosition = Vector2.new(
+ ctwn(menu_menu, {CanvasPosition = Vector2.new(
  0,
  newpos
- )})
+ )}, 0.3, "Out", "Exponential")
  end
  end)
  
