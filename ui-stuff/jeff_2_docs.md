@@ -1148,7 +1148,7 @@ NewToggle(name, enabled)
 <void> button:SetCallback(<function> func)
 ```
 *Sets the callback of `button` to `func`*
-**Hasn't been removed yet, will not be replaced**
+**Removed on 2.1.5.0a, will not be replaced**
 
 
 <br/>
