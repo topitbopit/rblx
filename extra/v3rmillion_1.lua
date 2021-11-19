@@ -1,4 +1,5 @@
 -- code by asad1
+-- optimized by topit
 local RunService = game:GetService("RunService")
 local placeEvent = game:GetService("ReplicatedStorage").Sockets.Edit.Place --store the remote so you don't index it every time
 
