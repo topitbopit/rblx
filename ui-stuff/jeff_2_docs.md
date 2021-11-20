@@ -174,7 +174,7 @@ Dropdowns are useful for selecting a certain mode for something to use. An examp
 ```lua
 local dd = menu:NewDropdown("Pick an option!",{"Option 1","Option 2","Option 3","Option 4"})
 
-dd.OnSelectionChange:Connect(function(value, idx) 
+dd.OnSelection:Connect(function(value, idx) 
 	if value == "Option 1" then
 		print("Option 1 is the best")
 	else
@@ -316,7 +316,7 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 #### Variables:  
 
 ```lua
-<string> ui.Version = "2.1.5.1-alpha" 
+<string> ui.Version = "2.1.6.0-alpha" 
 ```
 *The current ui version*
 
@@ -862,15 +862,29 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 ```
 *Returns the dropdown options*
 ```lua
-<void> dropdown:SetOptions()
+<void> dropdown:SetOptions(<table> options)
 ```
-**Currently unfinished and does nothing.**
+*Deletes all of the dropdowns current options, and adds `options`. For best performance, don't use often, or use AddOption and RemoveOption.*
+```lua
+<void> dropdown:AddOption(<string> name)
+```
+*Adds a new option to `dropdown`*
+```lua
+<void> dropdown:RemoveOption(<variant> name_idx)
+```
+*Removes an option from dropdown. Can use index (faster) or string (easier)*
+![](https://cdn.discordapp.com/attachments/891090588445851698/911727527691681852/gif.gif)
+<sup>*demo of RemoveOption and AddOption*
+```lua
+<bool> dropdown:IsOpen()
+```
+*Returns if the dropdown is open or not*
 
 
 ```lua
 <void> dropdown:SetTooltip(<string> newtooltip)
 ```
-*Sets this objects tooltip to `newtooltip`
+*Sets this objects tooltip to `newtooltip`*
 ```lua
 <string> dropdown:GetTooltip()
 ```
@@ -897,6 +911,15 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 <RBXEvent> dropdown.OnToggle
 ```
 *Event that fires `true` when the dropdown opens and `false` when closed.*
+```lua
+<RBXEvent> dropdown.OnOptionRemoved
+```
+*Event that gets fired when an option gets removed. The option's name, list index, and method used to find that option (string | index) are passed.*
+```
+```lua
+<RBXEvent> dropdown.OnOptionAdded
+```
+*Event that gets fired when an option gets added. The name and index are passed.*
 
 #### Variables:
 `none`
@@ -1122,7 +1145,7 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 `none`
 
 ---
-These docs are for version 2.1.5.1-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
+These docs are for version 2.1.6.0-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
 If you want to make a suggestion contact topit#4057
