@@ -1,4 +1,9 @@
 --[[
+2.1.6.0a
+ [+] Added dropdown:AddOption, dropdown:RemoveOption, dropdown:SetOptions, and dropdown:IsOpen
+ [*] Fixed GetBind erroring when there was no bind
+ [+] Added ui:GetScreenGUI
+
 2.1.5.1a
  [+] Changed scrolling again
  [+] Added ui.ScrollAmount number which controls the amount menus scroll each input
@@ -113,6 +118,7 @@ local plr = plrs.LocalPlayer
 local mouse = plr:GetMouse()
 
 local tinsert = table.insert
+local tremove = table.remove
 local ulen = utf8.len
 local tdelay = task.delay
 local twait = task.wait
@@ -347,7 +353,7 @@ ui = {} do
  ui.OnNotifDelete = eventlistener.new() 
  ui.NotifCount = -1
  
- ui.Version = "2.1.5.1-alpha"
+ ui.Version = "2.1.6.0-alpha"
  ui.Font = Enum.Font["SourceSans"]
  ui.FontSize = 20
  
@@ -376,7 +382,6 @@ ui = {} do
  getrand = nil
  shadow = nil
  ceffect = nil
- 
  
  ui.BindHandler:Disconnect()
  
@@ -860,9 +865,6 @@ ui = {} do
  ceffect(window_bmenu)
  toggleMenu()
  end)
- 
- 
- 
  
  
  
@@ -1575,7 +1577,8 @@ ui = {} do
  end
  
  function t:GetBind() 
- return ui.binds[toggle_button:GetDebugId()].b
+ local bindobj = ui.binds[toggle_button:GetDebugId()]
+ return (bindobj and bindobj.b or nil)
  end
  
  
@@ -1791,7 +1794,8 @@ ui = {} do
  end
  
  function t:GetBind() 
- return ui.binds[toggle_button:GetDebugId()].b
+ local bindobj = ui.binds[button_button:GetDebugId()]
+ return (bindobj and bindobj.b or nil)
  end
  
  function t:SetText(tx) 
@@ -2374,6 +2378,8 @@ ui = {} do
  local OnOpen = eventlistener.new()
  local OnClose = eventlistener.new()
  local OnToggle = eventlistener.new()
+ local OnOptionAdded = eventlistener.new()
+ local OnOptionRemoved = eventlistener.new()
  
  local mousingover = false
  local tooltip = nil
@@ -2473,18 +2479,7 @@ ui = {} do
  end
  end
  
- dropdown_button.MouseButton1Click:Connect(function() 
- ceffect(dropdown_button)
- toggle()
- end)
- 
- dropdown_button.MouseButton2Click:Connect(function() 
- ceffect(dropdown_button)
- toggle()
- end)
- 
- 
- for i,v in pairs(options) do
+ local function newoption(i,v) 
  local dropdown_option = Instance.new("TextButton")
  dropdown_option.Text = v
  dropdown_option.AutoButtonColor = false
@@ -2534,9 +2529,31 @@ ui = {} do
  dropdown_option.BackgroundTransparency = 0.4
  
  selection = {v, i}
+ dropdown_button.Text = text .. " ("..tostring(selection[1])..")"
  end
  
  tinsert(options_buttons, dropdown_option)
+ 
+ return dropdown_option
+ end
+ 
+ 
+ 
+ dropdown_button.MouseButton1Click:Connect(function() 
+ ceffect(dropdown_button)
+ toggle()
+ end)
+ 
+ dropdown_button.MouseButton2Click:Connect(function() 
+ ceffect(dropdown_button)
+ toggle()
+ end)
+ 
+ 
+ 
+ 
+ for i,v in pairs(options) do
+ newoption(i,v)
  end
  
  
@@ -2562,6 +2579,9 @@ ui = {} do
  return selection[1], selection[2]
  end
  
+ function t:IsOpen() 
+ return open_state
+ end
  
  
  function t:SetSelectedOption(name) 
@@ -2569,11 +2589,12 @@ ui = {} do
  
  local occ = 0
  local oldsel = selection
+ local button
  
  for i,v in pairs(options_buttons) do
  if v.Text == name then
  occ = occ + 1 
- 
+ button = v
  selection = {v.Text, i}
  end
  end
@@ -2640,10 +2661,77 @@ ui = {} do
  
  end
  
- function t:SetOptions() 
- warn("Coming soon")
+ function t:SetOptions(options)
+ for i = #options_buttons, 1, -1 do
+ t:RemoveOption(i) 
+ end
+ for _,v in ipairs(options) do
+ t:AddOption(v) 
+ end
  end
  
+ function t:AddOption(name) 
+ OnOptionAdded:Fire(name,#options_buttons+1)
+ 
+ newoption(#options_buttons+1,name)
+ if open_state then
+ twn(dropdown_container, {Size = UDim2.new(dropdown_button.Size.X, UDim.new(0, (#options*28)+15))}) 
+ end
+ end
+ 
+ function t:RemoveOption(name)
+ if type(name) == "string" then
+ local found = false
+ 
+ for idx,dd in pairs(options_buttons) do 
+ if dd.Text == name then
+ 
+ tremove(options_buttons, idx)
+ dd:Destroy()
+ 
+ found = true
+ OnOptionRemoved:Fire(name,idx,"string")
+ break
+ end
+ end
+ if not found then
+ error("RemoveOption failed; could not find valid option") 
+ end
+ 
+ elseif type(name) == "number" then
+ local dd = options_buttons[name]
+ if dd == nil then
+ error("RemoveOption failed; dropdown option index out of range")
+ end
+ OnOptionRemoved:Fire(name,idx,"index")
+ tremove(options_buttons, name)
+ dd:Destroy()
+ else
+ error("RemoveOption failed; '"..tostring(name).."' isn't a valid index/name to search for") 
+ end
+ 
+ 
+ for i,v in ipairs(options_buttons) do
+ v.Position = UDim2.new(0, 15, 0, ((i-1)*28)+8)
+ end
+ 
+ if #options_buttons == 0 then
+ dropdown_button.Text = text .. " (nil)" 
+ else
+ if options_buttons[selection[2]].Text ~= selection[1] then
+ selection = {options_buttons[1].Text, 1}
+ 
+ for i,v in pairs(options_buttons) do
+ twn(v, {BackgroundColor3 = ui.colors.button, BackgroundTransparency = 0.7})
+ end
+ 
+ twn(options_buttons[1], {BackgroundColor3 = ui.colors.enabled, BackgroundTransparency = 0.4})
+ 
+ dropdown_button.Text = text .. " ("..tostring(selection[1])..")"
+ OnSelection:Fire(unpack(selection))
+ end
+ end
+ end
  
  function t:GetTooltip()
  return tooltip
@@ -2663,6 +2751,9 @@ ui = {} do
  t.OnClose = OnClose
  t.OnSelection = OnSelection
  t.OnToggle = OnToggle
+ 
+ t.OnOptionRemoved = OnOptionRemoved
+ t.OnOptionAdded = OnOptionAdded
  end
  
  OnChildAdded:Fire("dropdown", t)
@@ -2723,6 +2814,10 @@ ui = {} do
  
  return w
  
+ end
+ 
+ function ui:GetScreenGUI() 
+ return screen
  end
  
  function ui:Ready() 
@@ -3505,6 +3600,5 @@ ui = {} do
  return bd
  end
 end
-
 
 return ui
