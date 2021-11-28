@@ -1,4 +1,33 @@
-_G.Block000 = _G.Block000 or true
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local plr = game:GetService("Players").LocalPlayer
+_G.BlockedDomains = {
+    "discord.com/api/webhooks/",
+    "webhook",
+    "000webhost",
+    "freehosting",
+    "ident.me",
+    "ipify.org",
+    "dyndns.org",
+    "checkip.amazonaws.com",
+    "httpbin.org/ip",
+    "ifconfig.io",
+    "ipaddress.sh"
+}
+
+_G.BlockedContent = {
+    ["Player name"] = plr.Name,
+    ["Server ID"] = game.JobId,
+    ["Place ID"] = game.PlaceId,
+    ["KRNL"] = "KRNL",
+    ["Synapse"] = "Synapse",
+    ["Fluxus"] = "Fluxus",
+    ["Scriptware"] = "Scriptware"
+}
+
+
+
+
 
 
 rconsoleclear()
@@ -220,7 +249,21 @@ if syn then
     old = hookfunction(syn.request, function(...) 
         local data = ...
         
+        
+        local blocked = {}
         local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+        
+        for name,content in pairs(_G.BlockedContent) do
+            if data.Body:match(content) then
+                table.insert(blocked, name)
+            end
+        end
+        for _,url in ipairs(_G.BlockedDomains) do
+            if data.Url:match(url) then
+                table.insert(blocked, url)
+            end
+        end
+        
         rconsoleprint("@@LIGHT_BLUE@@")
         rconsoleprint("\n ["..os.date("%X").."] => ")
         rconsoleprint("@@LIGHT_RED@@")
@@ -231,6 +274,15 @@ if syn then
         rconsoleprint("request")
         rconsoleprint("@@LIGHT_CYAN@@")
         rconsoleprint("\n   -Line: "..line)
+        rconsoleprint("\n   -Blocked: ")
+        if #blocked > 0 then
+            rconsoleprint("@@LIGHT_GREEN@@")
+            rconsoleprint("Yes")
+        else
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("No")
+        end
+        rconsoleprint("@@LIGHT_CYAN@@")
         rconsoleprint("\n   -Data:")
         rconsoleprint("\n      -Url: "..data.Url)
         rconsoleprint("\n      -Method: "..data.Method)
@@ -247,36 +299,63 @@ if syn then
             end
         end
         rconsoleprint("\n      -Body: "..data.Body)
-        if data.Url:match('discord.com/api/webhooks/') then
-            rconsoleprint("@@RED@@")
-            rconsoleprint("\n\nBlocked an attempt to request a discord webhook.\n\n")
-            return nil
-        end
         
-        if data.Url:match("000webhost") and _G.Block000 then
-            rconsoleprint("@@RED@@")
-            rconsoleprint("\n\nBlocked an attempt to request a 000webhost server.\nAlthough this may not be malicious, most of the time it is.\n")
-            return nil
+        
+        
+        
+        if #blocked > 0 then 
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+            for _,content in ipairs(blocked) do
+                rconsoleprint("\n    -"..content)
+            end
+            rconsoleprint("\n")
+            blocked = nil
+            return nil 
         end
+
+        
+        
         return old(...)
     end)
 else
     local func = http and http.request or request or http_request
     if func then
-        rconsoleprint("@@YELLOW@@")
-        rconsoleprint(func)
-        
+
         local old
         old = hookfunction(func, function(...) 
             local data = ...
             
+            
+            local blocked = {}
             local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+            
+            for name,content in pairs(_G.BlockedContent) do
+                if data.Body:match(content) then
+                    table.insert(blocked, name)
+                end
+            end
+            for _,url in ipairs(_G.BlockedDomains) do
+                if data.Url:match(url) then
+                    table.insert(blocked, url)
+                end
+            end
+            
             rconsoleprint("@@LIGHT_BLUE@@")
             rconsoleprint("\n ["..os.date("%X").."] => ")
             rconsoleprint("@@YELLOW@@")
             rconsoleprint("request")
             rconsoleprint("@@LIGHT_CYAN@@")
             rconsoleprint("\n   -Line: "..line)
+            rconsoleprint("\n   -Blocked: ")
+            if #blocked > 0 then
+                rconsoleprint("@@LIGHT_GREEN@@")
+                rconsoleprint("Yes")
+            else
+                rconsoleprint("@@LIGHT_RED@@")
+                rconsoleprint("No")
+            end
+            rconsoleprint("@@LIGHT_CYAN@@")
             rconsoleprint("\n   -Data:")
             rconsoleprint("\n      -Url: "..data.Url)
             rconsoleprint("\n      -Method: "..data.Method)
@@ -293,13 +372,27 @@ else
                 end
             end
             rconsoleprint("\n      -Body: "..data.Body)
-            if data.Url:match('discord.com/api/webhooks/') then
-                rconsoleprint("@@RED@@")
-                rconsoleprint("\n\nBlocked an attempt to request a discord webhook.\n\n")
-                return nil
+            
+            
+            
+            
+            if #blocked > 0 then 
+                rconsoleprint("@@LIGHT_RED@@")
+                rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+                for _,content in ipairs(blocked) do
+                    rconsoleprint("\n    -"..content)
+                end
+                rconsoleprint("\n")
+                blocked = nil
+                return nil 
             end
+    
+            
+            
             return old(...)
         end)
+
+
     end
 end
 rconsoleprint("\n\n")
