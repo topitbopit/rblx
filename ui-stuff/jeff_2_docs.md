@@ -1,4 +1,5 @@
 
+
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 **DOCS ARE CURRENTLY INCOMPLETE!**
@@ -340,9 +341,14 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 ```
 *Value used for resizing tooltips' height.*
 ```lua
-<number  ui.ScrollAmount = 200
+<number> ui.ScrollAmount = 200
 ```
 *Value used for scroll speed*
+```lua
+<bool> ui.GradientObjects = true
+```
+*Gives some objects like sliders gradient effects*
+
 <br/>
 
 ## Windows
