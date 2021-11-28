@@ -1,14 +1,9 @@
 
-
-
-<!---
-among us
---->
 # Jeff 2 UI Library
 *Jeff 2 is a clean, simple UI library made by topit.*  
 **DOCS ARE CURRENTLY INCOMPLETE!**
 **They are updated frequently, so check back often!**
-![](https://cdn.discordapp.com/attachments/886387861388132402/900523062242447440/jeff2_banner.png)  
+![](https://cdn.discordapp.com/attachments/893975559439273986/914391402304114718/banner.png)  
 *Join the [discord server](https://discord.gg/Gn9vWr8DJC)!*  
 Contents:
 
@@ -254,23 +249,30 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 |-|-|
 |red|Near black colors with a red accent
 |green|Dark gray colors with bright green accent
-|blue|Similar to default, but higher contrast
-|purple|Combination of Red and Blue
-|bright|The closest theme to a light mode
+|blue|Similar to Old, but higher contrast
+|purple| Imagine green, but instead of green, it was purple
+|jacko| Black and orange
+|nightshift| All black with some blueish/purple
+|legacy| Similar color scheme to the original jeff ui
+|old| Older color scheme from <2.1.7.0
+|default| Default theme
+|spring|Mint, but the colors are flipped
+|streamline|Nightshift but darker and with different colors
+|mint|Different version of Bright
 |mono|All gray colors, better version of older bright
-|mint|Like blue and bright
-|legacy|Similar color scheme to the original jeff ui
-|cold|Similar to blue and legacy
-|nightshift|All black with some blueish/purple
-|jacko|Black and orange
-|spring|Slightly lighter version of mint with a different hue
-
-![](https://cdn.discordapp.com/attachments/649469977828786178/900529096067534878/unknown.png)
+|cold|Unsaturated version of legacy
+|roslyn|80th pink-blue with gray background theme
+![](https://cdn.discordapp.com/attachments/893975559439273986/914380753603805214/jeff2themes.png)
 <br/>
 ```lua
 <table<Toggle>> ui:GetAllToggles()
 ```
 *Returns every toggle in `ui`. Use for disabling modules when exiting.*
+
+```lua
+<void> ui:Exit()
+```
+*Manually clears out all UI resources. Call if you don't create any windows.*
 
 **All of the object types below have / will have their own dedicated sections on how to use them.**
 ```lua
@@ -279,12 +281,12 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 *Creates a new window object.*
 
 ```lua
-<msgbox> ui:NewMessagebox(<string> msg_text, <string> msg_desc, <table> msg_buttons)
+<msgbox> ui:NewMessagebox(<string> msg_text, <string> msg_desc, <table> msg_buttons, <number> msg_x, <number> msg_y)
 ```
 *Creates a new messagebox object.*
 
 ```lua
-<notification> ui:NewNotification(<string> notif_text, <string> notif_desc, <number> notif_timer)
+<notification> ui:NewNotification(<string> notif_text, <string> notif_desc, <number> notif_timer, <number> notif_x, <number> notif_y)
 ```
 *Creates a new notification object.*
 
@@ -292,52 +294,35 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 <notification> ui:NewBindDialog(<string> bd_name, <function> bd_func, <string> bd_id, <string> bd_word, <guiobject> bd_display)
 ```
 *Creates a new binddialog object.*
->BindDialogs are an object used for keybind initialization that should only be used internally. Instead, use button:SetBind() or toggle:SetBind()
+>BindDialogs are objects used for keybind initialization that should only be used internally. Instead, use button:SetBind() or toggle:SetBind()
+
+```lua
+<notification> ui:NewColorPicker(<string> title, <color3> init)
+```
+*Creates a new colorpicker object.*
+>ColorPickers are objects used for Color modules that should only be used internally. Instead, interact with Color modules directly.
+
+**CURRENTLY UNFINISHED**
+```lua
+<notification> ui:NewFileDialog(<string> title, <number> sizex, <number> sizey)
+```
+*Creates a new file dialog object.*
+
+**CURRENTLY UNFINISHED**
 
 #### Events:
+<sup>Internally used events are now removed, since they shouldn't be listed if they shouldn't be modified.
 
-```lua
-<RBXEvent> ui.OnReady
-```
-*Event that gets fired when ui:Ready() gets called. Used internally, do not change.*
-
-```lua
-<RBXEvent> ui.OnNotifDelete
-```
-*Event that gets fired when a notification gets deleted. Used internally, do not change.*
 ```lua
 <RBXEvent> ui.Exiting
 ```
 *Event that gets fired when the last window closes.*
-```lua
-<RBXScriptConnection> ui.BindHandler
-```
-*Connection used for handling binds. Used internally, do not change*
 #### Variables:  
-
+<sup>Internally used variables are now removed, since they shouldn't be listed if they shouldn't be modified.
 ```lua
-<string> ui.Version = "2.1.6.0-alpha" 
+<string> ui.Version = "2.1.7.0" --No longer alpha because why should it be
 ```
 *The current ui version*
-
-
-```lua
-<table> ui.cons
-```
-*Table for ui connections. Used internally, do not change.*
-```lua
-<table> ui.colors
-```
-*Table for ui colors. Used internally, do not change*
-```lua
-<table> ui.binds
-```
-*Table for ui binds. Used internally, do not change*
-
-```lua
-<number> ui.NotifCount
-```
-*Value to keep track of currently displayed notifications. Used internally, do not change.*
 ```lua
 <Enum.Font> ui.Font = Enum.Font.SourceSans
 ```
@@ -346,18 +331,6 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 <number> ui.FontSize = 20
 ```
 *Base UI font size. Edit this before calling any functions.*
-```lua
-<number> ui.WindowCount
-```
-*How many windows there are. Used internally, do not change.*
-```lua
-<table> ui.Windows
-```
-*A table for ui windows. Used internally, do not change.*
-```lua
-<table> ui.Toggles
-```
-*A table for ui toggles. Used internally, do not change.*
 ```lua
 <number> ui.TooltipX = 15
 ```
@@ -373,7 +346,7 @@ local ui = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit
 <br/>
 
 ## Windows
-Windows are pretty self explanatory. Note that although you can create more than one window, it is buggy and will not work well.
+Windows are pretty self explanatory.
 
 #### Creation:
 ```lua
@@ -435,7 +408,7 @@ local menu = window:NewMenu("Epic modules")
 *Returns how many children the menu has. Used internally, do not change*
 **All below functions have specific documentation sections on how to use them. Scroll down until you find what you need!**
 ```lua
-<section> menu:NewSection(<string> section_text)
+<section> menu:NewSection(<string> section_text, <bool> gradient = true)
 ```
 *Creates a new section object saying `section_text`.*
 ```lua
@@ -469,7 +442,7 @@ local menu = window:NewMenu("Epic modules")
 ```
 *Unused as of now. Will be used as an embedded menu that can be used to fit more objects into a grid*
 ```lua
-<void> menu:NewTrim()
+<void> menu:NewTrim(<bool> gradient = true, <bool> offset = false)
 ```
 *Creates a new trim object, which is the detail line below menu headers.*
 
@@ -513,11 +486,11 @@ local Description = speedhax:NewLabel("Among us")
 
 ## Section
 
-Sections are like labels, but with different positioning and sizing. They're the same as menu titles, but without the color gradient.
+Sections are like labels, but with different positioning and sizing. As of 2.1.7.0, sections have the menu gradient on by default. They can be disabled on creation with the second parameter, `gradient`.
 
 #### Creation:
 ```lua
-<section> menu:NewSection(<string> text = "")
+<section> menu:NewSection(<string> text = "", <bool> gradient = true)
 ```
 *Creates a new section reading `text` and returns it*
 ```lua
@@ -915,7 +888,6 @@ local speedmethod = m_speedhacks:NewDropdown("Speed hack method", {"CFrame","Wal
 <RBXEvent> dropdown.OnOptionRemoved
 ```
 *Event that gets fired when an option gets removed. The option's name, list index, and method used to find that option (string | index) are passed.*
-```
 ```lua
 <RBXEvent> dropdown.OnOptionAdded
 ```
@@ -1020,9 +992,9 @@ Trim objects are useful for organization. Kinda like sections, trims are the det
 <sup>*A trim is used here to separate the main modules from the credits.*</sub>
 #### Creation:
 ```lua
-<void> menu:NewTrim()
+<void> menu:NewTrim(<bool> gradient = true, <bool> offset = false)
 ```
-*Creates a new trim object for `menu`.*
+*Creates a new trim object for `menu`. When `gradient` is true, the trim has a gradient effect. When `offset` is true, the trim gets offset upwards like the menu header trim.*
 ```lua
 modules:NewTrim()
 ```
@@ -1115,9 +1087,9 @@ Notifications are useful for displaying text quickly without obstructing anythin
 
 #### Creation:
 ```lua
-<notification> ui:NewNotification(<string> notif_text, <string> notif_desc, <number> notif_timer)
+<notification> ui:NewNotification(<string> notif_text, <string> notif_desc, <number> notif_timer, <number> notif_x, <number> notif_y)
 ```
-*Creates a new notification titled `notif_text` with thedescription `notif_desc` that lasts `notif_timer` seconds*
+*Creates a new notification titled `notif_text` with thedescription `notif_desc` that lasts `notif_timer` seconds, with the size being increased by `notif_x` and `notif_y` *
 ```lua
 local msg = ui:NewNotification("Notification", "Hello world!", 5)
 ```
@@ -1135,7 +1107,7 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 ```
 *Returns the notification description*
 ```lua
-<void> notif:SetDesc()
+<void> notif:SetDesc(<string> new_desc)
 ```
 *Sets the notification description*
 
@@ -1145,7 +1117,7 @@ local msg = ui:NewNotification("Notification", "Hello world!", 5)
 `none`
 
 ---
-These docs are for version 2.1.6.0-alpha. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
+These docs are for version 2.1.7.0. Functions should remain the same for future versions unless noted otherwise. If something does not work, check **Deprecated** and use the new solution.
 
 **DOCS ARE CURRENTLY INCOMPLETE**
 If you want to make a suggestion contact topit#4057
@@ -1172,9 +1144,3 @@ NewToggle(name, enabled)
 ```
 *Sets the callback of `button` to `func`*
 **Removed on 2.1.5.0a, will not be replaced**
-
-
-<br/>
-
-## Pro gamers
-if you're an epic user who uses jeff 2 then let me know and i will add your name here
