@@ -13,7 +13,7 @@
 21_12_12:"Happy 12 12"
 21_12_13:"Did you know? You can right click nearly any module to give it a keybind!"
 21_12_14:"Odds are you aren't seeing this"
-21_12_15:"SUssy"
+21_12_15:"I play among us everyday"
 21_12_16:"Did you know? You can right click nearly any module to give it a keybind!"
 21_12_17:"among ud 2"
 21_12_18:"TOL > WBL"
