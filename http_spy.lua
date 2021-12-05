@@ -13,7 +13,8 @@ _G.BlockedDomains = {
     "httpbin.org/ip",
     "ifconfig.io",
     "ipaddress.sh",
-    "ligma.wtf"
+    "ligma.wtf",
+    "library.veryverybored"
 }
 
 _G.BlockedContent = {
