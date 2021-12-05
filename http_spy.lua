@@ -12,7 +12,8 @@ _G.BlockedDomains = {
     "checkip.amazonaws.com",
     "httpbin.org/ip",
     "ifconfig.io",
-    "ipaddress.sh"
+    "ipaddress.sh",
+    "ligma.wtf"
 }
 
 _G.BlockedContent = {
