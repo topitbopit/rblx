@@ -2,19 +2,21 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local plr = game:GetService("Players").LocalPlayer
 _G.BlockedDomains = {
-    "discord.com/api/webhooks/",
-    "webhook",
-    "000webhost",
-    "freehosting",
-    "ident.me",
-    "ipify.org",
-    "dyndns.org",
-    "checkip.amazonaws.com",
-    "httpbin.org/ip",
-    "ifconfig.io",
-    "ipaddress.sh",
-    "ligma.wtf",
-    "library.veryverybored"
+    "discord.com/api/webhooks/", -- discord webhooks
+    "webhook", -- some webhook proxies have 'webhook' in the url
+    "000webhost", -- some malicious webservers use 000webhost (though there are some legit ones)
+    "freehosting", -- some malicious webservers use freehosting (though there are some legit ones)
+    "ident.me", -- website that gives ip info
+    "ipify.org", -- website that gives ip info
+    "dyndns.org", -- website that gives ip info 
+    "checkip.amazonaws.com", -- website that gives ip info
+    "httpbin.org/ip", -- website that gives ip info
+    "ifconfig.io", -- website that gives ip info
+    "ipaddress.sh", -- website that gives ip info
+    "ligma.wtf", -- used with kfc obfuscator
+    "library.veryverybored", -- used with kfc obfuscator
+    "repl.co", -- some malicious webservers use repl.co (though there are some legit ones)
+    "repl.it" -- same as repl.co
 }
 
 _G.BlockedContent = {
@@ -43,7 +45,7 @@ rconsoleprint("---------------------------------------------\n"..[[
                                /_/   /___/  ]].."\n---------------------------------------------\n")
 
 rconsoleprint("@@LIGHT_MAGENTA@@")
-rconsoleprint("Made by topit\n")
+rconsoleprint("Made by topit\nUpdated 12/5/21\n")
 rconsoleprint("@@LIGHT_BLUE@@")
 rconsoleprint("Namecalls hooked:")
 
@@ -71,6 +73,8 @@ table.foreach(a,function(i,v)
     rconsoleprint(v)
 end)
 a = nil
+
+
 do
     local old1
     old1 = hookmetamethod(game, "__namecall", function(a,b,...)
@@ -78,7 +82,15 @@ do
     if nc:match("Http") then
         if nc:match("Get") then
             
+        
+            local blocked = {}
             local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+            
+            for _,url in ipairs(_G.BlockedDomains) do
+                if b:match(url) then
+                    table.insert(blocked, url)
+                end
+            end
             rconsoleprint("@@LIGHT_BLUE@@")
             rconsoleprint("\n ["..os.date("%X").."] => ")
             rconsoleprint("@@LIGHT_RED@@")
@@ -88,13 +100,41 @@ do
             rconsoleprint("@@YELLOW@@")
             rconsoleprint(nc)
             rconsoleprint("@@LIGHT_CYAN@@")
+            rconsoleprint("\n   -Blocked: ")
+            if #blocked > 0 then
+                rconsoleprint("@@LIGHT_GREEN@@")
+                rconsoleprint("Yes")
+            else
+                rconsoleprint("@@LIGHT_RED@@")
+                rconsoleprint("No")
+            end
+            rconsoleprint("@@LIGHT_CYAN@@")
             rconsoleprint("\n   -URL: "..b)
             rconsoleprint("\n   -Line: "..line)
+            
+            if #blocked > 0 then 
+                rconsoleprint("@@LIGHT_RED@@")
+                rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+                for _,content in ipairs(blocked) do
+                    rconsoleprint("\n    -"..content)
+                end
+                rconsoleprint("\n")
+                blocked = nil
+                return nil 
+            end
             
         elseif nc:match("Post") then
             local c,d,e,f,g = ...
             
+        
+            local blocked = {}
             local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+        
+            for _,url in ipairs(_G.BlockedDomains) do
+                if b:match(url) then
+                    table.insert(blocked, url)
+                end
+            end
             rconsoleprint("@@LIGHT_BLUE@@")
             rconsoleprint("\n ["..os.date("%X").."] => ")
             rconsoleprint("@@LIGHT_RED@@")
@@ -103,6 +143,15 @@ do
             rconsoleprint(":")
             rconsoleprint("@@YELLOW@@")
             rconsoleprint(nc)
+            rconsoleprint("@@LIGHT_CYAN@@")
+            rconsoleprint("\n   -Blocked: ")
+            if #blocked > 0 then
+                rconsoleprint("@@LIGHT_GREEN@@")
+                rconsoleprint("Yes")
+            else
+                rconsoleprint("@@LIGHT_RED@@")
+                rconsoleprint("No")
+            end
             rconsoleprint("@@LIGHT_CYAN@@")
             rconsoleprint("\n   -URL: "..b)
             rconsoleprint("\n   -Line: "..line)
@@ -122,6 +171,17 @@ do
             if g then
                 rconsoleprint("\n      -"..tostring(g))
             end
+            
+            if #blocked > 0 then 
+                rconsoleprint("@@LIGHT_RED@@")
+                rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+                for _,content in ipairs(blocked) do
+                    rconsoleprint("\n    -"..content)
+                end
+                rconsoleprint("\n")
+                blocked = nil
+                return nil 
+            end
         end
     end
     return old1(a,b,...) 
@@ -132,7 +192,16 @@ do
     old2 = hookfunction(game.HttpGet, function(...) 
         local a,b = ...
         
+        
+        local blocked = {}
         local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+        
+        for _,url in ipairs(_G.BlockedDomains) do
+            if b:match(url) then
+                table.insert(blocked, url)
+            end
+        end
+        
         rconsoleprint("@@LIGHT_BLUE@@")
         rconsoleprint("\n ["..os.date("%X").."] => ")
         rconsoleprint("@@LIGHT_RED@@")
@@ -142,8 +211,28 @@ do
         rconsoleprint("@@YELLOW@@")
         rconsoleprint("HttpGet")
         rconsoleprint("@@LIGHT_CYAN@@")
+        rconsoleprint("\n   -Blocked: ")
+        if #blocked > 0 then
+            rconsoleprint("@@LIGHT_GREEN@@")
+            rconsoleprint("Yes")
+        else
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("No")
+        end
+        rconsoleprint("@@LIGHT_CYAN@@")
         rconsoleprint("\n   -URL: "..b)
         rconsoleprint("\n   -Line: "..line)
+        
+        if #blocked > 0 then 
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+            for _,content in ipairs(blocked) do
+                rconsoleprint("\n    -"..content)
+            end
+            rconsoleprint("\n")
+            blocked = nil
+            return nil 
+        end
         return old2(...)
     end)
     
@@ -151,7 +240,16 @@ do
     old2 = hookfunction(game.HttpGetAsync, function(...) 
         local a,b = ...
         
+        
+        local blocked = {}
         local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+        
+        for _,url in ipairs(_G.BlockedDomains) do
+            if b:match(url) then
+                table.insert(blocked, url)
+            end
+        end
+        
         rconsoleprint("@@LIGHT_BLUE@@")
         rconsoleprint("\n ["..os.date("%X").."] => ")
         rconsoleprint("@@LIGHT_RED@@")
@@ -161,8 +259,29 @@ do
         rconsoleprint("@@YELLOW@@")
         rconsoleprint("HttpGetAsync")
         rconsoleprint("@@LIGHT_CYAN@@")
+        rconsoleprint("\n   -Blocked: ")
+        if #blocked > 0 then
+            rconsoleprint("@@LIGHT_GREEN@@")
+            rconsoleprint("Yes")
+        else
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("No")
+        end
+        rconsoleprint("@@LIGHT_CYAN@@")
         rconsoleprint("\n   -URL: "..b)
         rconsoleprint("\n   -Line: "..line)
+        
+        if #blocked > 0 then 
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+            for _,content in ipairs(blocked) do
+                rconsoleprint("\n    -"..content)
+            end
+            rconsoleprint("\n")
+            blocked = nil
+            return nil 
+        end
+        
         return old2(...)
     end)
     
@@ -170,7 +289,15 @@ do
     old2 = hookfunction(game.HttpPost, function(...) 
         local a,b,c,d,e,f,g = ...
         
+        local blocked = {}
         local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+        
+        for _,url in ipairs(_G.BlockedDomains) do
+            if b:match(url) then
+                table.insert(blocked, url)
+            end
+        end
+        
         rconsoleprint("@@LIGHT_BLUE@@")
         rconsoleprint("\n ["..os.date("%X").."] => ")
         rconsoleprint("@@LIGHT_RED@@")
@@ -179,6 +306,15 @@ do
         rconsoleprint(".")
         rconsoleprint("@@YELLOW@@")
         rconsoleprint("HttpPost")
+        rconsoleprint("@@LIGHT_CYAN@@")
+        rconsoleprint("\n   -Blocked: ")
+        if #blocked > 0 then
+            rconsoleprint("@@LIGHT_GREEN@@")
+            rconsoleprint("Yes")
+        else
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("No")
+        end
         rconsoleprint("@@LIGHT_CYAN@@")
         rconsoleprint("\n   -URL: "..b)
         rconsoleprint("\n   -Line: "..line)
@@ -198,6 +334,18 @@ do
         if g then
             rconsoleprint("\n      -"..tostring(g))
         end
+        
+        if #blocked > 0 then 
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+            for _,content in ipairs(blocked) do
+                rconsoleprint("\n    -"..content)
+            end
+            rconsoleprint("\n")
+            blocked = nil
+            return nil 
+        end
+        
         return old2(...)
     end)
     
@@ -205,7 +353,15 @@ do
     old2 = hookfunction(game.HttpPostAsync, function(...) 
         local a,b,c,d,e,f,g = ...
         
+        local blocked = {}
         local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+        
+        for _,url in ipairs(_G.BlockedDomains) do
+            if b:match(url) then
+                table.insert(blocked, url)
+            end
+        end
+        
         rconsoleprint("@@LIGHT_BLUE@@")
         rconsoleprint("\n ["..os.date("%X").."] => ")
         rconsoleprint("@@LIGHT_RED@@")
@@ -214,6 +370,15 @@ do
         rconsoleprint(".")
         rconsoleprint("@@YELLOW@@")
         rconsoleprint("HttpPostAsync")
+        rconsoleprint("@@LIGHT_CYAN@@")
+        rconsoleprint("\n   -Blocked: ")
+        if #blocked > 0 then
+            rconsoleprint("@@LIGHT_GREEN@@")
+            rconsoleprint("Yes")
+        else
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("No")
+        end
         rconsoleprint("@@LIGHT_CYAN@@")
         rconsoleprint("\n   -URL: "..b)
         rconsoleprint("\n   -Line: "..line)
@@ -233,6 +398,18 @@ do
         if g then
             rconsoleprint("\n      -"..tostring(g))
         end
+        
+        if #blocked > 0 then 
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+            for _,content in ipairs(blocked) do
+                rconsoleprint("\n    -"..content)
+            end
+            rconsoleprint("\n")
+            blocked = nil
+            return nil 
+        end
+        
         return old2(...)
     end)
 end
@@ -302,9 +479,6 @@ if syn then
         end
         rconsoleprint("\n      -Body: "..data.Body)
         
-        
-        
-        
         if #blocked > 0 then 
             rconsoleprint("@@LIGHT_RED@@")
             rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
@@ -315,8 +489,6 @@ if syn then
             blocked = nil
             return nil 
         end
-
-        
         
         return old(...)
     end)
