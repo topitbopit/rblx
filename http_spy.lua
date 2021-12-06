@@ -1,7 +1,7 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 local plr = game:GetService("Players").LocalPlayer
-_G.BlockedDomains = {
+_G.BlockedDomains = _G.BlockedDomains or {
     "discord.com/api/webhooks/", -- discord webhooks
     "webhook", -- some webhook proxies have 'webhook' in the url
     "000webhost", -- some malicious webservers use 000webhost (though there are some legit ones)
@@ -19,7 +19,7 @@ _G.BlockedDomains = {
     "repl.it" -- same as repl.co
 }
 
-_G.BlockedContent = {
+_G.BlockedContent = _G.BlockedContent or {
     ["Player name"] = plr.Name,
     ["Server ID"] = game.JobId,
     ["Place ID"] = game.PlaceId,
