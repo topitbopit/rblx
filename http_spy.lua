@@ -1,15 +1,17 @@
 if not game:IsLoaded() then game.Loaded:Wait() end
 
--- Update 12/6/21
-  -- Improved code a bit
-  -- Made more safety checks so it wouldnt error if a messed up request was made
-  -- Made the URL white
-  -- Made the way requests are printed better
-  -- Now prints blocked URL content and blocked body content on startup
+-- Update 12/7/21
+  -- Organized code
+  -- Fixed colors
+  -- Added :GetObjects and .GetObjects hook
+  -- Fixed BlockedDomains and BlockedContent overwriting 
+  -- Added "api.myip.com" by request
+  -- Fixed request hooking not checking the url
+  -- Fixed request hooking not being able to print headers or cookies properly
 
 
 local plr = game:GetService("Players").LocalPlayer
-_G.BlockedDomains = {
+_G.BlockedDomains  = _G.BlockedDomains or {
     "discord.com/api/webhooks/", -- discord webhooks
     "webhook", -- some webhook proxies have 'webhook' in the url
     "000webhost", -- some malicious webservers use 000webhost (though there are some legit ones)
@@ -24,184 +26,226 @@ _G.BlockedDomains = {
     "ligma.wtf", -- used with kfc obfuscator
     "library.veryverybored", -- used with kfc obfuscator
     "repl.co", -- some malicious webservers use repl.co (though there are some legit ones)
-    "repl.it" -- same as repl.co
+    "repl.it", -- same as repl.co
+    "myip.com" -- website that gives ip info
 }
-
-_G.BlockedContent = {
+_G.BlockedContent = _G.BlockedContent or {
     ["Player name"] = plr.Name,
     ["Server ID"] = game.JobId,
     ["Place ID"] = game.PlaceId,
     ["Executor name"] = (identifyexecutor or getexecutor or getexecutorname or function() return "Unknown" end)(),
 }
 
-
-
-
-
-
 rconsoleclear()
 
 rconsoleprint("@@BLUE@@")
-rconsoleprint("---------------------------------------------\n"..[[
+rconsoleprint([[
+---------------------------------------------
    __ __ ______ ______ ___    ____          
   / // //_  __//_  __// _ \  / __/___  __ __
  / _  /  / /    / /  / ___/ _\ \ / _ \/ // /
 /_//_/  /_/    /_/  /_/    /___// .__/\_, / 
-                               /_/   /___/  ]].."\n---------------------------------------------\n")
+                               /_/   /___/  
+---------------------------------------------
+]])
 
+-- intro
 rconsoleprint("@@LIGHT_MAGENTA@@")
-rconsoleprint("Made by topit\nUpdated 12/6/21\n")
+rconsoleprint("Made by topit\nUpdated 12/7/21\n")
 
-rconsoleprint("@@LIGHT_BLUE@@")
-rconsoleprint("Blocked URL content:")
-
-for i,v in ipairs(_G.BlockedDomains) do
+-- blocked stuff
+do
     rconsoleprint("@@LIGHT_BLUE@@")
-    rconsoleprint("\n => ")
+    rconsoleprint("\n\nBlocked URL content (")
+    rconsoleprint("@@LIGHT_MAGENTA@@")
+    rconsoleprint("_G")
     rconsoleprint("@@WHITE@@")
-    rconsoleprint(v)
-end
-rconsoleprint("@@LIGHT_BLUE@@")
-rconsoleprint("\n\nBlocked body content:")
-
-for i,v in pairs(_G.BlockedContent) do
+    rconsoleprint(".BlockedDomains")
     rconsoleprint("@@LIGHT_BLUE@@")
-    rconsoleprint("\n => ")
+    rconsoleprint("):")
+    for i,v in ipairs(_G.BlockedDomains) do
+        rconsoleprint("@@LIGHT_BLUE@@")
+        rconsoleprint("\n => ")
+        rconsoleprint("@@WHITE@@")
+        rconsoleprint(v)
+    end
+    
+    rconsoleprint("@@LIGHT_BLUE@@")
+    rconsoleprint("\n\nBlocked body content (")
+    rconsoleprint("@@LIGHT_MAGENTA@@")
+    rconsoleprint("_G")
     rconsoleprint("@@WHITE@@")
-    rconsoleprint(i)
-    rconsoleprint("@@DARK_GRAY@@")
-    rconsoleprint(" ("..tostring(v)..")")
+    rconsoleprint(".BlockedContent")
+    rconsoleprint("@@LIGHT_BLUE@@")
+    rconsoleprint("):")
+    for i,v in pairs(_G.BlockedContent) do
+        rconsoleprint("@@LIGHT_BLUE@@")
+        rconsoleprint("\n => ")
+        rconsoleprint("@@WHITE@@")
+        rconsoleprint(i)
+        rconsoleprint("@@DARK_GRAY@@")
+        rconsoleprint(" ("..tostring(v)..")")
+    end
 end
-
-
+-- hook namecalls
 do
     rconsoleprint("@@LIGHT_BLUE@@")
     rconsoleprint("\n\nNamecalls hooked:")
     local old1
     old1 = hookmetamethod(game, "__namecall", function(a,b,...)
         local nc = getnamecallmethod()
-        if nc:match("Http") then
-            if nc:match("Get") then
-                
-            
-                local blocked = {}
-                local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
-                
-                for _,url in ipairs(_G.BlockedDomains) do
-                    if b:match(url) then
-                        table.insert(blocked, url)
+        if nc:match("Get") then
+            if nc:match("HttpGet") then
+                do
+                    local blocked = {}
+                    local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+                    
+                    for _,url in ipairs(_G.BlockedDomains) do
+                        if b:match(url) then
+                            table.insert(blocked, url)
+                        end
+                    end
+                    rconsoleprint("@@LIGHT_BLUE@@")
+                    rconsoleprint("\n ["..os.date("%X").."] => ")
+                    rconsoleprint("@@LIGHT_RED@@")
+                    rconsoleprint("game")
+                    rconsoleprint("@@WHITE@@")
+                    rconsoleprint(":")
+                    rconsoleprint("@@YELLOW@@")
+                    rconsoleprint(nc)
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -Blocked: ")
+                    if #blocked > 0 then
+                        rconsoleprint("@@LIGHT_GREEN@@")
+                        rconsoleprint("Yes")
+                    else
+                        rconsoleprint("@@LIGHT_RED@@")
+                        rconsoleprint("No")
+                    end
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -URL: ")
+                    rconsoleprint("@@WHITE@@")
+                    if b then
+                        rconsoleprint(tostring(b))
+                    else
+                        rconsoleprint("N/A")
+                    end
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -Line: "..line)
+                    
+                    if #blocked > 0 then 
+                        rconsoleprint("@@LIGHT_RED@@")
+                        rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+                        for _,content in ipairs(blocked) do
+                            rconsoleprint("\n    -"..content)
+                        end
+                        rconsoleprint("\n")
+                        blocked = nil
+                        return nil 
                     end
                 end
-                rconsoleprint("@@LIGHT_BLUE@@")
-                rconsoleprint("\n ["..os.date("%X").."] => ")
-                rconsoleprint("@@LIGHT_RED@@")
-                rconsoleprint("game")
-                rconsoleprint("@@WHITE@@")
-                rconsoleprint(":")
-                rconsoleprint("@@YELLOW@@")
-                rconsoleprint(nc)
-                rconsoleprint("@@LIGHT_CYAN@@")
-                rconsoleprint("\n   -Blocked: ")
-                if #blocked > 0 then
-                    rconsoleprint("@@LIGHT_GREEN@@")
-                    rconsoleprint("Yes")
-                else
+            elseif nc:match("GetObjects") then
+                do
+                    
+                    local blocked = {}
+                    local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
+                    
+                    rconsoleprint("@@LIGHT_BLUE@@")
+                    rconsoleprint("\n ["..os.date("%X").."] => ")
                     rconsoleprint("@@LIGHT_RED@@")
-                    rconsoleprint("No")
-                end
-                rconsoleprint("@@LIGHT_CYAN@@")
-                rconsoleprint("\n   -URL: ")
-                rconsoleprint("@@WHITE@@")
-                if b then
-                    rconsoleprint(tostring(b))
-                else
-                    rconsoleprint("N/A")
-                end
-                rconsoleprint("@@LIGHT_CYAN@@")
-                rconsoleprint("\n   -Line: "..line)
-                
-                if #blocked > 0 then 
-                    rconsoleprint("@@LIGHT_RED@@")
-                    rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
-                    for _,content in ipairs(blocked) do
-                        rconsoleprint("\n    -"..content)
+                    rconsoleprint("game")
+                    rconsoleprint("@@WHITE@@")
+                    rconsoleprint(":")
+                    rconsoleprint("@@YELLOW@@")
+                    rconsoleprint(nc)
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -Asset: ")
+                    rconsoleprint("@@WHITE@@")
+                    if b then
+                        rconsoleprint(tostring(b))
+                    else
+                        rconsoleprint("N/A")
                     end
-                    rconsoleprint("\n")
-                    blocked = nil
-                    return nil 
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -Line: "..line)
                 end
+            end
+        elseif nc:match("Post") then
+            if nc:match("HttpPost") then 
+                do
+                    local c,d,e,f,g = ...
+                    
                 
-            elseif nc:match("Post") then
-                local c,d,e,f,g = ...
+                    local blocked = {}
+                    local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
                 
-            
-                local blocked = {}
-                local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
-            
-                for _,url in ipairs(_G.BlockedDomains) do
-                    if b:match(url) then
-                        table.insert(blocked, url)
+                    for _,url in ipairs(_G.BlockedDomains) do
+                        if b:match(url) then
+                            table.insert(blocked, url)
+                        end
                     end
-                end
-                rconsoleprint("@@LIGHT_BLUE@@")
-                rconsoleprint("\n ["..os.date("%X").."] => ")
-                rconsoleprint("@@LIGHT_RED@@")
-                rconsoleprint("game")
-                rconsoleprint("@@WHITE@@")
-                rconsoleprint(":")
-                rconsoleprint("@@YELLOW@@")
-                rconsoleprint(nc)
-                rconsoleprint("@@LIGHT_CYAN@@")
-                rconsoleprint("\n   -Blocked: ")
-                if #blocked > 0 then
-                    rconsoleprint("@@LIGHT_GREEN@@")
-                    rconsoleprint("Yes")
-                else
+                    rconsoleprint("@@LIGHT_BLUE@@")
+                    rconsoleprint("\n ["..os.date("%X").."] => ")
                     rconsoleprint("@@LIGHT_RED@@")
-                    rconsoleprint("No")
-                end
-                rconsoleprint("@@LIGHT_CYAN@@")
-                rconsoleprint("\n   -URL: ")
-                rconsoleprint("@@WHITE@@")
-                if b then
-                    rconsoleprint(tostring(b))
-                else
-                    rconsoleprint("N/A")
-                end
-                rconsoleprint("\n   -Line: "..line)
-                if c then
-                    rconsoleprint("\n   -Data:")
-                    rconsoleprint("\n      -"..tostring(c))
-                end
-                if d then
-                    rconsoleprint("\n      -"..tostring(d))
-                end
-                if e then
-                    rconsoleprint("\n      -"..tostring(e))
-                end
-                if f then
-                    rconsoleprint("\n      -"..tostring(f))
-                end
-                if g then
-                    rconsoleprint("\n      -"..tostring(g))
-                end
-                
-                if #blocked > 0 then 
-                    rconsoleprint("@@LIGHT_RED@@")
-                    rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
-                    for _,content in ipairs(blocked) do
-                        rconsoleprint("\n    -"..content)
+                    rconsoleprint("game")
+                    rconsoleprint("@@WHITE@@")
+                    rconsoleprint(":")
+                    rconsoleprint("@@YELLOW@@")
+                    rconsoleprint(nc)
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -Blocked: ")
+                    if #blocked > 0 then
+                        rconsoleprint("@@LIGHT_GREEN@@")
+                        rconsoleprint("Yes")
+                    else
+                        rconsoleprint("@@LIGHT_RED@@")
+                        rconsoleprint("No")
                     end
-                    rconsoleprint("\n")
-                    blocked = nil
-                    return nil 
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -URL: ")
+                    rconsoleprint("@@WHITE@@")
+                    if b then
+                        rconsoleprint(tostring(b))
+                    else
+                        rconsoleprint("N/A")
+                    end
+                    rconsoleprint("@@LIGHT_CYAN@@")
+                    rconsoleprint("\n   -Line: "..line)
+                    if c then
+                        rconsoleprint("\n   -Data:")
+                        rconsoleprint("\n      -"..tostring(c))
+                    end
+                    if d then
+                        rconsoleprint("\n      -"..tostring(d))
+                    end
+                    if e then
+                        rconsoleprint("\n      -"..tostring(e))
+                    end
+                    if f then
+                        rconsoleprint("\n      -"..tostring(f))
+                    end
+                    if g then
+                        rconsoleprint("\n      -"..tostring(g))
+                    end
+                    
+                    if #blocked > 0 then 
+                        rconsoleprint("@@LIGHT_RED@@")
+                        rconsoleprint("\nAn attempt to make a possibly malicious request was made. Blacklisted content detected: ")
+                        for _,content in ipairs(blocked) do
+                            rconsoleprint("\n    -"..content)
+                        end
+                        rconsoleprint("\n")
+                        blocked = nil
+                        return nil 
+                    end
                 end
             end
         end
+        
         return old1(a,b,...) 
     end)
     
-    local a = {"HttpGet","HttpPost","HttpGetAsync","HttpPostAsync"}
+    local a = {"HttpGet","HttpPost","HttpGetAsync","HttpPostAsync","GetObjects"}
     table.foreach(a,function(i,v) 
         rconsoleprint("@@LIGHT_BLUE@@")
         rconsoleprint("\n => ")
@@ -214,8 +258,8 @@ do
     end)
     
     a = nil
-    
 end
+-- hook functions
 do
     rconsoleprint("@@LIGHT_BLUE@@")
     rconsoleprint("\n\nFunctions hooked:")
@@ -261,6 +305,7 @@ do
         else
             rconsoleprint("N/A")
         end
+        rconsoleprint("@@LIGHT_CYAN@@")
         rconsoleprint("\n   -Line: "..line)
         
         
@@ -521,7 +566,7 @@ do
     rconsoleprint("@@YELLOW@@")
     rconsoleprint("HttpPostAsync")
 end
-
+-- hook request
 rconsoleprint("@@LIGHT_BLUE@@")
 rconsoleprint("\n => ")
 if syn then
@@ -547,7 +592,7 @@ if syn then
                 end
             end
         end
-        if type(data.Body) ~= "string" then 
+        if type(data.Url) == "string" then 
             for _,url in ipairs(_G.BlockedDomains) do
                 if data.Url:match(url) then
                     table.insert(blocked, url)
@@ -596,13 +641,13 @@ if syn then
         if type(data.Headers) == "table" then
             rconsoleprint("\n      -Headers:")
             for i,v in pairs(data.Headers) do
-                rconsoleprint("\n         -"..tostring(i)..":"..tostring(v)) 
+                rconsoleprint("\n         -"..tostring(i)..": "..tostring(v)) 
             end
         end
         if type(data.Cookies) == "table" then
-            rconsoleprint("\n      -Headers:")
-            for i,v in pairs(data.Headers) do
-                rconsoleprint("\n         -"..tostring(i)..":"..tostring(v)) 
+            rconsoleprint("\n      -Cookies:")
+            for i,v in pairs(data.Cookies) do
+                rconsoleprint("\n         -"..tostring(i)..": "..tostring(v)) 
             end
         end
         rconsoleprint("\n      -Body: "..(data.Body and data.Body or "nil"))
@@ -623,11 +668,9 @@ if syn then
 else
     local func = http and http.request or request or http_request
     if func then
-
         local old
         old = hookfunction(func, function(...) 
             local data = ...
-            
             
             local blocked = {}
             local line = debug.traceback():gsub("[^\n]+\n-","",1):match(":(%d)")
@@ -639,7 +682,7 @@ else
                     end
                 end
             end
-            if type(data.Body) ~= "string" then 
+            if type(data.Url) == "string" then 
                 for _,url in ipairs(_G.BlockedDomains) do
                     if data.Url:match(url) then
                         table.insert(blocked, url)
@@ -650,6 +693,10 @@ else
             rconsoleprint("@@LIGHT_BLUE@@")
             rconsoleprint("\n ["..os.date("%X").."] => ")
             
+            rconsoleprint("@@LIGHT_RED@@")
+            rconsoleprint("syn")
+            rconsoleprint("@@WHITE@@")
+            rconsoleprint(".")
             rconsoleprint("@@YELLOW@@")
             rconsoleprint("request")
             
@@ -684,13 +731,13 @@ else
             if type(data.Headers) == "table" then
                 rconsoleprint("\n      -Headers:")
                 for i,v in pairs(data.Headers) do
-                    rconsoleprint("\n         -"..tostring(i)..":"..tostring(v)) 
+                    rconsoleprint("\n         -"..tostring(i)..": "..tostring(v)) 
                 end
             end
             if type(data.Cookies) == "table" then
-                rconsoleprint("\n      -Headers:")
-                for i,v in pairs(data.Headers) do
-                    rconsoleprint("\n         -"..tostring(i)..":"..tostring(v)) 
+                rconsoleprint("\n      -Cookies:")
+                for i,v in pairs(data.Cookies) do
+                    rconsoleprint("\n         -"..tostring(i)..": "..tostring(v)) 
                 end
             end
             rconsoleprint("\n      -Body: "..(data.Body and data.Body or "nil"))
@@ -710,6 +757,8 @@ else
         end)
     end
 end
+
+-- logs
 rconsoleprint("\n\n")
 rconsoleprint("@@LIGHT_BLUE@@")
 rconsoleprint("Logs:")
