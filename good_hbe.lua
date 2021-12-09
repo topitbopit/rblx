@@ -418,13 +418,15 @@ do
         end
     end)
     
-    others_size.OnValueChanged:Connect(function(v) 
+    others_size.OnFocusLost:Connect(function() 
+        local v = others_size:GetValue()
         for _,p in ipairs(players:GetPlayers()) do
             if p == plr then continue end
             
             local humrp = find(p.Character, "HumanoidRootPart")
+            print(humrp)
             if humrp then
-                twn(humrp, {Size = vector3(v*0.1, 2+v*0.05, v*0.1)}, 0.25)
+                twn(humrp, {Size = vector3(v*0.1, 2+(v*0.05), v*0.1)}, 0.25)
             end
         end
     end)
