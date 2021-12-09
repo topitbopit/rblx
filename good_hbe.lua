@@ -2,9 +2,11 @@ if not game:IsLoaded() then game.Loaded:Wait() end
 
 local players = game:GetService("Players")
 local ts = game:GetService("TweenService")
+local rs = game:GetService("RunService")
 local plr = players.LocalPlayer
 
 local vector3 = Vector3.new
+local hsv = Color3.fromHSV
 
 local function find(instance, name) 
     local a,b = pcall(function() return instance[name] end)
@@ -56,9 +58,6 @@ local w = ui:NewWindow("la sociedad hbe", 360, 300) local m
       custom_visible:SetTooltip("Changes the visibility for the specified part, retains original transparency when disabled")
      local custom_name = m:NewTextbox("Enter custom part name")
       custom_name:SetTooltip("Type in the part name (ex. \"left arm\") to expand that part. Type the name in quotes to disable fuzzy search (\"Head\" vs Head)")
-    --m:NewSection("Settings (Self)",true) m:NewTrim(true,true)
-    -- local massless = m:NewToggle("Massless hitboxes")
-    --  massless:SetTooltip("Makes the hitbox less glitchy. Helps for games with custom jumping mechanics")
     m:NewSection("Made by topit")
     
     
@@ -71,6 +70,8 @@ local w = ui:NewWindow("la sociedad hbe", 360, 300) local m
      local others_visible = m:NewToggle("Visible")
       others_visible:SetTooltip("Changes the visibility for other players' rootpart")
     m:NewSection("Made by topit")
+  m = w:NewMenu("Settings")
+   local rainbow_outline = m:NewToggle("RGB hitbox outline")
 
 ui:Ready()
 
@@ -304,32 +305,6 @@ do
             end
         end)
     end
-    
-    -- massless 
-    do 
-        --[[
-        turns out setting Massless to true on the humrp just locks up your character
-        so rip this idea
-        
-        
-        massless.OnToggle:Connect(function(t) 
-            if t then
-                plr_humrp.Massless = true
-                if plr_custom then
-                    plr_custom.Massless = true
-                end
-                
-                ui:NewNotification("Massless","Hitboxes are now massless",3)
-            else
-                plr_humrp.Massless = false
-                if plr_custom then
-                    plr_custom.Massless = false
-                end
-                ui:NewNotification("Massless","Disabled massless",3)
-            end
-        end)
-        ]]
-    end
 end
 
 -- OTHER HBE
@@ -429,6 +404,58 @@ do
                 twn(humrp, {Size = vector3(v*0.1, 2+(v*0.05), v*0.1)}, 0.25)
             end
         end
+    end)
+end
+
+-- SETTINGS 
+
+do 
+    local outlines = {}
+    local connections_outlines = {}
+    rainbow_outline.OnEnable:Connect(function()
+        local c = 0
+        rs:BindToRenderStep("HB-RGB",2000,function(dt) 
+            c += dt*0.05
+            c = (c > 1 and 0 or c)
+            local color = hsv(c, 1, 1)
+            for _,outline in ipairs(outlines) do
+                outline.Color3 = color
+            end
+        end)
+        
+        connections_outlines["new"] = players.PlayerAdded:Connect(function(p) 
+            connections_outlines[p.Name] = p.CharacterAdded:Connect(function(c) 
+                local h = c:WaitForChild("HumanoidRootPart",5)
+                outline.Adornee = h
+                outline.Parent = h
+            end)
+        end)
+        
+        connections_outlines["old"] = players.PlayerRemoving:Connect(function(p) 
+            connections_outlines[p.Name]:Disconnect()
+        end)
+        
+        for _,p in ipairs(players:GetPlayers()) do
+            local outline = Instance.new("SelectionBox")
+            outline.LineThickness = 0.01
+            outline.Visible = true
+            outline.Color3 = Color3.new(0,0,1)
+            outline.Adornee = find(p.Character, "HumanoidRootPart")
+            outline.Parent = find(p.Character, "HumanoidRootPart")
+            
+            outlines[#outlines+1] = outline
+            
+            connections_outlines[p.Name] = p.CharacterAdded:Connect(function(c) 
+                local h = c:WaitForChild("HumanoidRootPart",5)
+                outline.Adornee = h
+                outline.Parent = h
+            end)
+        end
+    end)
+    rainbow_outline.OnDisable:Connect(function() 
+        rs:UnbindFromRenderStep("HB-RGB")
+        for i,v in ipairs(outlines) do v:Destroy() end
+        for i,v in pairs(connections_outlines) do v:Disconnect() end
     end)
 end
 
