@@ -20,57 +20,99 @@ ui:SetColors({
 })
 ui.TooltipX = 25
 
-if not isfile("epicfps.txt") then
-    writefile("epicfps.txt","60")
+if isfile("epicfps.txt") then
+    if readfile("epicfps.txt"):match("%d+|%d+") then
+        print'verified'
+    else
+        writefile("epicfps.txt","144|60")
+    end
+else
+    writefile("epicfps.txt","144|60")
 end
-local fps = readfile("epicfps.txt")
 
-local w = ui:NewWindow("epic fps unlocker", 250, 180)
+local _ = readfile("epicfps.txt"):split"|"
+local max = _[1]
+local min = _[2]
+
+local w = ui:NewWindow("epic fps unlocker", 250, 200)
 local m = w:NewMenu("stuff")
 
 local unlocker = m:NewToggle("Unlock FPS")
 local unfocused = m:NewToggle("Limit when unfocused")
-local amountbox = m:NewTextbox("FPS: "..fps)
+local maxbox = m:NewTextbox("FPS max: "..max)
+local minbox = m:NewTextbox("FPS min: "..min)
+
+unlocker:SetTooltip("Unlocks your fps. When enabled, max amount ("..max..") is used and when disabled min amount ("..min..") is used")
+unfocused:SetTooltip("When the window gets minimized, rendering is disabled and fps gets capped to prevent cpu and gpu usage")
+
+maxbox:SetTooltip("FPS used when the unlocker is enabled")
+minbox:SetTooltip("FPS used when the unlocker is disabled")
 
 unlocker.OnToggle:Connect(function(t) 
     if t then
-        setfpscap(fps)
+        setfpscap(max)
     else
-        setfpscap(60)
+        setfpscap(min)
     end
 end)
 
-amountbox.OnFocusLost:Connect(function(text) 
+maxbox.OnFocusLost:Connect(function(text) 
     local n = tonumber(text)
-    
     if n == nil then
-        amountbox:SetText("Not a number!")
+        maxbox:SetText("Not a number!")
     else
-        fps = math.floor(n)
-        if fps < 20 then
-            local msg = ui:NewMessagebox("Are you sure?","Are you sure you want to set the cap this low?",{{Text = "Yes", Callback = function(self) 
-                amountbox:SetText("FPS: "..fps)
-                writefile("epicfps.txt",fps)
+        max = math.floor(n)
+        if max < 20 then
+            local msg = ui:NewMessagebox("Are you sure?","Are you sure you want to set the max this low?",{{Text = "Yes", Callback = function(self) 
+                maxbox:SetText("FPS max: "..max)
+                writefile("epicfps.txt",max.."|"..min)
                 
-                if unlocker:IsEnabled() then
-                    setfpscap(fps)
-                end
-                
+                setfpscap(unlocker:IsEnabled() and max or min)
                 self:Close()
             end},{Text = "No", Callback = function(self)
-                fps = readfile("epicfps.txt")
-                amountbox:SetText("FPS: "..fps)
-                setfpscap(fps)
+                max = readfile("epicfps.txt"):split("|")[1]
+                maxbox:SetText("FPS max: "..max)
                 
+                
+                setfpscap(unlocker:IsEnabled() and max or min)
                 self:Close()
             end}},40,-30)
         else
-            amountbox:SetText("FPS: "..fps)
-            writefile("epicfps.txt",fps)
+            maxbox:SetText("FPS max: "..max)
+            writefile("epicfps.txt",max.."|"..min)
             
-            if unlocker:IsEnabled() then
-                setfpscap(fps)
-            end
+            
+            setfpscap(unlocker:IsEnabled() and max or min)
+        end
+    end
+end)
+
+minbox.OnFocusLost:Connect(function(text) 
+    local n = tonumber(text)
+    if n == nil then
+        minbox:SetText("Not a number!")
+    else
+        min = math.floor(n)
+        if min < 20 then
+            local msg = ui:NewMessagebox("Are you sure?","Are you sure you want to set the min this low?",{{Text = "Yes", Callback = function(self) 
+                minbox:SetText("FPS min: "..min)
+                writefile("epicfps.txt",max.."|"..min)
+                
+                
+                setfpscap(unlocker:IsEnabled() and max or min)
+                self:Close()
+            end},{Text = "No", Callback = function(self)
+                min = readfile("epicfps.txt"):split("|")[2]
+                minbox:SetText("FPS min: "..min)
+                
+                setfpscap(unlocker:IsEnabled() and max or min)
+                self:Close()
+            end}},40,-30)
+        else
+            minbox:SetText("FPS min: "..min)
+            writefile("epicfps.txt",max.."|"..min)
+            
+            setfpscap(unlocker:IsEnabled() and max or min)
         end
     end
 end)
@@ -82,11 +124,12 @@ local event_onfocus,event_focus
 unfocused.OnEnable:Connect(function() 
     event_focus = uis.WindowFocused:Connect(function() 
         rs:Set3dRenderingEnabled(true)
-        setfpscap(unlocker:IsEnabled() and fps or 60)
+        
+        setfpscap(unlocker:IsEnabled() and max or min)
     end)
     event_onfocus = uis.WindowFocusReleased:Connect(function() 
         rs:Set3dRenderingEnabled(false)
-        setfpscap(20)
+        setfpscap(15)
     end)
 end)
 
@@ -98,6 +141,8 @@ end)
 ui.Exiting:Connect(function() 
     _G.UnlockerLoaded = false
     _G.UnlockerUI = nil
+    
+    setfpscap(60)
 end)
 
 
