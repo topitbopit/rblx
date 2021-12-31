@@ -41,6 +41,8 @@ Menu button hidden when there's only 1 menu
 
 ]]--
 
+_G.J2DEBUG = false
+
 local eventlistener = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/rbxevent.lua'))()
 
 local plrs = game:GetService("Players")
@@ -63,9 +65,11 @@ local tspawn = task.spawn
 
 local screen = Instance.new("ScreenGui")
 
-pcall(function() 
- 
-end)
+if not _G.J2DEBUG then
+  pcall(function() 
+    syn.protect_gui(screen)
+  end)
+end
 if gethiddengui then
  screen.Parent = gethiddengui()
 elseif gethui then 
