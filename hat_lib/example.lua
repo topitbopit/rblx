@@ -64,15 +64,18 @@ library.NetIntensity = 80 -- 80 works fine, 50-60 seems to be the lowest you can
 
 -- Make the hats
 local hats = {} do 
-    for i = 1, 10 do 
+    while true do
         local hat = library:NewHat()
         if hat then
             ins(hats, {
                 hat; -- The hat itself
-                random(0,200)*0.1; -- Current time w/ random offset
-                random(5,20)*0.1; -- Speed
-                random(-30,30)*0.1; -- Vertical offset
+                random(0,2000)*0.01; -- Current time w/ random offset
+                random(50,210)*0.01; -- Speed
+                random(-300,300)*0.01; -- Vertical offset
+                random(300,800)*0.01; -- Distance
             })
+        else
+            break
         end
     end
 end 
@@ -108,8 +111,8 @@ render_connection = rs_stepped:Connect(function(DeltaTime)
         -- << CFRAME MATH >> --
         -- Using sin and cos lets a circle path be formed
         -- `index` isn't really needed (because of the random time value set at hat creation) but it helps give extra variety
-        -- Changing 4 changes the size of the circle, try it out
-        local a, b = sin(index+time)*4, cos(index+time)*4
+        -- The hat[5] controls the distance
+        local a, b = sin(index+time)*hat[5], cos(index+time)*hat[5]
         
         -- To prevent the blocks rotating with the player constantly,
         -- the cframe gets calculated separately from the cfa line to preserve rotation
