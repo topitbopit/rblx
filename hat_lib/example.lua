@@ -1,4 +1,3 @@
-
 --[[
 I will make full on docs later, but heres some simple docs for now
 
@@ -61,16 +60,20 @@ end)
 -- There is an option to disable the flicker, but it's clientside only
 -- The only downside is that if a block gets destroyed for whatever reason, you still see it since the fakepart doesn't get destroyed
 library.DisableFlicker = true
+library.NetIntensity = 80 -- 80 works fine, 50-60 seems to be the lowest you can go without breaking ownership
 
 -- Make the hats
 local hats = {} do 
     for i = 1, 10 do 
-        ins(hats, {
-            library:NewHat(); -- The hat itself
-            random(0,200)*0.1; -- Current time w/ random offset
-            random(5,20)*0.1; -- Speed
-            random(-30,30)*0.1; -- Vertical offset
-        })
+        local hat = library:NewHat()
+        if hat then
+            ins(hats, {
+                hat; -- The hat itself
+                random(0,200)*0.1; -- Current time w/ random offset
+                random(5,20)*0.1; -- Speed
+                random(-30,30)*0.1; -- Vertical offset
+            })
+        end
     end
 end 
 
