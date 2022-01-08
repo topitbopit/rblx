@@ -67,3 +67,22 @@ hat.CFrame = CFrame.new(15, 15, 15)
 
 ## How does it work
 dm topit#4057 cause i dont want to explain it rn loolol
+
+## Q/A
+
+**What happens if i try to make a hat when there aren't any left on my character?**
+A warning will print to console and the NewHat call will return nil
+Probably gonna add a :HatExists() function or something later
+**What happens if i reset?**
+If DisableFlicker is enabled, then a fake hat will be there
+If DisableFlicker is disabled, then the hat will despawn normally
+Calling ClearHats when you respawn / die probably improves performance so do that
+**What happens if i unload the library while its running?**
+The existing hats just drop
+**What happens if i never unload the library?**
+It will still try to calculate stuff for the hats and probably slow your game down
+**Will this lag my pc?**
+Idk :skull:
+**How does the net work?**
+It does some ooga booga stuff and updates some hat stuff every other frame
+Idk why it works but it does
