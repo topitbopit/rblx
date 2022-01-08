@@ -15,7 +15,7 @@ does the funny thing with hats
 ``` 
 *The higher the less likely for blocks to break, but the more the flicker effect appears*
 ```lua
-<boolean> module.DisableFlicker = true
+<boolean> module.DisableFlicker = false
 ``` 
 *Because of the way the net works, there is a noticeable flicker effect, even more so on lower FPS. Setting `DisableFlicker` to true disables the flicker effect clientside by hiding the actual hat handles and showing the fake "root" parts.*
 
@@ -45,6 +45,25 @@ Basically:
 - create a hat with NewHat()
 - set hat.CFrame to a cframe
 - call Exit() when done with the hats
+
+## Give me an example
+```lua
+-- Load in the hat library
+local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/hat_lib/main.lua'))()
+-- Exit the library and clear all the resources after 15 seconds
+delay(15, function() 
+    library:Exit()
+end)
+
+-- Disable these if you're R15
+library.DisableFlicker = true
+library.BlockifyHats = true
+
+-- Make a hat
+local hat = library:NewHat()
+-- Move it to 15, 15, 15
+hat.CFrame = CFrame.new(15, 15, 15)
+```
 
 ## How does it work
 dm topit#4057 cause i dont want to explain it rn loolol
