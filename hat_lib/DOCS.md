@@ -1,5 +1,5 @@
 # Jeff's Hat lib
-made by topit
+made by topit  
 does the funny thing with hats
 
 ## How do I use it
