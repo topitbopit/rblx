@@ -1,6 +1,6 @@
 -- Sound visualizer example
--- Not gonna bother commenting this one, check the orbit one for explanations
--- The visualizer itself kinda sucks but it shows whats possible 
+-- Not gonna bother commenting this one, check the orbit one for setup and math explanations
+-- The visualizer itself kinda sucks but it shows what can be done
 
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/hat_lib/main.lua'))()
 
@@ -91,7 +91,7 @@ end
 
 local time = 0
 render_connection = rs_stepped:Connect(function(DeltaTime) 
-    time += DeltaTime
+    time += DeltaTime + (sb1[1].Value*0.001)
     local humrp_pos = l_humrp.Position
     
     for index,hat in ipairs(hats) do
@@ -99,7 +99,7 @@ render_connection = rs_stepped:Connect(function(DeltaTime)
         
         local c = time + ((index * .1)*7)
         local a, b = sin(c)*loudness, cos(c)*loudness
-        local pos1 = (humrp_pos + vec3(a-b,0,a+b))
+        local pos1 = (humrp_pos + vec3(a-b,1,a+b))
         hat[1].CFrame = cfn(pos1, humrp_pos)
     end
     
