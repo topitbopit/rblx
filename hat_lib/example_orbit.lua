@@ -1,21 +1,4 @@
---[[
-I will make full on docs later, but heres some simple docs for now
-
-<boolean>   module.BlockifyHats = true    -- Turns hats into blocks. Set DisableFlicker to false if you set this to false for consistent appearance
-<number>    module.NetIntensity = 80      -- The higher the less likely for blocks to break, but the more the flicker effect appears
-<boolean>   module.DisableFlicker = false -- Disables the flicker effect, but only clientside.
-
-<HatObject> module:NewHat() -- Creates and returns a hat object
-<void>      module:ClearHats() -- Removes all hats
-<void>      module:Exit() -- Removes all hats, remove variables, stops main net loop, etc.
-
--- HatObject --
-<CFrame>    HatObject.CFrame -- Sets the hat CFrame to a desired value when newindexed
-
-
-Basically: create a hat with NewHat(), set hat.CFrame to some value, call Exit() when done
-
-]]--
+-- Orbiting rocks example
 
 
 -- Get hat library
