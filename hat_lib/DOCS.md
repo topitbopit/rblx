@@ -19,6 +19,11 @@ does the funny thing with hats
 ``` 
 *Because of the way the net works, there is a noticeable flicker effect, even more so on lower FPS. Setting `DisableFlicker` to true disables the flicker effect clientside by hiding the actual hat handles and showing the fake "root" parts.*
 ```lua
+<Vector3> module.CustomNet
+```
+*In some cases, the default net that moves every part towards your player isn't desirable. By setting CustomNet to a Vector3 you have control on which direction the parts flicker*
+
+```lua
 <boolean> module.ShowRoots = false
 ```
 *Primarily used for debugging. Shows the hat roots as a small blue transclucent cube*
