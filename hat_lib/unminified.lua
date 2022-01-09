@@ -83,7 +83,7 @@ local module = {} do
         end
         if (not mesh) then
             if (handle.ClassName == "MeshPart") then
-                info[1] = mesh.MeshId:match("%d%d%d%d+")
+                info[1] = handle.MeshId:match("%d%d%d%d+")
             end
         end
         
