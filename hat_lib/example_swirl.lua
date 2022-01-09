@@ -45,7 +45,7 @@ do
 end
 
 
-local degrees = rad(36)
+
 
 local time = 0
 render_connection = rs_stepped:Connect(function(dt) 
@@ -54,7 +54,7 @@ render_connection = rs_stepped:Connect(function(dt)
     local humrp_pos = l_humrp.Position
     
     for idx,hat in ipairs(hats) do 
-        local c = time + (((idx * degrees)+18)) -- Thanks https://math.stackexchange.com/questions/1092502/
+        local c = time + (((idx * rad(36))+rad(18))) -- Thanks https://math.stackexchange.com/questions/1092502/
         local a, b = sin(c)*4, cos(c)*4
         local pos1 = (humrp_pos + vec3(a-b,idx>5 and a or b,a+b))
         hat.CFrame = cfn(pos1, humrp_pos) * cfa(a,b,0)
