@@ -1,5 +1,5 @@
 -- Sound visualizer example
--- Not gonna bother commenting this one, check the orbit one for setup and math explanations
+-- Not gonna bother commenting this one, check the orbit one for explanations
 -- The visualizer itself kinda sucks but it shows what can be done
 
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/hat_lib/main.lua'))()
@@ -57,8 +57,8 @@ die_connection = l_char.Humanoid.Died:Connect(function()
 end)
 
 
-library.DisableFlicker = true
-library.NetIntensity = 80
+library.DisableFlicker = false
+library.NetIntensity = 40
 
 local hats = {} do 
     while true do
@@ -97,7 +97,7 @@ render_connection = rs_stepped:Connect(function(DeltaTime)
     for index,hat in ipairs(hats) do
         local loudness = 4 + sb1[index].Value
         
-        local c = time + ((index * .1)*7)
+        local c = time + ((index * rad(36))+rad(18))
         local a, b = sin(c)*loudness, cos(c)*loudness
         local pos1 = (humrp_pos + vec3(a-b,1,a+b))
         hat[1].CFrame = cfn(pos1, humrp_pos)
