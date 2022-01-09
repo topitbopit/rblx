@@ -22,7 +22,7 @@ local module = {} do
     module.DisableFlicker = false
     module.ShowRoots = false
     module.NetIntensity = 80
-    
+    module.CustomNet = nil
     
     
     
@@ -174,25 +174,48 @@ local module = {} do
     end
     
     
-    spawn(function() 
-        while true do
-            if (not running) then return end
-            
-            
-            for idx,hat in ipairs(hats) do
-                rawget(hat, 'real')['CFrame'] = hat.CFrame
+    spawn(function()
+        wait(.1)
+        if (module.CustomNet) then 
+            while true do
+                if (not running) then return end
+                
+                
+                for idx,hat in ipairs(hats) do
+                    rawget(hat, 'real')['CFrame'] = hat.CFrame
+                end
+                stepped:Wait(stepped)
+                
+                if (not running) then return end
+                
+                local p1 = l_humrp.Position
+                local p2 = module.CustomNet
+                
+                for idx,hat in ipairs(hats) do 
+                    rawget(hat, 'real')['Velocity'] = p2
+                end
+                stepped:Wait(stepped)
             end
-            stepped:Wait(stepped)
-            
-            if (not running) then return end
-            
-            local p1 = l_humrp.Position
-            local p2 = module.NetIntensity
-            
-            for idx,hat in ipairs(hats) do 
-                rawget(hat, 'real')['Velocity'] = cfn(hat.CFrame.Position, p1).LookVector * p2
+        else
+            while true do
+                if (not running) then return end
+                
+                
+                for idx,hat in ipairs(hats) do
+                    rawget(hat, 'real')['CFrame'] = hat.CFrame
+                end
+                stepped:Wait(stepped)
+                
+                if (not running) then return end
+                
+                local p1 = l_humrp.Position
+                local p2 = module.NetIntensity
+                
+                for idx,hat in ipairs(hats) do 
+                    rawget(hat, 'real')['Velocity'] = cfn(hat.CFrame.Position, p1).LookVector * p2
+                end
+                stepped:Wait(stepped)
             end
-            stepped:Wait(stepped)
         end
     end)
 
