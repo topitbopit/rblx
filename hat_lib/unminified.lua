@@ -19,8 +19,11 @@ local module = {} do
         l_humrp = c:WaitForChild('HumanoidRootPart', 3)
     end)
     module.BlockifyHats = true
-    module.NetIntensity = 80
     module.DisableFlicker = false
+    module.ShowRoots = false
+    module.NetIntensity = 80
+    
+    
     
     
     local fake_hats = {}
@@ -29,32 +32,24 @@ local module = {} do
     
     local hat_obj_mt = {} do 
         hat_obj_mt.__index = function(a,b) 
-            -- If the user tries to get position then
-            -- return the fake hat's position
-            -- so it isn't all wonky
+            -- If the user tries to get cframe then
+            -- return the root hat's cframe
+            
             if (b == 'CFrame') then
                 return rawget(a, 'root')[b]
             end
+            
             -- Otherwise return desired value
             return rawget(a,b)
         end
         hat_obj_mt.__newindex = function(a,b,c) 
+            -- If the CFrame of the hat is being changed
+            -- then change the root's cframe
             if (b == 'CFrame') then
                 rawget(a, 'root')['CFrame'] = c
                 return
             end
             
-            -- If its the real velocity or position then change the real parts property
-            if (b == 'realvel') then
-                --printconsole("Set velocity",0,0,255)
-                rawget(a, 'real')['Velocity'] = c
-                return
-            end
-            if (b == 'realcf') then 
-                --printconsole("Set position",0,0,255)
-                rawget(a, 'real')['CFrame'] = c
-                return
-            end
             -- Otherwise do a normal set
             rawset(a,b,c)
         end
@@ -62,9 +57,9 @@ local module = {} do
     
     function module.GetHat_Internal() 
         local accessory = l_chr:FindFirstChildOfClass('Accessory')
-        local oldaccessory = accessory
-        accessory = accessory and accessory.Handle
-        if (not accessory) then return nil end
+        local handle = accessory and accessory.Handle
+        
+        if (not handle) then return nil end
         
         local fake_hat = Instance.new('Part')
         fake_hat.Transparency = 1
@@ -77,41 +72,61 @@ local module = {} do
         ins(fake_hats, fake_hat)
         
         
-        if (module.BlockifyHats) then
-            local mesh = accessory:FindFirstChildOfClass('SpecialMesh') or accessory:FindFirstChildOfClass('Mesh')
-            if mesh then mesh:Destroy() end
+        local info = {}
+        info[2] = handle.Size
+        
+        local mesh = handle:FindFirstChildOfClass('SpecialMesh') or handle:FindFirstChildOfClass('Mesh')
+        
+        if (module.BlockifyHats) and mesh then
+            info[1] = mesh.MeshId:match("%d%d%d%d+")
+            mesh:Destroy() 
         end
+        if (not mesh) then
+            if (handle.ClassName == "MeshPart") then
+                info[1] = mesh.MeshId:match("%d%d%d%d+")
+            end
+        end
+        
         
         if (module.DisableFlicker) then
-            fake_hat.Transparency = 0
-            accessory.Transparency = 1
+            fake_hat.Transparency = module.ShowRoots and 0.5 or 0
+            handle.Transparency = 1
             
-            fake_hat.Size = accessory.Size
+            
+            fake_hat.Size = info[2]
             fake_hat.BottomSurface = "Smooth"
             fake_hat.TopSurface = "Smooth"
+        else
+            if (module.ShowRoots) then
+                fake_hat.Transparency = .5
+                fake_hat.Size = vec3(0.8,0.8,0.8)
+                fake_hat.Color = Color3.new(0,0,1)
+            end
         end
         
-        local weld = accessory:FindFirstChildOfClass('Weld')
+        local weld = handle:FindFirstChildOfClass('Weld')
         if (weld) then weld:Destroy() end
         
-        accessory.Parent = fake_hat
-        oldaccessory:Destroy()
+        handle.Parent = fake_hat
         
-        return accessory, fake_hat
+        accessory:Destroy()
+        
+        return handle, fake_hat, info
     end
     
     function module:NewHat()
         local obj = setmetatable({}, hat_obj_mt)
         
-        local realhat, fakehat = module.GetHat_Internal()
+        local realhat, fakehat, info = module.GetHat_Internal()
         
         if (not realhat) then 
-            warn('Couldn\'t make hat, no more hats on char')
             return nil
         end
         
         rawset(obj, 'real', realhat)
         rawset(obj, 'root', fakehat)
+        rawset(obj, 'HatId', info[1])
+        rawset(obj, 'HatSize', info[2])
         
         ins(hats, obj)
         
@@ -122,7 +137,7 @@ local module = {} do
         for i,v in ipairs(hats) do 
             rawget(v, 'root'):Destroy()
             rawget(v, 'real'):Destroy()
-            v = nil
+            hats[i] = nil
         end
         hats = nil
         for i,v in ipairs(fake_hats) do 
@@ -144,18 +159,28 @@ local module = {} do
             Length = 2;
             Icon = 6023426926
         })
+        
+        delay(3, function()
+            notifs = nil
+        end)
     end
 
+    function module:GetHatCount() 
+        return #hats
+    end
     
-    
+    function module:GetHatTable() 
+        return hats
+    end
     
     
     spawn(function() 
         while true do
             if (not running) then return end
             
+            
             for idx,hat in ipairs(hats) do
-                hat.realcf = hat.CFrame
+                rawget(hat, 'real')['CFrame'] = hat.CFrame
             end
             stepped:Wait(stepped)
             
@@ -165,7 +190,7 @@ local module = {} do
             local p2 = module.NetIntensity
             
             for idx,hat in ipairs(hats) do 
-                hat.realvel = cfn(hat.CFrame.Position, p1).LookVector * p2
+                rawget(hat, 'real')['Velocity'] = cfn(hat.CFrame.Position, p1).LookVector * p2
             end
             stepped:Wait(stepped)
         end
