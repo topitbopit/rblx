@@ -8,16 +8,23 @@ does the funny thing with hats
 ```lua
 <boolean> module.BlockifyHats = true
 ``` 
-*Turns hats into blocks. Set `DisableFlicker` to false since `DisableFlicker` assumes you have blockify enabled*
+*Turns hats into blocks. Requires R6. If you have blockify enabled, set `DisableFlicker`to false*
 
 ```lua
 <number> module.NetIntensity = 80
 ``` 
-*The higher the less likely for blocks to break, but the more the flicker effect appears*
+*The higher the intensity the more the hats flicker / shake. However, the hats remain stable when others touch them*
 ```lua
 <boolean> module.DisableFlicker = false
 ``` 
 *Because of the way the net works, there is a noticeable flicker effect, even more so on lower FPS. Setting `DisableFlicker` to true disables the flicker effect clientside by hiding the actual hat handles and showing the fake "root" parts.*
+```lua
+<boolean> module.ShowRoots = false
+```
+*Primarily used for debugging. Shows the hat roots as a small blue transclucent cube*
+
+
+
 
 ### Module functions
 ```lua
@@ -32,13 +39,29 @@ does the funny thing with hats
 <void> module:Exit()
 ```
 *Removes all hats, remove variables, stops main net loop, etc.*
+```lua
+<number> module:GetHatCount()
+```
+*Returns the current amount of hats. Useful for debugging*
+```lua
+<table> module:GetHatTable() 
+```
+*Returns the hat table, which is an array of HatObjects*
 
 ### Hat object
-Hatobjects have one property, their CFrame
+Hatobjects have a few properties, but CFrame is the most used one
 ```lua
 <CFrame> HatObject.CFrame
 ```
 *Sets the hat CFrame to a desired value when newindexed*
+```lua
+<string> HatObject.HatId
+```
+*The ID portion of the MeshId. For example, "rbxassetid://4489232754" would result in "4489232754"*
+```lua
+<Vector3> HatObject.HatSize
+```
+*The size of the handle as a Vector3. For an international fedora, this would be (1,1,1)*
 
 ### Huh
 Basically: 
@@ -66,12 +89,12 @@ hat.CFrame = CFrame.new(15, 15, 15)
 ```
 
 ## How does it work
-dm topit#4057 cause i dont want to explain it rn loolol
+dm topit#4057 cause i dont want to explain it here loolol
 
 ## Q/A
 
 **What happens if i try to make a hat when there aren't any left on my character?**  
-A warning will print to console and the NewHat call will return nil  
+The NewHat call will return nil  
 Probably gonna add a :HatExists() function or something later  
 **What happens if i reset?**  
 If DisableFlicker is enabled, then a fake hat will be there  
@@ -86,3 +109,5 @@ Idk :skull:
 **How does the net work?**  
 It does some ooga booga stuff and updates some hat stuff every other frame  
 Idk why it works but it does  
+**Why do I need an fps unlocker?**
+Because the net updates the position every 2 frames, the net will appear choppy / laggy for other players. However, setting the cap to 144 (or higher) will let the hats update quicker, making it look smoother
