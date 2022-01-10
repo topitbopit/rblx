@@ -22,9 +22,11 @@ local render_connection
 die_connection = l_char.Humanoid.Died:Connect(function() 
     library:Exit()
     
-    old_chr.Humanoid:Destroy()
     die_connection:Disconnect()
     render_connection:Disconnect()
+    
+    
+    l_char.Humanoid:Destroy()
 end)
 
 do 
