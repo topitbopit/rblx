@@ -58,6 +58,11 @@ end)
 
 
 library.DisableFlicker = false
+pcall(function() 
+    if (l_char.Humanoid.RigType == Enum.HumanoidRigType.R6) then
+        library.DisableFlicker = true
+    end
+end)
 library.NetIntensity = 40
 
 local hats = {} do 
