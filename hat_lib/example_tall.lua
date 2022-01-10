@@ -12,7 +12,7 @@ local l_humrp = l_char and (l_char:FindFirstChild("HumanoidRootPart") or l_char:
 
 if (not l_humrp) then warn("Wait for the game to load!") return end 
 
-if (l_char.Humanoid.RigType == "R15") then
+if (l_char.Humanoid.RigType == Enum.HumanoidRigType.R15) then
     warn("Unsupported: make sure you're in R6")
     library:Exit()
     return
@@ -27,9 +27,6 @@ local render_connection
 
 die_connection = l_char.Humanoid.Died:Connect(function() 
     library:Exit()
-    
-    hats = nil
-    sb2 = nil
     
     die_connection:Disconnect()
     render_connection:Disconnect()
