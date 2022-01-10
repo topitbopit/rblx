@@ -21,15 +21,17 @@ local render_connection
 die_connection = l_char.Humanoid.Died:Connect(function() 
     library:Exit()
     
-    hats = nil
-    sb2 = nil
-    
     die_connection:Disconnect()
     render_connection:Disconnect()
 end)
 
 
-library.DisableFlicker = true
+library.DisableFlicker = false
+pcall(function() 
+    if (l_char.Humanoid.RigType == Enum.HumanoidRigType.R6) then
+        library.DisableFlicker = true
+    end
+end)
 library.NetIntensity = 80
 
 local hats = {}
@@ -45,7 +47,7 @@ do
 end
 
 
-
+local a,b = rad(36), rad(18)
 
 local time = 0
 render_connection = rs_stepped:Connect(function(dt) 
@@ -54,7 +56,7 @@ render_connection = rs_stepped:Connect(function(dt)
     local humrp_pos = l_humrp.Position
     
     for idx,hat in ipairs(hats) do 
-        local c = time + (((idx * rad(36))+rad(18))) -- Thanks https://math.stackexchange.com/questions/1092502/
+        local c = time + ((idx * a)+b) -- Thanks https://math.stackexchange.com/questions/1092502/
         local a, b = sin(c)*4, cos(c)*4
         local pos1 = (humrp_pos + vec3(a-b,idx>5 and a or b,a+b))
         hat.CFrame = cfn(pos1, humrp_pos) * cfa(a,b,0)
