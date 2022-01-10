@@ -42,7 +42,16 @@ end)
 -- Note that because of the way the net works, extreme flicker is generated (even more so with higher fps)
 -- There is an option to disable the flicker, but it's clientside only
 -- The only downside is that if a block gets destroyed for whatever reason, you still see it since the fakepart doesn't get destroyed
-library.DisableFlicker = true
+
+-- By default itll be false
+library.DisableFlicker = false
+-- But if the character is in R6 then set it to true
+-- The checks in a pcall in case theres no humanoid for some reason
+pcall(function() 
+    if (l_char.Humanoid.RigType == Enum.HumanoidRigType.R6) then
+        library.DisableFlicker = true
+    end
+end)
 library.NetIntensity = 80 -- 80 works fine, 50-60 seems to be the lowest you can go without breaking ownership
 
 -- Make the hats
@@ -107,4 +116,3 @@ render_connection = rs_stepped:Connect(function(DeltaTime)
         hat[1].CFrame = cfn(pos1) * cfa(a,b,0)
     end
 end)
-
