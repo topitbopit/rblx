@@ -38,7 +38,7 @@ do
     function getname()
         local a = ''
         for i = 1, 10 do 
-            a..= char(rand(60,150))
+            a = a .. char(rand(60,150))
         end
         return a
     end
