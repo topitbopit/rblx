@@ -947,7 +947,7 @@ local m_puzzles = win:AddMenu('puzzles') do
         
         local hex_key = ''
         for i in hex_replace:gmatch("([%a%d]+) ") do 
-            hex_key ..= string.char(tonumber('0x'..i))
+            hex_key = hex_key .. string.char(tonumber('0x'..i))
         end
         
         local hex_r1, hex_r2 = hex_key:match("Replace all ([%d%a])'s with a ([%d%a])")
