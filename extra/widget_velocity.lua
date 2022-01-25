@@ -19,7 +19,9 @@ do
     local a = Instance.new("ScreenGui")
     a.IgnoreGuiInset = true
     a.DisplayOrder = 1500
-    syn.protect_gui(a)
+    pcall(function() 
+        syn.protect_gui(a)
+    end)
     a.Parent = game.CoreGui
     
     txt = Instance.new("TextLabel")
