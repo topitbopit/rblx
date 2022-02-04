@@ -1,4 +1,4 @@
--- Telekenisis example
+-- Telekinesis example
 
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/hat_lib/main.lua'))()
 
@@ -24,19 +24,18 @@ pcall(function()
         library.DisableFlicker = true
     end
 end)
-library.NetIntensity = 60
-library.CustomNet = vec3(0, 0, 30)
+library.CustomNet = vec3(0, 0, 35)
 
 
 local bvs = {}
+local bgs = {}
 
 do
     connections[1] = l_char.Humanoid.Died:Connect(function() 
         library:Exit()
         
-        for i,v in ipairs(bvs) do 
-            v:Destroy()
-        end
+        for i,v in ipairs(bvs) do v:Destroy() end
+        for i,v in ipairs(bgs) do v:Destroy() end
         
         for i,v in ipairs(connections) do v:Disconnect() end
     end)
@@ -61,7 +60,7 @@ end
 
 local dest = l_humrp.CFrame
 for idx,v in ipairs(hats) do
-    v.CFrame = dest * cfn(0,5,0)
+    v.CFrame = dest * cfn(0,7,0)
 end
 wait(0.1)
 
@@ -72,57 +71,73 @@ for idx,hat in ipairs(hats) do
     root.CanCollide = true
     
     local a = Instance.new("BodyPosition")
-    a.D = 600
-    a.P = 9000
-    a.MaxForce = vec3(9000,9000,9000)
+    a.D = 800
+    a.P = 13000
+    a.MaxForce = vec3(15000,15000,15000)
     ins(bvs, a)
+    
+    local b = Instance.new("BodyGyro")
+    b.MaxTorque = vec3(15000,15000,15000)
+    b.D = 700 
+    b.P = 13000
+    
+    ins(bgs, b)
 end
 
 
-local offsets, cframes = {}, {}
-
+local offsets, cframes, bgcframes = {}, {}, {}
+local toggled = false
 connections[2] = serv_uis.InputBegan:Connect(function(io,gpe) 
     if (gpe) then return end
     if (io.KeyCode == Enum.KeyCode.R) then
+        toggled = not toggled
+        if (toggled) then 
         
-        for idx,hat in ipairs(hats) do 
-            bvs[idx].Parent = rawget(hat,'root')
-        end
-        offsets = {}
-        for i = 1, 10 do 
-            offsets[i] = {
-                (rand(-180,180)*.1),
-                (rand(-60,90)*.1),
-                (rand(-190,20)*.1)
-            }
-        end
-        
-        cframes = {}
-        for i = 1, 10 do 
-            cframes[i] = cfn(offsets[i][1],offsets[i][2],offsets[i][3] + (-i-2))
-        end
-        
-        
-        connections[4] = rs_stepped:Connect(function(dt) 
-            local base = l_humrp.CFrame
-            
-            for i,v in ipairs(bvs) do 
-                v.Position = (base * cframes[i]).Position
+            for i = 1, #hats do 
+                local root = rawget(hats[i],'root')
+                
+                bvs[i].Parent = root
+                bgs[i].Parent = root
             end
-        end)
-    end
-end)
-
-connections[3] = serv_uis.InputEnded:Connect(function(io,gpe) 
-    if (gpe) then return end
-    if (io.KeyCode == Enum.KeyCode.R) then
-        offsets = nil
-        cframes = nil
-        
-        connections[4]:Disconnect()
-        
-        for idx,hat in ipairs(hats) do 
-            bvs[idx].Parent = nil
+            offsets = {}
+            for i = 1, 10 do 
+                offsets[i] = {
+                    (rand(-200,50)*.1),
+                    (rand(-10,40)*.1),
+                    (rand(-200,50)*.1)
+                }
+            end
+            
+            cframes = {}
+            for i = 1, 10 do 
+                cframes[i] = cfn(offsets[i][1],offsets[i][2],offsets[i][3] + (-i-2))
+            end
+            
+            bgcframes = {}
+            for i = 1, 10 do 
+                bgcframes[i] = cfn(vec3(0,0,0), vec3(offsets[i][1],offsets[i][2],offsets[i][3]))
+            end
+            
+            
+            connections[4] = rs_stepped:Connect(function(dt) 
+                local base = l_humrp.CFrame
+                
+                for i = 1, #bvs do 
+                    bvs[i].Position = (base * cframes[i]).Position
+                    bgs[i].CFrame = bgcframes[i]
+                    
+                end
+            end)
+        else
+            offsets = nil
+            cframes = nil
+            bgcframes = nil
+            connections[4]:Disconnect()
+            
+            for i = 1, #hats do 
+                bvs[i].Parent = nil
+                bgs[i].Parent = nil
+            end
         end
     end
 end)
