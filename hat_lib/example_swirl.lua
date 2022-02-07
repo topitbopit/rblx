@@ -32,7 +32,7 @@ pcall(function()
         library.DisableFlicker = true
     end
 end)
-library.NetIntensity = 80
+library.CustomNet = vec3(0, 0, 40)
 
 local hats = {}
 do
