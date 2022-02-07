@@ -35,7 +35,7 @@ end)
 
 
 library.DisableFlicker = true
-library.NetIntensity = 70
+library.CustomNet = vec3(30, 0, 0)
 
 
 
