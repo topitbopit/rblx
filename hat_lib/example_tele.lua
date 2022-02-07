@@ -1,4 +1,4 @@
--- Telekinesis example
+-- Telekenisis example
 
 local library = loadstring(game:HttpGet('https://raw.githubusercontent.com/topitbopit/rblx/main/hat_lib/main.lua'))()
 
@@ -102,9 +102,9 @@ connections[2] = serv_uis.InputBegan:Connect(function(io,gpe)
             offsets = {}
             for i = 1, 10 do 
                 offsets[i] = {
-                    (rand(-200,50)*.1),
+                    (rand(-50,50)*.1),
                     (rand(-10,40)*.1),
-                    (rand(-200,50)*.1)
+                    (rand(-60,-30)*.1)
                 }
             end
             
