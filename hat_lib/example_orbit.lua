@@ -19,7 +19,7 @@ if (not l_humrp) then warn("Wait for the game to load!") return end
 local vec3,cfn,cfa = Vector3.new, CFrame.new, CFrame.Angles
 local cos,sin,sqrt,rad,random = math.cos,math.sin,math.sqrt, math.rad, math.random
 local ins = table.insert
--- You could do with just calling the normal functions, but reduntantly indexing math and getting .new every time
+-- You could do with just calling the normal functions, but redundantly indexing math and getting .new every time
 -- is annoying
 
 
@@ -52,7 +52,9 @@ pcall(function()
         library.DisableFlicker = true
     end
 end)
-library.NetIntensity = 80 -- 80 works fine, 50-60 seems to be the lowest you can go without breaking ownership
+library.CustomNet = vec3(0, 0, 40) -- Using a custom net vector makes it look better
+-- If you care more about ownership over shakiness, then just use NetIntensity
+
 
 -- Make the hats
 local hats = {} do 
