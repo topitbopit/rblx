@@ -21,7 +21,10 @@ local rem = table.remove
 _G.BlockedDomains  = _G.BlockedDomains or {
     -- Webhooks
     "discord.com/api/webhooks/";
+    
+    -- Webhook proxies
     "webhook";
+    "websec";
     
     -- Server hosters
     "000webhost";
