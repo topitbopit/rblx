@@ -1,6 +1,5 @@
 -- Made by topit
--- Since there is no method to get actual FPS, FPS is calculated by taking the inverse of the cpu time
--- It's sorta accurate but mostly fluctuates from the actual fps
+-- Update: switched to runservice deltatime method
 if not game:IsLoaded() then game.Loaded:Wait() end
 
 local rs = game:GetService("RunService")
@@ -32,10 +31,12 @@ b.Font = "SourceSans"
 b.TextScaled = true
 b.Parent = a 
 
+local delta = 0
 do
     local rgbtime = 0
     local hsvfunc = Color3.fromHSV
     local rgbcon = rs.RenderStepped:Connect(function(dt) 
+        delta = dt
         rgbtime = (rgbtime > 1 and rgbtime-1 or rgbtime)
         rgbtime += dt * 0.1
 
@@ -48,7 +49,7 @@ end
 local fps = game:GetService("Stats").PerformanceStats.CPU
 spawn(function()
     while true do
-        b.Text = floor(1 / (fps:GetValue()*0.001))
-        wait(0.3)
+        b.Text = floor(1 / delta)
+        wait(0.2)
     end
 end)
