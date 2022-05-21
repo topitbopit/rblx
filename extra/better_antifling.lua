@@ -1,3 +1,5 @@
+-- hi 🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑🤑
+
 -- get services
 local runServ = game:GetService('RunService') -- used for some antifling methods 
 local sGuiServ = game:GetService('StarterGui') -- starter gui
